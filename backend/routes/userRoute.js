@@ -6,6 +6,6 @@ const auth = require("../middlewares/auth");
 // Users routes
 router.post("/users/registrer/", usersCtrl.registrer);
 router.post("/users/login/", usersCtrl.login);
-router.get("/users/profil/", auth, usersCtrl.getUserProfile);
-router.put("/users/profil/", auth, usersCtrl.updateUserProfile);
+router.get("/users/profile/", auth, usersCtrl.getUserProfile);
+router.put("/users/profile/", auth, usersCtrl.updateUserProfile);
 module.exports = router;
