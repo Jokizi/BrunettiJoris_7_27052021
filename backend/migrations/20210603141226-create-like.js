@@ -1,40 +1,34 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Messages", {
+    await queryInterface.createTable("Likes", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      messageId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Messages",
+          key: "id",
+        },
+      },
       userId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: "Users",
           key: "id",
         },
       },
-      title: {
+      userLike: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.BOOLEAN,
       },
-      content: {
+      userDislike: {
         allowNull: false,
-        type: Sequelize.STRING,
-      },
-      attachment: {
-        allowNull: true,
-        type: Sequelize.STRING,
-      },
-      likes: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      dislikes: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
@@ -47,6 +41,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Messages");
+    await queryInterface.dropTable("Likes");
   },
 };
