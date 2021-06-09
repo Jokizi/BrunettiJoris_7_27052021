@@ -8,6 +8,7 @@ const app = express();
 const userRoute = require("./routes/userRoute");
 const messageRoute = require("./routes/messageRoute");
 const likeRoute = require("./routes/likeRoute");
+const commentRoute = require("./routes/commentRoute");
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", userRoute);
 app.use("/", messageRoute);
 app.use("/", likeRoute);
+app.use("/", commentRoute);
 app.use("*", (req, res) => {
   res.json({ error: 404 });
 });
