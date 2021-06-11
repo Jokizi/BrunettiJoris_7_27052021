@@ -76,4 +76,120 @@ module.exports = {
       }
     );
   },
+  listComments: function (req, res) {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN);
+    const userId = decodedToken.userId;
+    const messageId = parseInt(req.params.messageId);
+
+    var fields = req.query.fields;
+    var limit = parseInt(req.query.limit);
+    var offset = parseInt(req.query.offset);
+    var order = req.query.order;
+    const ITEMS_LIMIT = 50;
+    if (limit > ITEMS_LIMIT) {
+      limit = ITEMS_LIMIT;
+    }
+
+    models.Comment.findAll({
+      where: { messageId },
+      order: [order != null ? order.split(":") : ["createdAt", "ASC"]],
+      attributes: fields !== "*" && fields != null ? fields.split(",") : null,
+      limit: !isNaN(limit) ? limit : null,
+      offset: !isNaN(offset) ? offset : null,
+      include: [
+        {
+          model: models.User,
+          attributes: ["username"],
+        },
+      ],
+    })
+      .then(function (messages) {
+        if (messages) {
+          res.status(200).json(messages);
+        } else {
+          res.status(404).json({ error: "no messages found" });
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+        res.status(500).json({ error: "invalid fields" });
+      });
+    // });
+  },
 };
+
+/*createComment: function (req, res) {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
+    const userId = decodedToken.userId;
+
+    // Paramètres
+    const content = req.body.content;
+    const messageId = parseInt(req.params.messageId);
+
+    asyncLib.waterfall(
+      [
+        function (done) {
+          models.User.findOne({
+            where: { id: userId },
+          })
+            .then(function (userFound) {
+              done(null, userFound);
+            })
+            .catch(function (err) {
+              return res
+                .status(500)
+                .json({ error: "vérification utilisateur impossible" });
+            });
+        },
+        function (userFound, done) {
+          console.log("--------------uuuuuu----------------------");
+          console.log(userFound);
+          console.log("------------------------------------");
+          if (userFound) {
+            models.Message.findOne({
+              where: { id: messageId },
+            })
+              .then(function (messageFound) {
+                done(null, messageFound, userFound);
+              })
+              .catch(function (err) {
+                console.log("--------------erroooo----------------------");
+                console.log(err);
+                console.log("------------------------------------");
+                return res.status(404).json({ error: "message introuvable" });
+              });
+          } else {
+            res.status(404).json({ error: "utilisateur introuvable" });
+          }
+        },
+        function (userFound, messageFound, done) {
+          console.log("---------------mmmmmm---------------------");
+          console.log(messageFound);
+          console.log("------------------------------------");
+          if (messageFound) {
+            models.Comment.create({
+              content: content,
+              commentLikes: 0,
+              commentDislikes: 0,
+              UserId: userFound.id,
+              MessageId: messageFound.id,
+            }).then(function (newComment) {
+              done(newComment);
+            });
+          } else {
+            res.status(404).json({ error: "utilisateur introuvable" });
+          }
+        },
+      ],
+      function (newComment) {
+        if (newComment) {
+          return res.status(201).json(newComment);
+        } else {
+          return res
+            .status(500)
+            .json({ error: "publication commentaire impossible" });
+        }
+      }
+    );*/

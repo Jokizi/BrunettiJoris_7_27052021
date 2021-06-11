@@ -166,4 +166,27 @@ module.exports = {
         res.status(500).json({ error: "colonne invalide" });
       });
   },
+  getOneMessage: function (req, res) {
+    const messageId = parseInt(req.params.messageId);
+    models.Message.findOne({
+      attributes: ["createdAt", "title", "attachment", "content"],
+      where: { id: messageId },
+      include: [
+        {
+          model: models.User,
+          attributes: ["username"],
+        },
+      ],
+    })
+      .then(function (message) {
+        if (message) {
+          res.status(201).json(message);
+        } else {
+          res.status(404).json({ error: "message introuvable" });
+        }
+      })
+      .catch(function (err) {
+        res.status(500).json({ error: "impossible de récupérer le message" });
+      });
+  },
 };

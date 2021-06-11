@@ -12,4 +12,5 @@ router.post(
   messagesCtrl.createMessageImage
 );
 router.get("/messages/", auth, messagesCtrl.listMessages);
+router.get("/:messageId", auth, messagesCtrl.getOneMessage);
 module.exports = router;
