@@ -6,10 +6,11 @@ const jwt = require("jsonwebtoken");
 module.exports = {
   createComment: function (req, res) {
     const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
+    const decodedToken = jwt.verify(token, process.env.TOKEN);
     const userId = decodedToken.userId;
 
     // Paramètres
+
     const content = req.body.content;
     const messageId = parseInt(req.params.messageId);
 
@@ -37,23 +38,28 @@ module.exports = {
                 done(null, messageFound, userFound);
               })
               .catch(function (err) {
-                return res.status(404).json({ error: "message introuvable" });
+                return res.status(500).json({ error: "message introuvable" });
               });
           } else {
-            res.status(404).json({ error: "utilisateur introuvable" });
+            return res.status(404).json({ error: "utilisateur introuvable" });
           }
         },
-        function (userFound, messageFound, done) {
+        function (messageFound, userFound, done) {
           if (messageFound) {
-            models.Comments.create({
+            models.Comment.create({
               content: content,
               commentLikes: 0,
               commentDislikes: 0,
               UserId: userFound.id,
-              messageId: messageId,
-            }).then(function (newComment) {
-              done(newComment);
-            });
+              MessageId: messageFound.id,
+            }),
+              messageFound
+                .update({
+                  comments: messageFound.comments + 1,
+                })
+                .then(function (newComment) {
+                  done(newComment);
+                });
           } else {
             res.status(404).json({ error: "utilisateur introuvable" });
           }

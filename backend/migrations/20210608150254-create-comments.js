@@ -16,6 +16,7 @@ module.exports = {
         },
       },
       userId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: "Users",
@@ -23,15 +24,12 @@ module.exports = {
         },
       },
       content: {
-        allowNull: false,
         type: Sequelize.STRING,
       },
       commentLikes: {
-        allowNull: false,
         type: Sequelize.INTEGER,
       },
       commentDislikes: {
-        allowNull: false,
         type: Sequelize.INTEGER,
       },
       createdAt: {

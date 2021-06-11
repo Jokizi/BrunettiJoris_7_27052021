@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       attachment: DataTypes.STRING,
       likes: DataTypes.INTEGER,
       dislikes: DataTypes.INTEGER,
+      comments: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -49,6 +49,7 @@ module.exports = {
               likes: 0,
               dislikes: 0,
               UserId: userFound.id,
+              comments: 0,
               attachment: `${req.protocol}://${req.get("host")}/images/${
                 req.file.filename
               }`,
@@ -111,6 +112,7 @@ module.exports = {
               likes: 0,
               dislikes: 0,
               UserId: userFound.id,
+              comments: 0,
             }).then(function (newMessage) {
               done(newMessage);
             });
