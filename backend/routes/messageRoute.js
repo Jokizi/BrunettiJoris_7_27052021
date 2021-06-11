@@ -11,6 +11,7 @@ router.post(
   multer,
   messagesCtrl.createMessageImage
 );
+router.put("/:messageId/update", auth, messagesCtrl.updateMessage);
 router.get("/messages/", auth, messagesCtrl.listMessages);
 router.get("/:messageId", auth, messagesCtrl.getOneMessage);
 module.exports = router;

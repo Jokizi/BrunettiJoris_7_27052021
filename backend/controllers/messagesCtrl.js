@@ -189,4 +189,79 @@ module.exports = {
         res.status(500).json({ error: "impossible de récupérer le message" });
       });
   },
+  updateMessage: function (req, res) {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
+    const userId = decodedToken.userId;
+
+    const title = req.body.title;
+    const content = req.body.content;
+    const messageId = parseInt(req.params.messageId);
+    console.log("--------------messssss----------------------");
+    console.log(messageId);
+    console.log("------------------------------------");
+
+    asyncLib.waterfall(
+      [
+        function (done) {
+          models.Message.findOne({
+            where: { id: messageId },
+          })
+            .then(function (messageFound) {
+              console.log("--------------messageFound----------------------");
+              console.log(messageFound);
+              console.log("------------------------------------");
+              done(null, messageFound);
+            })
+            .catch(function (err) {
+              return res.status(500).json({ error: "message introuvable" });
+            });
+        },
+        function (messageFound, done) {
+          models.User.findOne({
+            where: { id: userId },
+          })
+            .then(function (userFound) {
+              console.log("-------------ussser-----------------------");
+              console.log(userFound);
+              console.log("------------------------------------");
+              done(null, messageFound, userFound);
+            })
+            .catch(function (err) {
+              return res
+                .status(500)
+                .json({ error: "vérification utilisateur impossible" });
+            });
+        },
+        function (messageFound, userFound, done) {
+          if (messageFound) {
+            messageFound
+              .update({
+                title: title ? title : messageFound.title,
+                content: content ? content : message.content,
+              })
+              .then(function (newMessageFound) {
+                console.log(
+                  "---------------newmessagefound---------------------"
+                );
+                console.log(newMessageFound);
+                console.log("------------------------------------");
+                done(newMessageFound);
+              });
+          } else {
+            res.status(404).json({ error: "utilisateur introuvable" });
+          }
+        },
+      ],
+      function (messageFound) {
+        if (messageFound) {
+          return res.status(201).json(messageFound);
+        } else {
+          return res
+            .status(500)
+            .json({ error: "publication commentaire impossible" });
+        }
+      }
+    );
+  },
 };
