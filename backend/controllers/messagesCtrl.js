@@ -197,20 +197,14 @@ module.exports = {
     const title = req.body.title;
     const content = req.body.content;
     const messageId = parseInt(req.params.messageId);
-    console.log("--------------messssss----------------------");
-    console.log(messageId);
-    console.log("------------------------------------");
 
     asyncLib.waterfall(
       [
         function (done) {
           models.Message.findOne({
-            where: { id: messageId },
+            where: { id: messageId, userId },
           })
             .then(function (messageFound) {
-              console.log("--------------messageFound----------------------");
-              console.log(messageFound);
-              console.log("------------------------------------");
               done(null, messageFound);
             })
             .catch(function (err) {
@@ -222,9 +216,6 @@ module.exports = {
             where: { id: userId },
           })
             .then(function (userFound) {
-              console.log("-------------ussser-----------------------");
-              console.log(userFound);
-              console.log("------------------------------------");
               done(null, messageFound, userFound);
             })
             .catch(function (err) {
@@ -241,11 +232,6 @@ module.exports = {
                 content: content ? content : message.content,
               })
               .then(function (newMessageFound) {
-                console.log(
-                  "---------------newmessagefound---------------------"
-                );
-                console.log(newMessageFound);
-                console.log("------------------------------------");
                 done(newMessageFound);
               });
           } else {

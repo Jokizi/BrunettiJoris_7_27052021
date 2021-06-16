@@ -116,16 +116,16 @@ module.exports = {
         res.status(500).json({ error: "invalid fields" });
       });
   },
-};
-
-/*createComment: function (req, res) {
+  updateComment: function (req, res) {
     const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
+    const decodedToken = jwt.verify(token, process.env.TOKEN);
     const userId = decodedToken.userId;
 
     // Paramètres
+
     const content = req.body.content;
-    const messageId = parseInt(req.params.messageId);
+    // const messageId = parseInt(req.params.messageId);
+    const commentId = parseInt(req.params.commentId);
 
     asyncLib.waterfall(
       [
@@ -142,53 +142,47 @@ module.exports = {
                 .json({ error: "vérification utilisateur impossible" });
             });
         },
+
         function (userFound, done) {
-          console.log("--------------uuuuuu----------------------");
-          console.log(userFound);
-          console.log("------------------------------------");
           if (userFound) {
-            models.Message.findOne({
-              where: { id: messageId },
+            models.Comment.findOne({
+              where: { id: commentId, userId },
             })
-              .then(function (messageFound) {
-                done(null, messageFound, userFound);
+              .then(function (commentFound) {
+                done(null, commentFound);
               })
               .catch(function (err) {
-                console.log("--------------erroooo----------------------");
-                console.log(err);
-                console.log("------------------------------------");
-                return res.status(404).json({ error: "message introuvable" });
+                return res
+                  .status(500)
+                  .json({ error: "commentaire introuvable" });
+              });
+          } else {
+            return res.status(404).json({ error: "utilisateur introuvable" });
+          }
+        },
+        function (commentFound, done) {
+          if (commentFound) {
+            commentFound
+              .update({
+                content: content ? content : comment.content,
+              })
+              .then(function (newCommentFound) {
+                done(newCommentFound);
               });
           } else {
             res.status(404).json({ error: "utilisateur introuvable" });
           }
         },
-        function (userFound, messageFound, done) {
-          console.log("---------------mmmmmm---------------------");
-          console.log(messageFound);
-          console.log("------------------------------------");
-          if (messageFound) {
-            models.Comment.create({
-              content: content,
-              commentLikes: 0,
-              commentDislikes: 0,
-              UserId: userFound.id,
-              MessageId: messageFound.id,
-            }).then(function (newComment) {
-              done(newComment);
-            });
-          } else {
-            res.status(404).json({ error: "utilisateur introuvable" });
-          }
-        },
       ],
-      function (newComment) {
-        if (newComment) {
-          return res.status(201).json(newComment);
+      function (commentFound) {
+        if (commentFound) {
+          return res.status(201).json(commentFound);
         } else {
           return res
             .status(500)
             .json({ error: "publication commentaire impossible" });
         }
       }
-    );*/
+    );
+  },
+};
