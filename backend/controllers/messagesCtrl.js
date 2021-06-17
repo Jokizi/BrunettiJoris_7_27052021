@@ -166,6 +166,45 @@ module.exports = {
         res.status(500).json({ error: "colonne invalide" });
       });
   },
+  listMessagesUser: function (req, res) {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN);
+    const userId = decodedToken.userId;
+
+    const fields = req.query.fields;
+    const limit = parseInt(req.query.limit);
+    const offset = parseInt(req.query.offset);
+    const order = req.query.order;
+
+    if (limit > items_limit) {
+      limit = items_limit;
+    }
+
+    models.Message.findAll({
+      where: { userId },
+      order: [order != null ? order.split(":") : ["title", "ASC"]],
+      attributes: fields !== "*" && fields != null ? fields.split(",") : null,
+      limit: !isNaN(limit) ? limit : null,
+      offset: !isNaN(offset) ? offset : null,
+      include: [
+        {
+          model: models.User,
+          attributes: ["username"],
+        },
+      ],
+    })
+      .then(function (messages) {
+        if (messages) {
+          res.status(200).json(messages);
+        } else {
+          res.status(404).json({ error: "message(s) introuvable(s)" });
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+        res.status(500).json({ error: "colonne invalide" });
+      });
+  },
   getOneMessage: function (req, res) {
     const messageId = parseInt(req.params.messageId);
     models.Message.findOne({
