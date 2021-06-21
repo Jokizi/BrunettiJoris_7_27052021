@@ -15,4 +15,5 @@ router.put("/:messageId/update", auth, messagesCtrl.updateMessage);
 router.get("/messages/", auth, messagesCtrl.listMessages);
 router.get("/:messageId", auth, messagesCtrl.getOneMessage);
 router.get("/user/messages", auth, messagesCtrl.listMessagesUser);
+router.delete("/user/:messageId", auth, messagesCtrl.deleteMessage);
 module.exports = router;

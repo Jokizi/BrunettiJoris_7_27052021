@@ -49,7 +49,7 @@ module.exports = {
       function (commentFound, userFound, done) {
         // si le user et le message sont présents dans la table like
         if (userFound) {
-          models.CommentsLikes.findOne({
+          models.CommentsLike.findOne({
             where: {
               userId: userId,
               commentId: commentId,
@@ -70,7 +70,7 @@ module.exports = {
       function (commentFound, userFound, userAlreadyLikedFound, done) {
         // si l'user n'est pas présent dans la table like on l'a crée
         if (!userAlreadyLikedFound) {
-          models.CommentsLikes.create({
+          models.CommentsLike.create({
             userLike: true,
             userDislike: false,
             commentId,
@@ -204,7 +204,7 @@ module.exports = {
       },
       function (commentFound, userFound, done) {
         if (userFound) {
-          models.CommentsLikes.findOne({
+          models.CommentsLike.findOne({
             where: {
               userId: userId,
               commentId: commentId,
@@ -224,7 +224,7 @@ module.exports = {
       },
       function (commentFound, userFound, userAlreadyLikedFound, done) {
         if (!userAlreadyLikedFound) {
-          models.CommentsLikes.create({
+          models.CommentsLike.create({
             userLike: false,
             userDislike: true,
             commentId,

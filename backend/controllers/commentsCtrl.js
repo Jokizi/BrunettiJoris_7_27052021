@@ -90,7 +90,6 @@ module.exports = {
     if (limit > ITEMS_LIMIT) {
       limit = ITEMS_LIMIT;
     }
-
     models.Comment.findAll({
       where: { messageId },
       order: [order != null ? order.split(":") : ["createdAt", "ASC"]],
@@ -142,7 +141,6 @@ module.exports = {
                 .json({ error: "vérification utilisateur impossible" });
             });
         },
-
         function (userFound, done) {
           if (userFound) {
             models.Comment.findOne({

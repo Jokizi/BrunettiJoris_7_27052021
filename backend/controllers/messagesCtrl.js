@@ -289,4 +289,101 @@ module.exports = {
       }
     );
   },
+  deleteMessage: function (req, res) {
+    //Params
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN);
+    const userId = decodedToken.userId;
+    const messageId = parseInt(req.params.messageId);
+
+    asyncLib.waterfall([
+      function (done) {
+        models.Comment.findAll({
+          where: { messageId },
+          attributes: ["id"],
+        })
+          .then(function (commentsFound) {
+            let commentIds = [];
+
+            commentsFound.map(({ id }) => {
+              commentIds.push(id);
+            });
+            done(null, commentIds);
+          })
+          .catch(function (err) {
+            res.status(500).json({ error: "unable to verify comment" });
+          });
+      },
+      function (commentIds, done) {
+        models.CommentsLike.destroy({
+          where: { commentId: commentIds },
+        })
+          .then(function () {
+            done(null);
+          })
+          .catch(function (err) {
+            res.status(500).json({ error: "unable to delet comment likes" });
+          });
+      },
+      function (done) {
+        models.Comment.destroy({
+          where: { messageId: messageId },
+        })
+          .then(() => {
+            models.Like.destroy({
+              where: { messageId: messageId },
+            });
+            done(null);
+          })
+          .catch((err) => {
+            return res
+              .status(500)
+              .json({ error: "unable to delete comment or like" });
+          });
+      },
+      function (done) {
+        models.Message.findOne({
+          where: { id: messageId },
+        })
+          .then(function (messageFound) {
+            done(null, messageFound);
+          })
+          .catch(function (err) {
+            res.status(500).json({ error: "unable to verify message" });
+          });
+      },
+      function (messageFound, done) {
+        if (messageFound.UserId === userId) {
+          if (messageFound.attachment === null) {
+            messageFound
+              .destroy({
+                where: { id: messageId },
+              })
+              .then(function (destroyMessageFound) {
+                return res.status(201).json(destroyMessageFound);
+              })
+              .catch(function (err) {
+                res.status(500).json({ error: "unable to delete message" });
+              });
+          } else {
+            const filename = messageFound.attachment.split("/images/")[1];
+            fs.unlink(`images/${filename}`, () => {
+              models.Message.destroy({
+                where: { id: messageId },
+              });
+            })
+              .then(function (destroyMessageFoundImg) {
+                return res.status(201).json(destroyMessageFoundImg);
+              })
+              .catch(function (err) {
+                res.status(500).json({ error: "unable to delete message" });
+              });
+          }
+        } else
+          return res
+            .status(500)
+            .json({ error: "this publication does not belong to you" });
+      },
+    ]);
+  },
 };
