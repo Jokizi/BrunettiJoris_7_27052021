@@ -183,4 +183,124 @@ module.exports = {
       }
     );
   },
+  deleteComment: function (req, res) {
+    // var messageId = req.params.id
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN);
+    const userId = decodedToken.userId;
+
+    // Params
+
+    let messageId = parseInt(req.params.messageId);
+    let commentId = parseInt(req.params.commentId);
+
+    if (messageId <= 0) {
+      return res.status(400).json({ error: "invalid parameters" });
+    }
+
+    asyncLib.waterfall([
+      function (done) {
+        models.Message.findOne({
+          where: { id: messageId },
+        })
+          .then(function (messageFound) {
+            done(null, messageFound);
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "unable to verify message" });
+          });
+      },
+      function (messageFound, done) {
+        models.Comment.findOne({
+          where: { id: commentId },
+        })
+          .then(function (commentFound) {
+            done(null, messageFound, commentFound);
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "unable to verify comment" });
+          });
+      },
+      function (messageFound, commentFound, done) {
+        models.User.findOne({
+          where: { id: userId },
+        })
+          .then(function (userFound) {
+            done(null, messageFound, commentFound, userFound);
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "unable to verify user" });
+          });
+      },
+      function (messageFound, commentFound, userFound, done) {
+        if (commentFound) {
+          models.Comment.findOne({
+            where: {
+              userId: userId,
+              messageId: messageId,
+            },
+          })
+            .then(function (commentFound) {
+              done(null, messageFound, commentFound, userFound);
+            })
+            .catch(function (err) {
+              return res
+                .status(500)
+                .json({ error: "unable to verify comment and user" });
+            });
+        } else {
+          return res.status(500).json({ error: "this comment does not exist" });
+        }
+      },
+      function (messageFound, userFound, commentFound, done) {
+        models.CommentsLike.findAll({
+          where: { commentId },
+          attributes: ["id"],
+        })
+          .then(function (commentlikefound) {
+            let commentLikeIds = [];
+
+            commentlikefound.map(({ id }) => {
+              commentLikeIds.push(id);
+            });
+
+            done(null, messageFound, userFound, commentFound, commentLikeIds);
+          })
+          .catch(function (err) {
+            res.status(500).json({ error: "unable to delet comment likes" });
+          });
+      },
+      function (messageFound, userFound, commentFound, commentLikeIds, done) {
+        models.CommentsLike.destroy({
+          where: { id: commentLikeIds },
+        })
+          .then(function () {
+            done(null, messageFound, userFound, commentFound);
+          })
+          .catch(function (err) {
+            res.status(500).json({ error: "unable to delet comment likes" });
+          });
+      },
+      function (messageFound, userFound, commentFound, done) {
+        if (commentFound) {
+          models.Comment.destroy({
+            where: { id: commentId },
+          })
+            .then((commentFound) => {
+              messageFound.update({
+                comments: messageFound.comments - 1,
+              });
+              return res.status(201).json(messageFound);
+            })
+            .catch((err) => {
+              return res
+                .status(500)
+                .json({ error: "unable to delet this comment" });
+            });
+        } else {
+          return res.status(500).json({ error: "comment not found" });
+        }
+      },
+    ]);
+  },
 };
