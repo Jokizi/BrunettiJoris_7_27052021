@@ -38,7 +38,9 @@ module.exports = {
                 done(null, messageFound, userFound);
               })
               .catch(function (err) {
-                return res.status(500).json({ error: "message introuvable" });
+                return res
+                  .status(500)
+                  .json({ error: "publication introuvable" });
               });
           } else {
             return res.status(404).json({ error: "utilisateur introuvable" });
@@ -107,7 +109,7 @@ module.exports = {
         if (messages) {
           res.status(200).json(messages);
         } else {
-          res.status(404).json({ error: "no messages found" });
+          res.status(404).json({ error: "publications introuvable" });
         }
       })
       .catch(function (err) {
@@ -195,7 +197,7 @@ module.exports = {
     let commentId = parseInt(req.params.commentId);
 
     if (messageId <= 0) {
-      return res.status(400).json({ error: "invalid parameters" });
+      return res.status(400).json({ error: "paramètres invalide" });
     }
 
     asyncLib.waterfall([
@@ -207,7 +209,9 @@ module.exports = {
             done(null, messageFound);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify message" });
+            return res
+              .status(500)
+              .json({ error: "impossible de vérifier la publication" });
           });
       },
       function (messageFound, done) {
@@ -218,7 +222,9 @@ module.exports = {
             done(null, messageFound, commentFound);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify comment" });
+            return res
+              .status(500)
+              .json({ error: "impossible de vérifier le commentaire" });
           });
       },
       function (messageFound, commentFound, done) {
@@ -229,7 +235,9 @@ module.exports = {
             done(null, messageFound, commentFound, userFound);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify user" });
+            return res
+              .status(500)
+              .json({ error: "impossible de vérifier l'utilisateur" });
           });
       },
       function (messageFound, commentFound, userFound, done) {
@@ -244,12 +252,12 @@ module.exports = {
               done(null, messageFound, commentFound, userFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({ error: "unable to verify comment and user" });
+              return res.status(500).json({
+                error: "impossible de vérifier le commentaire et l'utilisateur",
+              });
             });
         } else {
-          return res.status(500).json({ error: "this comment does not exist" });
+          return res.status(500).json({ error: "ce commentaire n'existe pas" });
         }
       },
       function (messageFound, userFound, commentFound, done) {
@@ -267,7 +275,11 @@ module.exports = {
             done(null, messageFound, userFound, commentFound, commentLikeIds);
           })
           .catch(function (err) {
-            res.status(500).json({ error: "unable to delet comment likes" });
+            res
+              .status(500)
+              .json({
+                error: "impossible de trouver les likes du commentaire",
+              });
           });
       },
       function (messageFound, userFound, commentFound, commentLikeIds, done) {
@@ -278,7 +290,9 @@ module.exports = {
             done(null, messageFound, userFound, commentFound);
           })
           .catch(function (err) {
-            res.status(500).json({ error: "unable to delet comment likes" });
+            res.status(500).json({
+              error: "impossible de supprimer les likes du commentaire",
+            });
           });
       },
       function (messageFound, userFound, commentFound, done) {
@@ -295,10 +309,10 @@ module.exports = {
             .catch((err) => {
               return res
                 .status(500)
-                .json({ error: "unable to delet this comment" });
+                .json({ error: "impossible de supprimer ce commentaire" });
             });
         } else {
-          return res.status(500).json({ error: "comment not found" });
+          return res.status(500).json({ error: "commentaire invtrouvable" });
         }
       },
     ]);

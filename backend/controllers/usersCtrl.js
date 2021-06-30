@@ -247,4 +247,649 @@ module.exports = {
       }
     );
   },
+  deleteUser: function (req, res) {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
+    const userId = decodedToken.userId;
+    const messageId = parseInt(req.params.messageId);
+    const commentId = parseInt(req.params.commentId);
+
+    asyncLib.waterfall([
+      function (done) {
+        models.Message.findAll({
+          where: { userId },
+          attributes: ["id"],
+        })
+          .then(function (allMessagesUser) {
+            let messageUserIds = [];
+
+            allMessagesUser.map(({ id }) => {
+              messageUserIds.push(id);
+            });
+            done(null, messageUserIds);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "1 vérification commentaireLike de l'user ID impossible",
+            });
+          });
+      },
+      function (messageUserIds, done) {
+        models.Like.findAll({
+          where: { messageId: messageUserIds },
+          attributes: ["id"],
+        })
+          .then(function (allLikeMessagesUser) {
+            let likeMessagesUserIds = [];
+
+            allLikeMessagesUser.map(({ id }) => {
+              likeMessagesUserIds.push(id);
+            });
+            done(null, messageUserIds, likeMessagesUserIds);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "2 vérification commentaireLike de l'user ID impossible",
+            });
+          });
+      },
+      function (messageUserIds, likeMessagesUserIds, done) {
+        models.Comment.findAll({
+          where: { messageId: messageUserIds },
+          attributes: ["id"],
+        })
+          .then(function (allCommentMessagesUser) {
+            let commentMessagesUserIds = [];
+
+            allCommentMessagesUser.map(({ id }) => {
+              commentMessagesUserIds.push(id);
+            });
+            done(
+              null,
+              messageUserIds,
+              likeMessagesUserIds,
+              commentMessagesUserIds
+            );
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "3 vérification commentaireLike de l'user ID impossible",
+            });
+          });
+      },
+      function (
+        messageUserIds,
+        likeMessagesUserIds,
+        commentMessagesUserIds,
+        done
+      ) {
+        models.CommentsLike.findAll({
+          where: { commentId: commentMessagesUserIds },
+          attributes: ["id"],
+        })
+          .then(function (allCommentsLikeMessagesUser) {
+            let commentsLikeMessagesUserIds = [];
+
+            allCommentsLikeMessagesUser.map(({ id }) => {
+              commentsLikeMessagesUserIds.push(id);
+            });
+            done(
+              null,
+              messageUserIds,
+              likeMessagesUserIds,
+              commentMessagesUserIds,
+              commentsLikeMessagesUserIds
+            );
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "4 vérification commentaireLike de l'user ID impossible",
+            });
+          });
+      },
+      function (
+        messageUserIds,
+        likeMessagesUserIds,
+        commentMessagesUserIds,
+        commentsLikeMessagesUserIds,
+        done
+      ) {
+        models.CommentsLike.destroy({
+          where: { id: commentsLikeMessagesUserIds },
+        })
+          .then(function () {
+            models.Like.destroy({
+              where: { id: likeMessagesUserIds },
+            });
+          })
+          .then(function () {
+            models.Comment.destroy({
+              where: { id: commentMessagesUserIds },
+            });
+          })
+          .then(function () {
+            models.Message.destroy({
+              where: { id: messageUserIds },
+            });
+            done(null);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error:
+                "5 impossible de supprimer les commentaires like de l'user ID",
+            });
+          });
+      },
+
+      /*===========================================================================*/
+      function (done) {
+        models.Comment.findAll({
+          where: { userId },
+          attributes: ["id", "messageId"],
+        }).then(function (commentUserFound) {
+          let commentUserIds = [];
+          let commentMessageIds = [];
+
+          commentUserFound.map((element) => {
+            commentUserIds.push(element.id);
+            commentMessageIds.push(element.messageId);
+          });
+          done(null, commentUserIds, commentMessageIds);
+        });
+      },
+
+      /*====================================================================*/
+      function (commentUserIds, commentMessageIds, done) {
+        models.Message.findAll({
+          where: { id: commentUserIds },
+        })
+          .then(function (messageFound) {
+            done(null, commentUserIds, commentMessageIds, messageFound);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error:
+                "5 impossible de supprimer les commentaires like de l'user ID",
+            });
+          });
+      },
+
+      /*==========================================================================*/
+      function (commentUserIds, commentMessageIds, messageFound, done) {
+        models.CommentsLike.findAll({
+          where: { userId, userLike: true },
+          attributes: ["commentId"],
+        })
+          .then((commentsLikeUserFound) => {
+            let messageIdCommentsLikeUser = [];
+            commentsLikeUserFound.map(({ commentId }) => {
+              messageIdCommentsLikeUser.push(commentId);
+            });
+            messageIdCommentsLikeUser.map((element) => {
+              console.log("------------------------------------");
+              console.log(element);
+              console.log("------------------------------------");
+              models.Comment.update(
+                {
+                  commentLikes: models.Comment.commentLikes - 1,
+                },
+                {
+                  where: { id: element },
+                }
+              );
+            });
+          })
+          .then(() => {
+            models.CommentsLike.destroy({
+              where: { userId, userLike: true },
+            });
+            done(null, commentUserIds, commentMessageIds, messageFound);
+          });
+      },
+
+      /*=============================================================================*/
+      function (commentUserIds, commentMessageIds, messageFound, done) {
+        models.CommentsLike.findAll({
+          where: { userId, userDislike: true },
+          attributes: ["commentId"],
+        })
+          .then((commentsLikeUserFound) => {
+            let messageIdCommentsLikeUser = [];
+            commentsLikeUserFound.map(({ commentId }) => {
+              messageIdCommentsLikeUser.push(commentId);
+            });
+            messageIdCommentsLikeUser.map((element) => {
+              models.Comment.update(
+                {
+                  commentDislikes: models.Comment.commentDislikes - 1,
+                },
+                {
+                  where: { id: element },
+                }
+              );
+            });
+          })
+          .then(() => {
+            models.CommentsLike.destroy({
+              where: { userId, userDislike: true },
+            });
+            done(null, commentUserIds, commentMessageIds, messageFound);
+          });
+      },
+
+      /*==============================================================================*/
+      function (commentUserIds, commentMessageIds, messageFound, done) {
+        models.CommentsLike.destroy({
+          where: { commentId: commentUserIds },
+        }).then(() => {
+          done(null, commentUserIds, commentMessageIds, messageFound);
+        });
+      },
+      function (commentUserIds, commentMessageIds, messageFound, done) {
+        models.CommentsLike.destroy({
+          where: { userId },
+        }).then(() => {
+          done(null, commentUserIds, commentMessageIds, messageFound);
+        });
+      },
+
+      /*============================================================================*/
+      function (commentUserIds, commentMessageIds, messageFound, done) {
+        models.Like.findAll({
+          where: { userId, userLike: true },
+          attributes: ["messageId"],
+        })
+          .then((likeUserFound) => {
+            let messageIdLikeUser = [];
+            likeUserFound.map(({ messageId }) => {
+              messageIdLikeUser.push(messageId);
+            });
+            messageIdLikeUser.map((element) => {
+              models.Message.update(
+                {
+                  likes: models.Message.likes - 1,
+                },
+                {
+                  where: { id: element },
+                }
+              );
+            });
+          })
+
+          .then(() => {
+            models.Like.destroy({
+              where: { userId, userLike: true },
+            });
+            done(null, commentUserIds, commentMessageIds, messageFound);
+          });
+      },
+
+      /*===========================================================================*/
+      function (commentUserIds, commentMessageIds, messageFound, done) {
+        models.Like.findAll({
+          where: { userId, userDislike: true },
+          attributes: ["messageId"],
+        })
+          .then((likeUserFound) => {
+            let messageIdLikeUser = [];
+            likeUserFound.map(({ messageId }) => {
+              messageIdLikeUser.push(messageId);
+            });
+            messageIdLikeUser.map((element) => {
+              models.Message.update(
+                {
+                  dislikes: models.Message.dislikes - 1,
+                },
+                {
+                  where: { id: element },
+                }
+              );
+            });
+          })
+          .then(() => {
+            models.Like.destroy({
+              where: { userId, userDislike: true },
+            });
+            done(null, commentUserIds, commentMessageIds, messageFound);
+          });
+      },
+
+      /*===========================================================================*/
+      function (commentUserIds, commentMessageIds, messageFound, done) {
+        models.Like.destroy({
+          where: { userId },
+        }).then(() => {
+          done(null, commentUserIds, commentMessageIds, messageFound);
+        });
+      },
+
+      /*====================================================================================*/
+      function (commentUserIds, commentMessageIds, messageFound, done) {
+        models.Message.findAll({
+          where: { id: commentMessageIds },
+        })
+          .then(() => {
+            commentMessageIds.map((element) => {
+              models.Message.decrement(
+                {
+                  comments: 1,
+                },
+                {
+                  where: { id: element },
+                }
+              );
+            });
+          })
+
+          .then(() => {
+            models.Comment.destroy({
+              where: { userId: userId },
+            });
+            done(null);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error:
+                "5 impossible de supprimer les commentaires like de l'user ID",
+            });
+          });
+      },
+      function (done) {
+        models.User.destroy({
+          where: { id: userId },
+        })
+          .then(() => {
+            res.status(201).json("utilisateur supprimé");
+          })
+          .catch(function (err) {
+            res.status(500).json("impossible de supprimé l'utilisateur");
+          });
+      },
+      /*========================================================================================================================*/
+      /*function (done) {
+        models.CommentsLike.findAll({
+          where: { userId },
+          attributes: ["id"],
+        })
+          .then(function (commentsLikeFound) {
+            let commentsLikeIds = [];
+
+            commentsLikeFound.map(({ id }) => {
+              commentsLikeIds.push(id);
+            });
+            done(null, commentsLikeIds);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "1 vérification commentaireLike de l'user ID impossible",
+            });
+          });
+      },
+      function (commentsLikeIds, done) {
+        models.CommentsLike.destroy({
+          where: { id: commentsLikeIds },
+        })
+          .then(function () {
+            done(null);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error:
+                "2 impossible de supprimer les commentaires like de l'user ID",
+            });
+          });
+      },
+      function (done) {
+        models.Comment.findAll({
+          where: { userId },
+          attributes: ["id"],
+        })
+          .then(function (commentsFound) {
+            let commentIds = [];
+
+            commentsFound.map(({ id }) => {
+              commentIds.push(id);
+            });
+            done(null, commentIds);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "3 vérification commentaire de l'user ID impossible",
+            });
+          });
+      },
+      function (commentIds, done) {
+        models.CommentsLike.destroy({
+          where: { commentId: commentIds },
+        })
+          .then(function () {
+            done(null, commentIds);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "4 impossible de supprimer les commentaires like",
+            });
+          });
+      },
+      function (commentIds, done) {
+        models.Comment.destroy({
+          where: { id: commentIds },
+        })
+          .then(function () {
+            done(null);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "5 impossible de supprimer les commentaires like",
+            });
+          });
+      },
+      function (done) {
+        models.Like.findAll({
+          where: { userId },
+          attributes: ["id"],
+        })
+          .then(function (likeFound) {
+            let likeIds = [];
+
+            likeFound.map(({ id }) => {
+              likeIds.push(id);
+            });
+            done(null, likeIds);
+          })
+          .catch(function (err) {
+            res
+              .status(500)
+              .json({ error: "6 vérification commentaire impossible" });
+          });
+      },
+      function (likeIds, done) {
+        models.Like.destroy({
+          where: { id: likeIds },
+        })
+          .then(function () {
+            done(null);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "7 impossible de supprimer les commentaires like",
+            });
+          });
+      },
+      function (done) {
+        models.Message.findAll({
+          where: { userId },
+          attributes: ["id"],
+        })
+          .then(function (messagesFound) {
+            let messageIds = [];
+
+            messagesFound.map(({ id }) => {
+              messageIds.push(id);
+            });
+            done(null, messageIds);
+          })
+          .catch(function (err) {
+            res
+              .status(500)
+              .json({ error: "8 vérification commentaire impossible" });
+          });
+      },
+      function (messageIds, done) {
+        models.Like.destroy({
+          where: { messageId: messageIds },
+        })
+          .then(function () {
+            done(null, messageIds);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "9 impossible de supprimer les commentaires like",
+            });
+          });
+      },
+      function (messageIds, done) {
+        models.CommentsLike.destroy({
+          where: { commentId: messageIds },
+        })
+          .then(function () {
+            done(null, messageIds);
+          })
+          .catch(function (err) {
+            console.log("--------------err à 10----------------------");
+            console.log(err);
+            console.log("------------------------------------");
+            res.status(500).json({
+              error: "10 impossible de supprimer les commentaires like",
+            });
+          });
+      },
+      function (messageIds, done) {
+        models.Comment.destroy({
+          where: { messageId: messageIds },
+        })
+          .then(function () {
+            done(null, messageIds);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "11 impossible de supprimer les commentaires like",
+            });
+          });
+      },
+      function (messageIds, done) {
+        console.log("---------------messIDS---------------------");
+        console.log(messageIds);
+        console.log("------------------------------------");
+        models.Message.destroy({
+          where: { id: messageIds },
+        })
+          .then(function () (destroyMessagesFound) {
+            //return res.status(201).json(destroyMessagesFound);
+            done(null, messageIds);
+          })
+          .catch(function (err) {
+            console.log("------------------------------------");
+            console.log(err);
+            console.log("------------------------------------");
+            res
+              .status(500)
+              .json({ error: "12 impossible de supprimer la publication" });
+          });
+      },
+      function (messageIds, done) {
+        models.Message.findAll({
+          attributes: ["id"],
+        }).then(function (allMessagesNoUser) {
+          console.log("--------------allmessause----------------------");
+          console.log(allMessagesNoUser);
+          console.log("------------------------------------");
+        });
+      },*/
+
+      /*function (done) {
+        models.Comment.destroy({
+          where: { commentId: commentIds },
+        })
+          .then(() => {
+            models.Like.destroy({
+              where: { messageId: messageId },
+            });
+            done(null);
+          })
+          .catch((err) => {
+            return res
+              .status(500)
+              .json({ error: "impossible de supprimer les commentaires" });
+          });
+      },*/
+      /*function (done) {
+        models.User.findOne({
+          where: { id: userId },
+        })
+          .then(function (userFound) {
+            done(null, userFound);
+          })
+          .catch(function (err) {
+            return res
+              .status(500)
+              .json({ error: "vérification utilisateur impossible" });
+          });
+      },
+      function (userFound, done) {
+        if (userFound) {
+        models.Message.findAll({
+          where: { userId },
+        })
+          .then(function () {
+            done(messagesFound);
+          })
+          .catch(function (err) {
+            return res
+              .status(500)
+              .json({ error: "publications de l'utilisateur introuvable" });
+          });
+        }
+      },
+      function (done) {
+        models.Like.findAll({
+          where: { userId },
+        })
+          .then(function () {
+            done(likesFound);
+          })
+          .catch(function (err) {
+            return res
+              .status(500)
+              .json({ error: "likes de l'utilisateur introuvable" });
+          });
+      },
+      function (done) {
+        models.Comment.findAll({
+          where: { userId },
+        })
+          .then(function () {
+            done(commentsFound);
+          })
+          .catch(function (err) {
+            return res
+              .status(500)
+              .json({ error: "commentaires de l'utilisateur introuvable" });
+          });
+      },
+      function (done) {
+        models.CommentsLike.findAll({
+          where: { userId },
+        })
+          .then(function () {
+            done(commentsLikeFound);
+          })
+          .catch(function (err) {
+            return res.status(500).json({
+              error: "likes commentaires de l'utilisateur introuvable",
+            });
+          });
+      },*/
+    ]);
+  },
 };

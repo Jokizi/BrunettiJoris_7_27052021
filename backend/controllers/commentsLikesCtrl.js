@@ -14,7 +14,7 @@ module.exports = {
     const commentId = parseInt(req.params.commentId);
 
     if (commentId <= 0) {
-      return res.status(400).json({ error: "invalid parameters" });
+      return res.status(400).json({ error: "paramètres invalide" });
     }
 
     asyncLib.waterfall([
@@ -27,7 +27,9 @@ module.exports = {
             done(null, commentFound);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify message" });
+            return res
+              .status(500)
+              .json({ error: "impossible de vérifier la publication" });
           });
       },
       function (commentFound, done) {
@@ -40,10 +42,12 @@ module.exports = {
               done(null, commentFound, userFound);
             })
             .catch(function (err) {
-              return res.status(500).json({ error: "unable to verify user" });
+              return res
+                .status(500)
+                .json({ error: "impossible de vérifier l'utilisateur" });
             });
         } else {
-          return res.status(404).json({ error: "post already liked" });
+          return res.status(404).json({ error: "publication déjà liké" });
         }
       },
       function (commentFound, userFound, done) {
@@ -61,10 +65,12 @@ module.exports = {
             .catch(function (err) {
               return res
                 .status(500)
-                .json({ error: "unable to verify is user already liked" });
+                .json({
+                  error: "impossible de vérifier si l'utilisateur à déjà liké",
+                });
             });
         } else {
-          return res.status(404).json({ error: "user not exist" });
+          return res.status(404).json({ error: "l'utilisateur n'existe pas" });
         }
       },
       function (commentFound, userFound, userAlreadyLikedFound, done) {
@@ -87,7 +93,7 @@ module.exports = {
               .catch(function (err) {
                 return res
                   .status(500)
-                  .json({ error: "unable to set user reaction" });
+                  .json({ error: "impossible d'ajouter le like" });
               });
         } else {
           // si il n'a pas déja liker et disliker
@@ -109,7 +115,7 @@ module.exports = {
                 .catch(function (err) {
                   return res
                     .status(500)
-                    .json({ error: "cannot update user reaction" });
+                    .json({ error: "impossible d'ajouter le like" });
                 });
             // si il a déjà disliké
           } else if (
@@ -132,7 +138,7 @@ module.exports = {
                 .catch(function (err) {
                   return res
                     .status(500)
-                    .json({ error: "cannot update user reaction" });
+                    .json({ error: "impossible d'ajouter le like" });
                 });
             // si il à déjà liké
           } else if (
@@ -153,10 +159,10 @@ module.exports = {
                 .catch(function (err) {
                   return res
                     .status(500)
-                    .json({ error: "cannot update user reaction" });
+                    .json({ error: "impossible de retiré le like" });
                 });
           } else {
-            return res.status(409).json({ error: "message already disliked" });
+            return res.status(409).json({ error: "publication déjà liké" });
           }
         }
       },
@@ -172,7 +178,7 @@ module.exports = {
     const commentId = parseInt(req.params.commentId);
 
     if (commentId <= 0) {
-      return res.status(400).json({ error: "invalid parameters" });
+      return res.status(400).json({ error: "paramètres invalide" });
     }
 
     asyncLib.waterfall([
@@ -184,7 +190,9 @@ module.exports = {
             done(null, commentFound);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify message" });
+            return res
+              .status(500)
+              .json({ error: "impossible de vérifier la publication" });
           });
       },
       function (commentFound, done) {
@@ -196,10 +204,12 @@ module.exports = {
               done(null, commentFound, userFound);
             })
             .catch(function (err) {
-              return res.status(500).json({ error: "unable to verify user" });
+              return res
+                .status(500)
+                .json({ error: "impossible de vérifier l'utilisateur" });
             });
         } else {
-          res.status(404).json({ error: "post already liked" });
+          res.status(404).json({ error: "publication déjà disliké" });
         }
       },
       function (commentFound, userFound, done) {
@@ -216,10 +226,13 @@ module.exports = {
             .catch(function (err) {
               return res
                 .status(500)
-                .json({ error: "unable to verify is user already liked" });
+                .json({
+                  error:
+                    "impossible de vérifier si l'utilisateur à déjà disliké",
+                });
             });
         } else {
-          res.status(404).json({ error: "user not exist" });
+          res.status(404).json({ error: "l'utilisateur n'existe pas" });
         }
       },
       function (commentFound, userFound, userAlreadyLikedFound, done) {
@@ -241,7 +254,7 @@ module.exports = {
               .catch(function (err) {
                 return res
                   .status(500)
-                  .json({ error: "unable to set user reaction" });
+                  .json({ error: "impossible d'ajouter le dislike" });
               });
         } else {
           if (
@@ -262,7 +275,7 @@ module.exports = {
                 .catch(function (err) {
                   res
                     .status(500)
-                    .json({ error: "cannot update user reaction" });
+                    .json({ error: "impossible d'ajouter le dislike" });
                 });
           } else if (
             userAlreadyLikedFound.userLike === true &&
@@ -284,7 +297,7 @@ module.exports = {
                 .catch(function (err) {
                   res
                     .status(500)
-                    .json({ error: "cannot update user reaction" });
+                    .json({ error: "impossible d'ajouter le dislike" });
                 });
           } else if (
             userAlreadyLikedFound.userLike === false &&
@@ -304,10 +317,10 @@ module.exports = {
                 .catch(function (err) {
                   res
                     .status(500)
-                    .json({ error: "cannot update user reaction" });
+                    .json({ error: "impossible de retirer le dislike" });
                 });
           } else {
-            res.status(409).json({ error: "message already disliked" });
+            res.status(409).json({ error: "publication déjà disliké" });
           }
         }
       },

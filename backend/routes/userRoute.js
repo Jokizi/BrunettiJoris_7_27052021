@@ -8,4 +8,5 @@ router.post("/users/registrer/", usersCtrl.registrer);
 router.post("/users/login/", usersCtrl.login);
 router.get("/users/profile/", auth, usersCtrl.getUserProfile);
 router.put("/users/profile/", auth, usersCtrl.updateUserProfile);
+router.delete("/user/:userId", auth, usersCtrl.deleteUser);
 module.exports = router;

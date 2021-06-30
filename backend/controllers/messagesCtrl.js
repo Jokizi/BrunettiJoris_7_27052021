@@ -67,7 +67,7 @@ module.exports = {
         } else {
           return res
             .status(500)
-            .json({ error: "publication message impossible" });
+            .json({ error: "impossible de poster la publication avec image" });
         }
       }
     );
@@ -127,7 +127,7 @@ module.exports = {
         } else {
           return res
             .status(500)
-            .json({ error: "publication message impossible" });
+            .json({ error: "impossible de poster la publication" });
         }
       }
     );
@@ -197,7 +197,7 @@ module.exports = {
         if (messages) {
           res.status(200).json(messages);
         } else {
-          res.status(404).json({ error: "message(s) introuvable(s)" });
+          res.status(404).json({ error: "publication(s) introuvable(s)" });
         }
       })
       .catch(function (err) {
@@ -221,11 +221,13 @@ module.exports = {
         if (message) {
           res.status(201).json(message);
         } else {
-          res.status(404).json({ error: "message introuvable" });
+          res.status(404).json({ error: "publication introuvable" });
         }
       })
       .catch(function (err) {
-        res.status(500).json({ error: "impossible de récupérer le message" });
+        res
+          .status(500)
+          .json({ error: "impossible de récupérer la publication" });
       });
   },
   updateMessage: function (req, res) {
@@ -247,7 +249,7 @@ module.exports = {
               done(null, messageFound);
             })
             .catch(function (err) {
-              return res.status(500).json({ error: "message introuvable" });
+              return res.status(500).json({ error: "publication introuvable" });
             });
         },
         function (messageFound, done) {
@@ -284,7 +286,7 @@ module.exports = {
         } else {
           return res
             .status(500)
-            .json({ error: "publication commentaire impossible" });
+            .json({ error: "impossible de poster la modification" });
         }
       }
     );
@@ -311,7 +313,9 @@ module.exports = {
             done(null, commentIds);
           })
           .catch(function (err) {
-            res.status(500).json({ error: "unable to verify comment" });
+            res
+              .status(500)
+              .json({ error: "vérification commentaire impossible" });
           });
       },
       function (commentIds, done) {
@@ -322,7 +326,9 @@ module.exports = {
             done(null);
           })
           .catch(function (err) {
-            res.status(500).json({ error: "unable to delet comment likes" });
+            res
+              .status(500)
+              .json({ error: "impossible de supprimer les commentaires like" });
           });
       },
       function (done) {
@@ -338,7 +344,7 @@ module.exports = {
           .catch((err) => {
             return res
               .status(500)
-              .json({ error: "unable to delete comment or like" });
+              .json({ error: "impossible de supprimer les commentaires" });
           });
       },
       function (done) {
@@ -349,7 +355,9 @@ module.exports = {
             done(null, messageFound);
           })
           .catch(function (err) {
-            res.status(500).json({ error: "unable to verify message" });
+            res
+              .status(500)
+              .json({ error: "impossible de vérifier la publication" });
           });
       },
       function (messageFound, done) {
@@ -363,7 +371,9 @@ module.exports = {
                 return res.status(201).json(destroyMessageFound);
               })
               .catch(function (err) {
-                res.status(500).json({ error: "unable to delete message" });
+                res
+                  .status(500)
+                  .json({ error: "impossible de supprimer la publication" });
               });
           } else {
             const filename = messageFound.attachment.split("/images/")[1];
@@ -376,13 +386,17 @@ module.exports = {
                 return res.status(201).json(destroyMessageFoundImg);
               })
               .catch(function (err) {
-                res.status(500).json({ error: "unable to delete message" });
+                res
+                  .status(500)
+                  .json({
+                    error: "impossible de supprimer la publication avec image",
+                  });
               });
           }
         } else
           return res
             .status(500)
-            .json({ error: "this publication does not belong to you" });
+            .json({ error: "la publication ne vous appartient pas" });
       },
     ]);
   },
