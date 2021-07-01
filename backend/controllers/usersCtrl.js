@@ -270,7 +270,7 @@ module.exports = {
           })
           .catch(function (err) {
             res.status(500).json({
-              error: "1 vérification commentaireLike de l'user ID impossible",
+              error: "1 vérification messages de l'user ID impossible",
             });
           });
       },
@@ -289,7 +289,7 @@ module.exports = {
           })
           .catch(function (err) {
             res.status(500).json({
-              error: "2 vérification commentaireLike de l'user ID impossible",
+              error: "2 vérification likes des messages ID impossible",
             });
           });
       },
@@ -313,7 +313,7 @@ module.exports = {
           })
           .catch(function (err) {
             res.status(500).json({
-              error: "3 vérification commentaireLike de l'user ID impossible",
+              error: "3 vérification commentaires des messages ID impossible",
             });
           });
       },
@@ -343,7 +343,8 @@ module.exports = {
           })
           .catch(function (err) {
             res.status(500).json({
-              error: "4 vérification commentaireLike de l'user ID impossible",
+              error:
+                "4 vérification commentaireLikes des commentaires ID impossible",
             });
           });
       },
@@ -375,8 +376,7 @@ module.exports = {
           })
           .catch(function (err) {
             res.status(500).json({
-              error:
-                "5 impossible de supprimer les commentaires like de l'user ID",
+              error: "5 impossible de supprimer ces éléments",
             });
           });
       },
@@ -386,16 +386,22 @@ module.exports = {
         models.Comment.findAll({
           where: { userId },
           attributes: ["id", "messageId"],
-        }).then(function (commentUserFound) {
-          let commentUserIds = [];
-          let commentMessageIds = [];
+        })
+          .then(function (commentUserFound) {
+            let commentUserIds = [];
+            let commentMessageIds = [];
 
-          commentUserFound.map((element) => {
-            commentUserIds.push(element.id);
-            commentMessageIds.push(element.messageId);
+            commentUserFound.map((element) => {
+              commentUserIds.push(element.id);
+              commentMessageIds.push(element.messageId);
+            });
+            done(null, commentUserIds, commentMessageIds);
+          })
+          .catch(function (err) {
+            res.status(500).json({
+              error: "6 vérification des commentaires impossible",
+            });
           });
-          done(null, commentUserIds, commentMessageIds);
-        });
       },
 
       /*====================================================================*/
@@ -408,8 +414,7 @@ module.exports = {
           })
           .catch(function (err) {
             res.status(500).json({
-              error:
-                "5 impossible de supprimer les commentaires like de l'user ID",
+              error: "7 vérification des messages impossible",
             });
           });
       },
@@ -598,8 +603,12 @@ module.exports = {
         models.User.destroy({
           where: { id: userId },
         })
-          .then(() => {
-            res.status(201).json("utilisateur supprimé");
+          .then((userDestroy) => {
+            if (userDestroy) {
+              res.status(201).json("utilisateur supprimé");
+            } else {
+              res.status(501).json("utilisateur introuvable");
+            }
           })
           .catch(function (err) {
             res.status(500).json("impossible de supprimé l'utilisateur");
