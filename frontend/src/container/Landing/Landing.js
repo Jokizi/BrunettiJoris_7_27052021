@@ -1,6 +1,18 @@
 import Button from "../../components/Button/Button";
+import React from "react";
+import { useHistory } from "react-router";
 
 const Landing = () => {
+  const history = useHistory();
+
+  const goRegister = () => {
+    history.push("/inscription");
+  };
+
+  const goLogin = () => {
+    history.push("/connexion");
+  };
+
   return (
     <div
       style={{
@@ -15,8 +27,8 @@ const Landing = () => {
         <br />
         Ce site est fait pour vous rassembler!
       </div>
-      <Button title="Inscription" />
-      <Button title="Connexion" />
+      <Button onClick={goRegister} title="Inscription" />
+      <Button onClick={goLogin} title="Connexion" />
     </div>
   );
 };
