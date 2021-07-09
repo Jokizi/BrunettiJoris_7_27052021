@@ -2,8 +2,10 @@ import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import api from "../../Config/Api";
 import { useState } from "react";
+import { useHistory } from "react-router";
 
 const Register = () => {
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [email, setEmail] = useState("");
@@ -36,8 +38,10 @@ const Register = () => {
         email,
         password,
       });
+      history.push("/accueil");
     } catch (error) {}
   };
+
   return (
     <div>
       Register

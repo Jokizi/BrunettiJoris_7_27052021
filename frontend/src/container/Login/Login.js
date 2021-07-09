@@ -2,8 +2,10 @@ import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import api from "../../Config/Api";
 import { useState } from "react";
+import { useHistory } from "react-router";
 
 const Login = () => {
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,6 +23,7 @@ const Login = () => {
         email,
         password,
       });
+      history.push("/accueil");
     } catch (error) {}
   };
 
