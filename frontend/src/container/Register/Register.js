@@ -4,7 +4,7 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import { useHistory } from "react-router";
 
-const Register = () => {
+const Register = ({ setIsLoggedIn, isLoggedIn }) => {
   const history = useHistory();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
@@ -31,6 +31,8 @@ const Register = () => {
   };
 
   const onRegister = async () => {
+    //const token = JSON.parse(JSON.stringify(sessionStorage.getItem('TOKEN')));
+
     try {
       const response = await api.post("/users/registrer/", {
         username,
@@ -38,6 +40,11 @@ const Register = () => {
         email,
         password,
       });
+      console.log("---------------rep data---------------------");
+      console.log(response.data);
+      console.log("------------------------------------");
+      sessionStorage.setItem("TOKEN", response.data.token);
+      setIsLoggedIn(true);
       history.push("/accueil");
     } catch (error) {}
   };

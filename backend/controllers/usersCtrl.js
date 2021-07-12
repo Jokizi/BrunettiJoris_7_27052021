@@ -89,7 +89,11 @@ module.exports = {
       function (newUser) {
         if (newUser) {
           return res.status(201).json({
-            userId: newUser.id,
+            token: jwt.sign(
+              { userId: newUser.id, isAdmin: newUser.isAdmin },
+              process.env.TOKEN,
+              { expiresIn: "24h" }
+            ),
           });
         } else {
           return res
@@ -181,6 +185,9 @@ module.exports = {
     })
       .then(function (user) {
         if (user) {
+          console.log("---------------user---------------------");
+          console.log(user);
+          console.log("------------------------------------");
           res.status(201).json(user);
         } else {
           res.status(404).json({ error: "utilisateur introuvable" });
