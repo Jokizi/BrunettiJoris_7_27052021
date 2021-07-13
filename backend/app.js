@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 require("dotenv").config();
 const app = express();
+const helmet = require("helmet");
 
 const userRoute = require("./routes/userRoute");
 const messageRoute = require("./routes/messageRoute");
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(helmet());
 app.use("/", userRoute);
 app.use("/", messageRoute);
 app.use("/", likeRoute);

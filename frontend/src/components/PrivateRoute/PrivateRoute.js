@@ -1,14 +1,14 @@
-import { Route, Redirect } from "react-router";
+import { Route, Redirect } from "react-router-dom";
 
-const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => {
+const PrivateRoute = ({ component: Component, isLoggedin, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) =>
-        isLoggedIn ? (
+        isLoggedin ? (
           <Component {...props} />
         ) : (
-          <Redirect to={{ pathname: "/connexion" }} />
+          <Redirect to={{ pathname: "/" }} />
         )
       }
     ></Route>

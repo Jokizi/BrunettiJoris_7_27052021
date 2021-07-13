@@ -185,9 +185,6 @@ module.exports = {
     })
       .then(function (user) {
         if (user) {
-          console.log("---------------user---------------------");
-          console.log(user);
-          console.log("------------------------------------");
           res.status(201).json(user);
         } else {
           res.status(404).json({ error: "utilisateur introuvable" });

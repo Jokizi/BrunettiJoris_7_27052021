@@ -4,7 +4,7 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import { useHistory } from "react-router";
 
-const Register = ({ setIsLoggedIn, isLoggedIn }) => {
+const Register = ({ setIsLoggedin }) => {
   const history = useHistory();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
@@ -20,9 +20,6 @@ const Register = ({ setIsLoggedIn, isLoggedIn }) => {
   };
 
   const onChangeEmail = (e) => {
-    console.log("------------------------------------");
-    console.log(e);
-    console.log("------------------------------------");
     setEmail(e.target.value);
   };
 
@@ -40,11 +37,9 @@ const Register = ({ setIsLoggedIn, isLoggedIn }) => {
         email,
         password,
       });
-      console.log("---------------rep data---------------------");
-      console.log(response.data);
-      console.log("------------------------------------");
-      sessionStorage.setItem("TOKEN", response.data.token);
-      setIsLoggedIn(true);
+
+      sessionStorage.setItem("test", response.data.token);
+      setIsLoggedin(true);
       history.push("/accueil");
     } catch (error) {}
   };

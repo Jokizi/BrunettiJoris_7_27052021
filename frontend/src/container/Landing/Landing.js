@@ -2,7 +2,7 @@ import Button from "../../components/Button/Button";
 import React from "react";
 import { useHistory } from "react-router";
 
-const Landing = () => {
+const Landing = ({ setIsLoggedin }) => {
   const history = useHistory();
 
   const goRegister = () => {
