@@ -50,6 +50,9 @@ module.exports = {
               done(null, userFound);
             })
             .catch(function (err) {
+              console.log('------------err ------------------------');
+              console.log(err);
+              console.log('------------------------------------');
               return res
                 .status(500)
                 .json({ error: "vérification utilisateur impossible" });
