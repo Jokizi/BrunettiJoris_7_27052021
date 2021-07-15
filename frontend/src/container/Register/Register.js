@@ -28,8 +28,6 @@ const Register = ({ setIsLoggedin }) => {
   };
 
   const onRegister = async () => {
-    //const token = JSON.parse(JSON.stringify(sessionStorage.getItem('TOKEN')));
-
     try {
       const response = await api.post("/users/registrer/", {
         username,
@@ -49,12 +47,7 @@ const Register = ({ setIsLoggedin }) => {
       Register
       <Input onChange={onChangeEmail} value={email} label="e-mail" />
       <Input onChange={onChangeUsername} value={username} label="Pseudonyme" />
-      <Input
-        onChange={onChangePassword}
-        value={password}
-        label="mot de passe"
-        type="password"
-      />
+      <Input onChange={onChangePassword} value={password} label="mot de passe" type="password" />
       <Input onChange={onChangeBio} value={bio} label="bio" />
       <Button onClick={onRegister} title="S'inscrire" />
     </div>

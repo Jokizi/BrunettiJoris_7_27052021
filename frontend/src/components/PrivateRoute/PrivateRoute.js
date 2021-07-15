@@ -15,3 +15,4 @@ const PrivateRoute = ({ component: Component, isLoggedin, ...rest }) => {
   );
 };
 export default PrivateRoute;
+
