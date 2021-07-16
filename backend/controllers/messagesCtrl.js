@@ -15,10 +15,10 @@ module.exports = {
     const userId = decodedToken.userId;
 
     // Paramètres
-    const title = req.body.title;
-    const content = req.body.content;
 
-    if (title == null || content == null) {
+    const formMessage = JSON.parse(req.body.message);
+    const { title, content } = formMessage;
+    if (title == null || (content == null && attachment == null)) {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
 
@@ -36,9 +36,7 @@ module.exports = {
               done(null, userFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({ error: "vérification utilisateur impossible" });
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
             });
         },
         function (userFound, done) {
@@ -50,9 +48,7 @@ module.exports = {
               dislikes: 0,
               UserId: userFound.id,
               comments: 0,
-              attachment: `${req.protocol}://${req.get("host")}/images/${
-                req.file.filename
-              }`,
+              attachment: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
             }).then(function (newMessage) {
               done(newMessage);
             });
@@ -63,11 +59,26 @@ module.exports = {
       ],
       function (newMessage) {
         if (newMessage) {
-          return res.status(201).json(newMessage);
+          var fields = req.query.fields;
+          var limit = parseInt(req.query.limit);
+          var offset = parseInt(req.query.offset);
+          var order = req.query.order;
+          models.Message.findAll({
+            order: [order != null ? order.split(":") : ["createdAt", "DESC"]],
+            attributes: fields !== "*" && fields != null ? fields.split(",") : null,
+            limit: !isNaN(limit) ? limit : null,
+            offset: !isNaN(offset) ? offset : null,
+            include: [
+              {
+                model: models.User,
+                attributes: ["username"],
+              },
+            ],
+          }).then(function (allMessageFound) {
+            return res.status(201).json(allMessageFound);
+          });
         } else {
-          return res
-            .status(500)
-            .json({ error: "impossible de poster la publication avec image" });
+          return res.status(500).json({ error: "cannot post message" });
         }
       }
     );
@@ -99,9 +110,7 @@ module.exports = {
               done(null, userFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({ error: "vérification utilisateur impossible" });
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
             });
         },
         function (userFound, done) {
@@ -123,11 +132,26 @@ module.exports = {
       ],
       function (newMessage) {
         if (newMessage) {
-          return res.status(201).json(newMessage);
+          var fields = req.query.fields;
+          var limit = parseInt(req.query.limit);
+          var offset = parseInt(req.query.offset);
+          var order = req.query.order;
+          models.Message.findAll({
+            order: [order != null ? order.split(":") : ["createdAt", "DESC"]],
+            attributes: fields !== "*" && fields != null ? fields.split(",") : null,
+            limit: !isNaN(limit) ? limit : null,
+            offset: !isNaN(offset) ? offset : null,
+            include: [
+              {
+                model: models.User,
+                attributes: ["username"],
+              },
+            ],
+          }).then(function (allMessageFound) {
+            return res.status(201).json(allMessageFound);
+          });
         } else {
-          return res
-            .status(500)
-            .json({ error: "impossible de poster la publication" });
+          return res.status(500).json({ error: "cannot post message" });
         }
       }
     );
@@ -143,9 +167,9 @@ module.exports = {
     }
 
     models.Message.findAll({
-      order: [order != null ? order.split(":") : ["title", "ASC"]],
+      order: [order != null ? order.split(":") : ["createdAt", "DESC"]],
       attributes: fields !== "*" && fields != null ? fields.split(",") : null,
-      limit: !isNaN(limit) ? limit : null,
+      limit: !isNaN(limit) ? limit : null, // mettre une limite pour éviter de trop charger, new call après la limite fixer en number
       offset: !isNaN(offset) ? offset : null,
       include: [
         {
@@ -225,9 +249,7 @@ module.exports = {
         }
       })
       .catch(function (err) {
-        res
-          .status(500)
-          .json({ error: "impossible de récupérer la publication" });
+        res.status(500).json({ error: "impossible de récupérer la publication" });
       });
   },
   updateMessage: function (req, res) {
@@ -260,9 +282,7 @@ module.exports = {
               done(null, messageFound, userFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({ error: "vérification utilisateur impossible" });
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
             });
         },
         function (messageFound, userFound, done) {
@@ -284,9 +304,7 @@ module.exports = {
         if (messageFound) {
           return res.status(201).json(messageFound);
         } else {
-          return res
-            .status(500)
-            .json({ error: "impossible de poster la modification" });
+          return res.status(500).json({ error: "impossible de poster la modification" });
         }
       }
     );
@@ -313,9 +331,7 @@ module.exports = {
             done(null, commentIds);
           })
           .catch(function (err) {
-            res
-              .status(500)
-              .json({ error: "vérification commentaire impossible" });
+            res.status(500).json({ error: "vérification commentaire impossible" });
           });
       },
       function (commentIds, done) {
@@ -326,9 +342,7 @@ module.exports = {
             done(null);
           })
           .catch(function (err) {
-            res
-              .status(500)
-              .json({ error: "impossible de supprimer les commentaires like" });
+            res.status(500).json({ error: "impossible de supprimer les commentaires like" });
           });
       },
       function (done) {
@@ -342,9 +356,7 @@ module.exports = {
             done(null);
           })
           .catch((err) => {
-            return res
-              .status(500)
-              .json({ error: "impossible de supprimer les commentaires" });
+            return res.status(500).json({ error: "impossible de supprimer les commentaires" });
           });
       },
       function (done) {
@@ -355,9 +367,7 @@ module.exports = {
             done(null, messageFound);
           })
           .catch(function (err) {
-            res
-              .status(500)
-              .json({ error: "impossible de vérifier la publication" });
+            res.status(500).json({ error: "impossible de vérifier la publication" });
           });
       },
       function (messageFound, done) {
@@ -371,9 +381,7 @@ module.exports = {
                 return res.status(201).json(destroyMessageFound);
               })
               .catch(function (err) {
-                res
-                  .status(500)
-                  .json({ error: "impossible de supprimer la publication" });
+                res.status(500).json({ error: "impossible de supprimer la publication" });
               });
           } else {
             const filename = messageFound.attachment.split("/images/")[1];
@@ -386,17 +394,12 @@ module.exports = {
                 return res.status(201).json(destroyMessageFoundImg);
               })
               .catch(function (err) {
-                res
-                  .status(500)
-                  .json({
-                    error: "impossible de supprimer la publication avec image",
-                  });
+                res.status(500).json({
+                  error: "impossible de supprimer la publication avec image",
+                });
               });
           }
-        } else
-          return res
-            .status(500)
-            .json({ error: "la publication ne vous appartient pas" });
+        } else return res.status(500).json({ error: "la publication ne vous appartient pas" });
       },
     ]);
   },

@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
     const name = file.originalname.split(" ").join("_");
     const extension = MIME_TYPES[file.mimetype];
     const id = newNanoId.nanoid();
-    callback(null, name + "." + id + "." + extension);
+    callback(null, "image_" + id + "." + extension);
   },
 });
 

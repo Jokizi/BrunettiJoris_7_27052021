@@ -7,6 +7,9 @@ const Home = () => {
   const history = useHistory();
 
   useEffect(() => {
+    console.log("---------------use---------------------");
+    console.log("useEffect FIre");
+    console.log("------------------------------------");
     if (sessionStorage.getItem("test")) {
       const getMessages = async () => {
         const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
@@ -25,31 +28,33 @@ const Home = () => {
       history.push("/");
     }
   }, [history]);
-
-  console.log("--------------allMessages----------------------");
-  console.log(allMessages);
-  console.log("------------------------------------");
+  const viewMessagesPost = (newMessages) => {
+    setAllMessages(newMessages);
+  };
   return (
     <div>
       <div className="grpm-home">C'est la home page</div>
-      <PostMessage />
-      {allMessages &&
-        allMessages.map((element) => {
-          console.log("----------------element--------------------");
-          console.log(element);
-          console.log("------------------------------------");
-          return (
-            <div key={element.id}>
-              <div>{element.User.username}</div>
-              <div>{element.createdAt}</div>
-              <div>{element.title}</div>
-              <div>{element.content}</div>
-              <div>{element.likes}</div>
-              <div>{element.dislikes}</div>
-              <div>{element.comments}</div>
-            </div>
-          );
-        })}
+      <PostMessage viewMessagesPost={viewMessagesPost} />
+      {allMessages.map((element) => {
+        return (
+          <div key={element.id}>
+            <div>{element.User.username}</div>
+            <div>{element.createdAt}</div>
+            <div>{element.title}</div>
+            {element.attachment ? (
+              <div style={{ width: "50%", height: "20em" }}>
+                <img src={element.attachment} alt="img" style={{ width: "50%", height: "20em" }} />
+              </div>
+            ) : (
+              <></>
+            )}
+            <div>{element.content}</div>
+            <div>{element.likes}</div>
+            <div>{element.dislikes}</div>
+            <div>{element.comments}</div>
+          </div>
+        );
+      })}
     </div>
   );
 };
