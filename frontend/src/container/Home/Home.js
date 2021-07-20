@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import api from "../../Config/Api";
 import PostMessage from "../../components/PostMessage/PostMessage";
+import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
+import CommentMessage from "../../components/CommentMessage/CommentMessage";
 const Home = () => {
   const [allMessages, setAllMessages] = useState([]);
   const history = useHistory();
@@ -31,6 +33,17 @@ const Home = () => {
   const viewMessagesPost = (newMessages) => {
     setAllMessages(newMessages);
   };
+  const changeLike = ({ messageId, like, dislike }) => {
+    const displayLike = allMessages.filter((element) => {
+      if (element.id === messageId) {
+        element.likes = like;
+        element.dislikes = dislike;
+      }
+      return element;
+    });
+    setAllMessages(displayLike);
+  };
+
   return (
     <div>
       <div className="grpm-home">C'est la home page</div>
@@ -49,8 +62,13 @@ const Home = () => {
               <></>
             )}
             <div>{element.content}</div>
-            <div>{element.likes}</div>
-            <div>{element.dislikes}</div>
+            <LikeDislikeMessage
+              changeLike={changeLike}
+              like={element.likes}
+              dislike={element.dislikes}
+              messageId={element.id}
+            />
+            <CommentMessage />
             <div>{element.comments}</div>
           </div>
         );
