@@ -68,8 +68,7 @@ const Home = () => {
               dislike={element.dislikes}
               messageId={element.id}
             />
-            <CommentMessage />
-            <div>{element.comments}</div>
+            <CommentMessage comments={element.comments} />
           </div>
         );
       })}
