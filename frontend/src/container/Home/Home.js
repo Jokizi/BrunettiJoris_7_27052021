@@ -41,7 +41,18 @@ const Home = () => {
       }
       return element;
     });
+
     setAllMessages(displayLike);
+  };
+
+  const changeComment = ({ messageId, comments }) => {
+    const displayComment = allMessages.filter((element) => {
+      if (element.id === messageId) {
+        element.comments = comments;
+      }
+      return element;
+    });
+    setAllMessages(displayComment);
   };
 
   return (
@@ -68,7 +79,7 @@ const Home = () => {
               dislike={element.dislikes}
               messageId={element.id}
             />
-            <CommentMessage comments={element.comments} />
+            <CommentMessage changeComment={changeComment} comments={element.comments} messageId={element.id} />
           </div>
         );
       })}
