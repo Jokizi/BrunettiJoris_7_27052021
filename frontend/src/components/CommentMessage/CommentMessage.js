@@ -1,19 +1,22 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
+import Accordion from "../Accordion/Accordion";
 import api from "../../Config/Api";
 import { useState } from "react";
 import { useEffect } from "react";
+import { nanoid } from "nanoid";
 
 const CommentMessage = ({ messageId, comments, changeComment }) => {
+  const [allComments, setAllComments] = useState([]);
   const [commentIcon, setCommentIcon] = useState(["far", "comment-dots"]);
+  const [content, setContent] = useState("");
+
   useEffect(() => {
     if (comments > 0) {
       setCommentIcon(["fas", "comment-dots"]);
     }
   }, []);
-
-  const [content, setContent] = useState("");
 
   const onChangeContent = (e) => {
     setContent(e.target.value);
@@ -22,7 +25,7 @@ const CommentMessage = ({ messageId, comments, changeComment }) => {
   const onComment = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
     const obj = { content };
-
+    const user = JSON.parse(sessionStorage.getItem("groupomania-user"));
     try {
       const response = await api({
         url: "/" + messageId + "/comments/new/",
@@ -37,6 +40,11 @@ const CommentMessage = ({ messageId, comments, changeComment }) => {
       console.log("----------------resDataComment--------------------");
       console.log(response.data.comments);
       console.log("------------------------------------");
+
+      setAllComments([
+        ...allComments,
+        { id: nanoid(), createdAt: "à l'instant", User: { username: user.username }, content },
+      ]);
     } catch (error) {}
   };
   return (
@@ -44,9 +52,18 @@ const CommentMessage = ({ messageId, comments, changeComment }) => {
       <div>
         <FontAwesomeIcon color="blue" icon={commentIcon} />
         {comments}
+        <div className="accordions">
+          <Accordion
+            title="afficher commentaires"
+            content={content}
+            messageId={messageId}
+            allComments={allComments}
+            setAllComments={setAllComments}
+          />
+        </div>
       </div>
       <div>
-        <Input onChange={onChangeContent} label="commentaire" type="text" />
+        <Input onChange={onChangeContent} label="votre commentaire" type="text" />
         <Button onClick={onComment} title="commenter" />
       </div>
     </div>

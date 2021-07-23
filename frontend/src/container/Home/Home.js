@@ -6,12 +6,10 @@ import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
 const Home = () => {
   const [allMessages, setAllMessages] = useState([]);
+  const [user, setUser] = useState({});
   const history = useHistory();
 
   useEffect(() => {
-    console.log("---------------use---------------------");
-    console.log("useEffect FIre");
-    console.log("------------------------------------");
     if (sessionStorage.getItem("test")) {
       const getMessages = async () => {
         const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
@@ -22,6 +20,13 @@ const Home = () => {
             method: "get",
             headers: { Authorization: `Bearer ${token}` },
           });
+          const userDataResponse = await api({
+            url: "/users/profile/",
+            method: "get",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setUser(userDataResponse.data);
+          sessionStorage.setItem("groupomania-user", JSON.stringify(userDataResponse.data));
           setAllMessages(response.data);
         } catch (error) {}
       };
