@@ -6,7 +6,7 @@ const Header = () => {
   const history = useHistory();
   const onLogout = () => {
     sessionStorage.removeItem("test");
-    //history.push("/");
+    //history.push("/"); //voir pourquoi ca ne fonctionne pas
   };
   return (
     <div className="grpm-header">

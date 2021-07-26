@@ -27,9 +27,7 @@ module.exports = {
             done(null, commentFound);
           })
           .catch(function (err) {
-            return res
-              .status(500)
-              .json({ error: "impossible de vérifier la publication" });
+            return res.status(500).json({ error: "impossible de vérifier la publication" });
           });
       },
       function (commentFound, done) {
@@ -42,9 +40,7 @@ module.exports = {
               done(null, commentFound, userFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({ error: "impossible de vérifier l'utilisateur" });
+              return res.status(500).json({ error: "impossible de vérifier l'utilisateur" });
             });
         } else {
           return res.status(404).json({ error: "publication déjà liké" });
@@ -63,11 +59,9 @@ module.exports = {
               done(null, commentFound, userFound, userAlreadyLikedFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({
-                  error: "impossible de vérifier si l'utilisateur à déjà liké",
-                });
+              return res.status(500).json({
+                error: "impossible de vérifier si l'utilisateur à déjà liké",
+              });
             });
         } else {
           return res.status(404).json({ error: "l'utilisateur n'existe pas" });
@@ -91,16 +85,11 @@ module.exports = {
                 return res.status(201).json("like ajouté");
               })
               .catch(function (err) {
-                return res
-                  .status(500)
-                  .json({ error: "impossible d'ajouter le like" });
+                return res.status(500).json({ error: "impossible d'ajouter le like" });
               });
         } else {
           // si il n'a pas déja liker et disliker
-          if (
-            !userAlreadyLikedFound.userLike &&
-            !userAlreadyLikedFound.userDislike
-          ) {
+          if (!userAlreadyLikedFound.userLike && !userAlreadyLikedFound.userDislike) {
             userAlreadyLikedFound.update({
               userLike: true,
             }),
@@ -113,15 +102,10 @@ module.exports = {
                   return res.status(201).json("like ajouté");
                 })
                 .catch(function (err) {
-                  return res
-                    .status(500)
-                    .json({ error: "impossible d'ajouter le like" });
+                  return res.status(500).json({ error: "impossible d'ajouter le like" });
                 });
             // si il a déjà disliké
-          } else if (
-            userAlreadyLikedFound.userLike === false &&
-            userAlreadyLikedFound.userDislike === true
-          ) {
+          } else if (userAlreadyLikedFound.userLike === false && userAlreadyLikedFound.userDislike === true) {
             userAlreadyLikedFound.update({
               userDislike: false,
               userLike: true,
@@ -133,18 +117,13 @@ module.exports = {
                 })
                 .then(function () {
                   done(null, commentFound, userFound);
-                  return res.status(201).json("dislike retirée, like ajouté");
+                  return res.status(201).json("dislike retiré, like ajouté");
                 })
                 .catch(function (err) {
-                  return res
-                    .status(500)
-                    .json({ error: "impossible d'ajouter le like" });
+                  return res.status(500).json({ error: "impossible d'ajouter le like" });
                 });
             // si il à déjà liké
-          } else if (
-            userAlreadyLikedFound.userLike === true &&
-            userAlreadyLikedFound.userDislike === false
-          ) {
+          } else if (userAlreadyLikedFound.userLike === true && userAlreadyLikedFound.userDislike === false) {
             userAlreadyLikedFound.update({
               userLike: false,
             }),
@@ -154,12 +133,10 @@ module.exports = {
                 })
                 .then(function () {
                   done(null, commentFound, userFound);
-                  return res.status(201).json("like retirée");
+                  return res.status(201).json("like retiré");
                 })
                 .catch(function (err) {
-                  return res
-                    .status(500)
-                    .json({ error: "impossible de retiré le like" });
+                  return res.status(500).json({ error: "impossible de retiré le like" });
                 });
           } else {
             return res.status(409).json({ error: "publication déjà liké" });
@@ -190,9 +167,7 @@ module.exports = {
             done(null, commentFound);
           })
           .catch(function (err) {
-            return res
-              .status(500)
-              .json({ error: "impossible de vérifier la publication" });
+            return res.status(500).json({ error: "impossible de vérifier la publication" });
           });
       },
       function (commentFound, done) {
@@ -204,9 +179,7 @@ module.exports = {
               done(null, commentFound, userFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({ error: "impossible de vérifier l'utilisateur" });
+              return res.status(500).json({ error: "impossible de vérifier l'utilisateur" });
             });
         } else {
           res.status(404).json({ error: "publication déjà disliké" });
@@ -224,12 +197,9 @@ module.exports = {
               done(null, commentFound, userFound, userAlreadyLikedFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({
-                  error:
-                    "impossible de vérifier si l'utilisateur à déjà disliké",
-                });
+              return res.status(500).json({
+                error: "impossible de vérifier si l'utilisateur à déjà disliké",
+              });
             });
         } else {
           res.status(404).json({ error: "l'utilisateur n'existe pas" });
@@ -252,15 +222,10 @@ module.exports = {
                 res.status(201).json("dislike ajouté");
               })
               .catch(function (err) {
-                return res
-                  .status(500)
-                  .json({ error: "impossible d'ajouter le dislike" });
+                return res.status(500).json({ error: "impossible d'ajouter le dislike" });
               });
         } else {
-          if (
-            userAlreadyLikedFound.userLike === false &&
-            userAlreadyLikedFound.userDislike === false
-          ) {
+          if (userAlreadyLikedFound.userLike === false && userAlreadyLikedFound.userDislike === false) {
             userAlreadyLikedFound.update({
               userDislike: true,
             }),
@@ -273,14 +238,9 @@ module.exports = {
                   res.status(201).json("dislike ajouté");
                 })
                 .catch(function (err) {
-                  res
-                    .status(500)
-                    .json({ error: "impossible d'ajouter le dislike" });
+                  res.status(500).json({ error: "impossible d'ajouter le dislike" });
                 });
-          } else if (
-            userAlreadyLikedFound.userLike === true &&
-            userAlreadyLikedFound.userDislike === false
-          ) {
+          } else if (userAlreadyLikedFound.userLike === true && userAlreadyLikedFound.userDislike === false) {
             userAlreadyLikedFound.update({
               userDislike: true,
               userLike: false,
@@ -292,17 +252,12 @@ module.exports = {
                 })
                 .then(function () {
                   done(null, commentFound, userFound);
-                  res.status(201).json("like retiré ,dislike ajouté");
+                  res.status(201).json("like retiré, dislike ajouté");
                 })
                 .catch(function (err) {
-                  res
-                    .status(500)
-                    .json({ error: "impossible d'ajouter le dislike" });
+                  res.status(500).json({ error: "impossible d'ajouter le dislike" });
                 });
-          } else if (
-            userAlreadyLikedFound.userLike === false &&
-            userAlreadyLikedFound.userDislike === true
-          ) {
+          } else if (userAlreadyLikedFound.userLike === false && userAlreadyLikedFound.userDislike === true) {
             userAlreadyLikedFound.update({
               userDislike: false,
             }),
@@ -312,12 +267,10 @@ module.exports = {
                 })
                 .then(function () {
                   done(null, commentFound, userFound);
-                  res.status(201).json("dislike retirée");
+                  res.status(201).json("dislike retiré");
                 })
                 .catch(function (err) {
-                  res
-                    .status(500)
-                    .json({ error: "impossible de retirer le dislike" });
+                  res.status(500).json({ error: "impossible de retirer le dislike" });
                 });
           } else {
             res.status(409).json({ error: "publication déjà disliké" });

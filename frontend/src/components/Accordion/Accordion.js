@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Accordion.css";
 import api from "../../Config/Api";
+import LikeDislikeComment from "../LikeComment/LikeComment";
 
 const Accordion = ({ title, messageId, allComments, setAllComments }) => {
   const [active, setActive] = useState(false);
@@ -15,13 +16,20 @@ const Accordion = ({ title, messageId, allComments, setAllComments }) => {
           method: "get",
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log("----------------getComments--------------------");
-        console.log(response.data);
-        console.log("------------------------------------");
         setAllComments(response.data);
       } catch (error) {}
     }
     setActive(!active);
+  };
+  const changeLikeComment = ({ commentId, commentLike, commentDislike }) => {
+    const displayLike = allComments.filter((element) => {
+      if (element.id === commentId) {
+        element.commentLikes = commentLike;
+        element.commentDislikes = commentDislike;
+      }
+      return element;
+    });
+    setAllComments(displayLike);
   };
   return (
     <div className={`accordion ${active && "active"}`}>
@@ -35,6 +43,12 @@ const Accordion = ({ title, messageId, allComments, setAllComments }) => {
               <div>{element.createdAt}</div>
               <div>{element.User.username}</div>
               <div>{element.content}</div>
+              <LikeDislikeComment
+                changeLikeComment={changeLikeComment}
+                commentLike={element.commentLikes}
+                commentDislike={element.commentDislikes}
+                commentId={element.id}
+              />
             </div>
           );
         })}
