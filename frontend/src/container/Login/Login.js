@@ -4,7 +4,7 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import { useHistory } from "react-router";
 
-const Login = ({ setIsLoggedin }) => {
+const Login = ({ setIsLoggedin, setMyUserId }) => {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +25,7 @@ const Login = ({ setIsLoggedin }) => {
       });
       sessionStorage.setItem("test", response.data.token);
       setIsLoggedin(true);
+      setMyUserId(response.data.userId);
       history.push("/accueil");
     } catch (error) {}
   };

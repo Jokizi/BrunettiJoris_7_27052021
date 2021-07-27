@@ -14,6 +14,7 @@ import "../../assets/fontawesome";
 const App = () => {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [checkLogin, setCheckLogin] = useState(false);
+  const [myUserId, setMyUserId] = useState("");
 
   useEffect(() => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
@@ -21,11 +22,13 @@ const App = () => {
     if (!isLoggedin && token) {
       const getUser = async () => {
         try {
-          await api({
+          const response = await api({
             url: "/users/profile/",
             method: "get",
             headers: { Authorization: `Bearer ${token}` },
           });
+
+          setMyUserId(response.data.id);
           setIsLoggedin(true);
           setCheckLogin(true);
         } catch (error) {
@@ -42,7 +45,9 @@ const App = () => {
       <Header isLoggedin={isLoggedin} setIsLoggedin={setIsLoggedin} />
 
       <Switch>
-        {checkLogin && <PrivateRoute exact path="/accueil" component={Home} isLoggedin={isLoggedin} />}
+        {checkLogin && (
+          <PrivateRoute exact path="/accueil" myUserId={myUserId} component={Home} isLoggedin={isLoggedin} />
+        )}
         <Route
           exact
           path="/"
@@ -54,7 +59,11 @@ const App = () => {
           exact
           path="/connexion"
           render={() =>
-            isLoggedin ? <Redirect to="/accueil" /> : <Login setIsLoggedin={setIsLoggedin} isLoggedin={isLoggedin} />
+            isLoggedin ? (
+              <Redirect to="/accueil" />
+            ) : (
+              <Login setMyUserId={setMyUserId} setIsLoggedin={setIsLoggedin} isLoggedin={isLoggedin} />
+            )
           }
         ></Route>
         <Route

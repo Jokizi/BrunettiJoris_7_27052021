@@ -4,7 +4,9 @@ import api from "../../Config/Api";
 import PostMessage from "../../components/PostMessage/PostMessage";
 import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
-const Home = () => {
+import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
+import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
+const Home = ({ myUserId }) => {
   const [allMessages, setAllMessages] = useState([]);
   const [user, setUser] = useState({});
   const history = useHistory();
@@ -85,6 +87,8 @@ const Home = () => {
               messageId={element.id}
             />
             <CommentMessage changeComment={changeComment} comments={element.comments} messageId={element.id} />
+            <DeleteMessage messageId={element.id} myUserId={myUserId} idUserMessage={element.UserId} />
+            <ModifyMessage />
           </div>
         );
       })}
