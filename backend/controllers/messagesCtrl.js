@@ -2,6 +2,7 @@
 const models = require("../models");
 const asyncLib = require("async");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 
 // Constantes
 const title_limit = 2;
@@ -367,7 +368,7 @@ module.exports = {
             done(null, messageFound);
           })
           .catch(function (err) {
-            res.status(500).json({ error: "impossible de vérifier la publication" });
+            return res.status(500).json({ error: "impossible de vérifier la publication !!!!!" });
           });
       },
       function (messageFound, done) {
@@ -385,19 +386,16 @@ module.exports = {
               });
           } else {
             const filename = messageFound.attachment.split("/images/")[1];
-            fs.unlink(`images/${filename}`, () => {
-              models.Message.destroy({
-                where: { id: messageId },
-              });
-            })
-              .then(function (destroyMessageFoundImg) {
-                return res.status(201).json(destroyMessageFoundImg);
-              })
-              .catch(function (err) {
-                res.status(500).json({
-                  error: "impossible de supprimer la publication avec image",
+            fs.unlink(`images/${filename}`, (err) => {
+              if (err) return res.status(500).json({ error: "impossible de supprimer la publication" });
+              messageFound
+                .destroy({
+                  where: { id: messageId },
+                })
+                .then((destroyMessageFoundImg) => {
+                  return res.status(201).json(destroyMessageFoundImg);
                 });
-              });
+            });
           }
         } else return res.status(500).json({ error: "la publication ne vous appartient pas" });
       },

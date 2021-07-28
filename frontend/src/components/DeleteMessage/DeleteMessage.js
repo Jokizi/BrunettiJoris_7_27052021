@@ -18,9 +18,6 @@ const DeleteMessage = ({ messageId, myUserId, idUserMessage, changeDeleteMessage
         },
       });
       changeDeleteMessage(messageId);
-      console.log("--------------resDataDelete----------------------");
-      console.log(response.data);
-      console.log("------------------------------------");
     } catch (error) {}
   };
   return (
