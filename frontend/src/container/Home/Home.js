@@ -37,9 +37,12 @@ const Home = ({ myUserId }) => {
       history.push("/");
     }
   }, [history]);
+  // rendre dynamique l'affichage des messages
   const viewMessagesPost = (newMessages) => {
     setAllMessages(newMessages);
   };
+
+  // rendre dynamique l'affichage des likes message
   const changeLike = ({ messageId, like, dislike }) => {
     const displayLike = allMessages.filter((element) => {
       if (element.id === messageId) {
@@ -48,10 +51,10 @@ const Home = ({ myUserId }) => {
       }
       return element;
     });
-
     setAllMessages(displayLike);
   };
 
+  // rendre dynamique l'affichage des commentaires
   const changeComment = ({ messageId, comments }) => {
     const displayComment = allMessages.filter((element) => {
       if (element.id === messageId) {
@@ -60,6 +63,12 @@ const Home = ({ myUserId }) => {
       return element;
     });
     setAllMessages(displayComment);
+  };
+  // rendre dynamique la suppression de message
+  const changeDeleteMessage = (messageId) => {
+    const idToDelete = messageId;
+    const displayMessages = allMessages.filter((element) => element.id !== idToDelete);
+    setAllMessages(displayMessages);
   };
 
   return (
@@ -87,7 +96,12 @@ const Home = ({ myUserId }) => {
               messageId={element.id}
             />
             <CommentMessage changeComment={changeComment} comments={element.comments} messageId={element.id} />
-            <DeleteMessage messageId={element.id} myUserId={myUserId} idUserMessage={element.UserId} />
+            <DeleteMessage
+              changeDeleteMessage={changeDeleteMessage}
+              messageId={element.id}
+              myUserId={myUserId}
+              idUserMessage={element.UserId}
+            />
             <ModifyMessage />
           </div>
         );

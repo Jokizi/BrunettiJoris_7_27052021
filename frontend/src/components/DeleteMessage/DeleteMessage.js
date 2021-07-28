@@ -3,7 +3,7 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const DeleteMessage = ({ messageId, myUserId, idUserMessage }) => {
+const DeleteMessage = ({ messageId, myUserId, idUserMessage, changeDeleteMessage }) => {
   const onDeleteMessage = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
 
@@ -17,6 +17,10 @@ const DeleteMessage = ({ messageId, myUserId, idUserMessage }) => {
           "Content-Type": "multipart/from-data",
         },
       });
+      changeDeleteMessage(messageId);
+      console.log("--------------resDataDelete----------------------");
+      console.log(response.data);
+      console.log("------------------------------------");
     } catch (error) {}
   };
   return (
