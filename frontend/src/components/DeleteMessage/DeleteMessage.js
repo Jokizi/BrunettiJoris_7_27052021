@@ -1,9 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import api from "../../Config/Api";
 import { useState } from "react";
-import { useEffect } from "react";
+import ConfirmPopUp from "../ConfirmPopUp/ConfirmPopUp";
 
 const DeleteMessage = ({ messageId, myUserId, idUserMessage, changeDeleteMessage }) => {
+  const [open, setOpen] = useState(false);
+
+  const handleModal = () => {
+    setOpen(!open);
+  };
+
   const onDeleteMessage = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
 
@@ -22,14 +28,20 @@ const DeleteMessage = ({ messageId, myUserId, idUserMessage, changeDeleteMessage
   };
   return (
     <div>
-      {myUserId === idUserMessage ? (
+      {myUserId === idUserMessage && (
         <div>
-          <FontAwesomeIcon onClick={onDeleteMessage} color="red" icon={["far", "trash-alt"]} />
+          <FontAwesomeIcon onClick={handleModal} color="red" icon={["far", "trash-alt"]} />
           supprimer
         </div>
-      ) : (
-        <></>
       )}
+      <ConfirmPopUp
+        open={open}
+        confirmModalAction={onDeleteMessage}
+        handleModal={handleModal}
+        buttonTitle1="Oui"
+        buttonTitle2="Non"
+        modalTitle="Voulez vous supprimer la publication ?"
+      />
     </div>
   );
 };
