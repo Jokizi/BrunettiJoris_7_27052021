@@ -70,7 +70,11 @@ const App = () => {
           exact
           path="/inscription"
           render={() =>
-            isLoggedin ? <Redirect to="/accueil" /> : <Register setIsLoggedin={setIsLoggedin} isLoggedin={isLoggedin} />
+            isLoggedin ? (
+              <Redirect to="/accueil" />
+            ) : (
+              <Register setIsLoggedin={setIsLoggedin} isLoggedin={isLoggedin} setMyUserId={setMyUserId} />
+            )
           }
         ></Route>
       </Switch>

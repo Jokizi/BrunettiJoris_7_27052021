@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { nanoid } from "nanoid";
 
-const CommentMessage = ({ messageId, comments, changeComment }) => {
+const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMessages }) => {
   const [allComments, setAllComments] = useState([]);
   const [commentIcon, setCommentIcon] = useState(["far", "comment-dots"]);
   const [content, setContent] = useState("");
@@ -37,14 +37,18 @@ const CommentMessage = ({ messageId, comments, changeComment }) => {
       setCommentIcon(["fas", "comment-dots"]);
 
       changeComment({ messageId, comments });
-      console.log("----------------resDataComment--------------------");
-      console.log(response.data.comments);
-      console.log("------------------------------------");
-
-      setAllComments([
-        ...allComments,
-        { id: nanoid(), createdAt: "à l'instant", User: { username: user.username }, content },
-      ]);
+      try {
+        const response = await api({
+          url: "/" + messageId + "/comments",
+          method: "get",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAllComments(response.data);
+      } catch (error) {}
+      // setAllComments([
+      //   ...allComments,
+      //   { id: nanoid(), createdAt: "à l'instant", User: { username: user.username }, content },
+      // ]);
     } catch (error) {}
   };
   return (
@@ -54,11 +58,13 @@ const CommentMessage = ({ messageId, comments, changeComment }) => {
         {comments}
         <div className="accordions">
           <Accordion
+            setAllMessages={setAllMessages}
             title="afficher commentaires"
             content={content}
             messageId={messageId}
             allComments={allComments}
             setAllComments={setAllComments}
+            myUserId={myUserId}
           />
         </div>
       </div>

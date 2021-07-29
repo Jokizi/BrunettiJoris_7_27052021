@@ -7,8 +7,7 @@ const asyncLib = require("async");
 // Constantes
 const email_regex =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const password_regex =
-  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/;
+const password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/;
 
 module.exports = {
   registrer: function (req, res) {
@@ -50,12 +49,10 @@ module.exports = {
               done(null, userFound);
             })
             .catch(function (err) {
-              console.log('------------err ------------------------');
+              console.log("------------err ------------------------");
               console.log(err);
-              console.log('------------------------------------');
-              return res
-                .status(500)
-                .json({ error: "vérification utilisateur impossible" });
+              console.log("------------------------------------");
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
             });
         },
         // si utilisateur n'est pas existant, on utilise bcrypt pour hasher le password
@@ -82,9 +79,7 @@ module.exports = {
               done(newUser);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({ error: "ajout utilisateur impossible" });
+              return res.status(500).json({ error: "ajout utilisateur impossible" });
             });
         },
       ],
@@ -92,16 +87,11 @@ module.exports = {
       function (newUser) {
         if (newUser) {
           return res.status(201).json({
-            token: jwt.sign(
-              { userId: newUser.id, isAdmin: newUser.isAdmin },
-              process.env.TOKEN,
-              { expiresIn: "24h" }
-            ),
+            userId: newUser.id,
+            token: jwt.sign({ userId: newUser.id, isAdmin: newUser.isAdmin }, process.env.TOKEN, { expiresIn: "24h" }),
           });
         } else {
-          return res
-            .status(500)
-            .json({ error: "ajout utilisateur impossible" });
+          return res.status(500).json({ error: "ajout utilisateur impossible" });
         }
       }
     );
@@ -125,25 +115,17 @@ module.exports = {
               done(null, userFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({ error: "vérification utilisateur impossible" });
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
             });
         },
         // si utilisateur trouvé via son mail, on compare le mot de passe
         function (userFound, done) {
           if (userFound) {
-            bcrypt.compare(
-              password,
-              userFound.password,
-              function (errBycrypt, resBycrypt) {
-                done(null, userFound, resBycrypt);
-              }
-            );
+            bcrypt.compare(password, userFound.password, function (errBycrypt, resBycrypt) {
+              done(null, userFound, resBycrypt);
+            });
           } else {
-            return res
-              .status(404)
-              .json({ error: "utilisateur absent de la base de donnée" });
+            return res.status(404).json({ error: "utilisateur absent de la base de donnée" });
           }
         },
         // si le mot de passe est décodé, c'est bien le bon utilisateur
@@ -170,9 +152,7 @@ module.exports = {
             ),
           });
         } else {
-          return res
-            .status(500)
-            .json({ error: "login utilisateur impossible" });
+          return res.status(500).json({ error: "login utilisateur impossible" });
         }
       }
     );
@@ -194,9 +174,7 @@ module.exports = {
         }
       })
       .catch(function (err) {
-        res
-          .status(500)
-          .json({ error: "impossible de récupérer l'utilisateur" });
+        res.status(500).json({ error: "impossible de récupérer l'utilisateur" });
       });
   },
   updateUserProfile: function (req, res) {
@@ -219,9 +197,7 @@ module.exports = {
               done(null, userFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({ error: "vérification utilisateur impossible" });
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
             });
         },
         function (userFound, done) {
@@ -234,9 +210,7 @@ module.exports = {
                 done(userFound);
               })
               .catch(function (err) {
-                res
-                  .status(500)
-                  .json({ error: "mise à jour utilisateur impossible" });
+                res.status(500).json({ error: "mise à jour utilisateur impossible" });
               });
           } else {
             res.status(404).json({ error: "utilisateur introuvable" });
@@ -247,9 +221,7 @@ module.exports = {
         if (userFound) {
           return res.status(201).json(userFound);
         } else {
-          return res
-            .status(500)
-            .json({ error: "mise à jour du profil utilisateur impossible" });
+          return res.status(500).json({ error: "mise à jour du profil utilisateur impossible" });
         }
       }
     );
@@ -311,12 +283,7 @@ module.exports = {
             allCommentMessagesUser.map(({ id }) => {
               commentMessagesUserIds.push(id);
             });
-            done(
-              null,
-              messageUserIds,
-              likeMessagesUserIds,
-              commentMessagesUserIds
-            );
+            done(null, messageUserIds, likeMessagesUserIds, commentMessagesUserIds);
           })
           .catch(function (err) {
             res.status(500).json({
@@ -324,12 +291,7 @@ module.exports = {
             });
           });
       },
-      function (
-        messageUserIds,
-        likeMessagesUserIds,
-        commentMessagesUserIds,
-        done
-      ) {
+      function (messageUserIds, likeMessagesUserIds, commentMessagesUserIds, done) {
         models.CommentsLike.findAll({
           where: { commentId: commentMessagesUserIds },
           attributes: ["id"],
@@ -340,28 +302,15 @@ module.exports = {
             allCommentsLikeMessagesUser.map(({ id }) => {
               commentsLikeMessagesUserIds.push(id);
             });
-            done(
-              null,
-              messageUserIds,
-              likeMessagesUserIds,
-              commentMessagesUserIds,
-              commentsLikeMessagesUserIds
-            );
+            done(null, messageUserIds, likeMessagesUserIds, commentMessagesUserIds, commentsLikeMessagesUserIds);
           })
           .catch(function (err) {
             res.status(500).json({
-              error:
-                "4 vérification commentaireLikes des commentaires ID impossible",
+              error: "4 vérification commentaireLikes des commentaires ID impossible",
             });
           });
       },
-      function (
-        messageUserIds,
-        likeMessagesUserIds,
-        commentMessagesUserIds,
-        commentsLikeMessagesUserIds,
-        done
-      ) {
+      function (messageUserIds, likeMessagesUserIds, commentMessagesUserIds, commentsLikeMessagesUserIds, done) {
         models.CommentsLike.destroy({
           where: { id: commentsLikeMessagesUserIds },
         })
@@ -601,8 +550,7 @@ module.exports = {
           })
           .catch(function (err) {
             res.status(500).json({
-              error:
-                "5 impossible de supprimer les commentaires like de l'user ID",
+              error: "5 impossible de supprimer les commentaires like de l'user ID",
             });
           });
       },

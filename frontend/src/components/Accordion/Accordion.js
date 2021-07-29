@@ -2,8 +2,9 @@ import { useState } from "react";
 import "./Accordion.css";
 import api from "../../Config/Api";
 import LikeDislikeComment from "../LikeComment/LikeComment";
+import DeleteComment from "../DeleteComment/DeleteComment";
 
-const Accordion = ({ title, messageId, allComments, setAllComments }) => {
+const Accordion = ({ myUserId, title, messageId, allComments, setAllComments, setAllMessages }) => {
   const [active, setActive] = useState(false);
 
   const getAllComments = async (e) => {
@@ -21,6 +22,7 @@ const Accordion = ({ title, messageId, allComments, setAllComments }) => {
     }
     setActive(!active);
   };
+  // rendre dynamique les likes Comment
   const changeLikeComment = ({ commentId, commentLike, commentDislike }) => {
     const displayLike = allComments.filter((element) => {
       if (element.id === commentId) {
@@ -30,6 +32,12 @@ const Accordion = ({ title, messageId, allComments, setAllComments }) => {
       return element;
     });
     setAllComments(displayLike);
+  };
+
+  const changeDeleteComment = (commentId) => {
+    const idToDelete = commentId;
+    const displayComments = allComments.filter((element) => element.id !== idToDelete);
+    setAllComments(displayComments);
   };
   return (
     <div className={`accordion ${active && "active"}`}>
@@ -48,6 +56,14 @@ const Accordion = ({ title, messageId, allComments, setAllComments }) => {
                 commentLike={element.commentLikes}
                 commentDislike={element.commentDislikes}
                 commentId={element.id}
+              />
+              <DeleteComment
+                setAllMessages={setAllMessages}
+                changeDeleteComment={changeDeleteComment}
+                commentId={element.id}
+                messageId={messageId}
+                myUserId={myUserId}
+                idUserComment={element.UserId}
               />
             </div>
           );

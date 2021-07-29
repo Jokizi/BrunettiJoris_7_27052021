@@ -95,14 +95,20 @@ const Home = ({ myUserId }) => {
               dislike={element.dislikes}
               messageId={element.id}
             />
-            <CommentMessage changeComment={changeComment} comments={element.comments} messageId={element.id} />
+            <CommentMessage
+              setAllMessages={setAllMessages}
+              changeComment={changeComment}
+              comments={element.comments}
+              messageId={element.id}
+              myUserId={myUserId}
+            />
+            <ModifyMessage />
             <DeleteMessage
               changeDeleteMessage={changeDeleteMessage}
               messageId={element.id}
               myUserId={myUserId}
               idUserMessage={element.UserId}
             />
-            <ModifyMessage />
           </div>
         );
       })}
