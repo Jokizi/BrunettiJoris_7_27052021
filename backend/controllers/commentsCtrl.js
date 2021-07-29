@@ -5,6 +5,9 @@ const jwt = require("jsonwebtoken");
 
 module.exports = {
   createComment: function (req, res) {
+    console.log("---------------req.bodyComment---------------------");
+    console.log(req.body);
+    console.log("------------------------------------");
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN);
     const userId = decodedToken.userId;
@@ -24,9 +27,7 @@ module.exports = {
               done(null, userFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({ error: "vérification utilisateur impossible" });
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
             });
         },
         function (userFound, done) {
@@ -38,9 +39,7 @@ module.exports = {
                 done(null, messageFound, userFound);
               })
               .catch(function (err) {
-                return res
-                  .status(500)
-                  .json({ error: "publication introuvable" });
+                return res.status(500).json({ error: "publication introuvable" });
               });
           } else {
             return res.status(404).json({ error: "utilisateur introuvable" });
@@ -71,9 +70,7 @@ module.exports = {
         if (newComment) {
           return res.status(201).json(newComment);
         } else {
-          return res
-            .status(500)
-            .json({ error: "publication commentaire impossible" });
+          return res.status(500).json({ error: "publication commentaire impossible" });
         }
       }
     );
@@ -138,9 +135,7 @@ module.exports = {
               done(null, userFound);
             })
             .catch(function (err) {
-              return res
-                .status(500)
-                .json({ error: "vérification utilisateur impossible" });
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
             });
         },
         function (userFound, done) {
@@ -152,9 +147,7 @@ module.exports = {
                 done(null, commentFound);
               })
               .catch(function (err) {
-                return res
-                  .status(500)
-                  .json({ error: "commentaire introuvable" });
+                return res.status(500).json({ error: "commentaire introuvable" });
               });
           } else {
             return res.status(404).json({ error: "utilisateur introuvable" });
@@ -178,9 +171,7 @@ module.exports = {
         if (commentFound) {
           return res.status(201).json(commentFound);
         } else {
-          return res
-            .status(500)
-            .json({ error: "publication commentaire impossible" });
+          return res.status(500).json({ error: "publication commentaire impossible" });
         }
       }
     );
@@ -209,9 +200,7 @@ module.exports = {
             done(null, messageFound);
           })
           .catch(function (err) {
-            return res
-              .status(500)
-              .json({ error: "impossible de vérifier la publication" });
+            return res.status(500).json({ error: "impossible de vérifier la publication" });
           });
       },
       function (messageFound, done) {
@@ -222,9 +211,7 @@ module.exports = {
             done(null, messageFound, commentFound);
           })
           .catch(function (err) {
-            return res
-              .status(500)
-              .json({ error: "impossible de vérifier le commentaire" });
+            return res.status(500).json({ error: "impossible de vérifier le commentaire" });
           });
       },
       function (messageFound, commentFound, done) {
@@ -235,9 +222,7 @@ module.exports = {
             done(null, messageFound, commentFound, userFound);
           })
           .catch(function (err) {
-            return res
-              .status(500)
-              .json({ error: "impossible de vérifier l'utilisateur" });
+            return res.status(500).json({ error: "impossible de vérifier l'utilisateur" });
           });
       },
       function (messageFound, commentFound, userFound, done) {
@@ -275,11 +260,9 @@ module.exports = {
             done(null, messageFound, userFound, commentFound, commentLikeIds);
           })
           .catch(function (err) {
-            res
-              .status(500)
-              .json({
-                error: "impossible de trouver les likes du commentaire",
-              });
+            res.status(500).json({
+              error: "impossible de trouver les likes du commentaire",
+            });
           });
       },
       function (messageFound, userFound, commentFound, commentLikeIds, done) {
@@ -307,9 +290,7 @@ module.exports = {
               return res.status(201).json(messageFound);
             })
             .catch((err) => {
-              return res
-                .status(500)
-                .json({ error: "impossible de supprimer ce commentaire" });
+              return res.status(500).json({ error: "impossible de supprimer ce commentaire" });
             });
         } else {
           return res.status(500).json({ error: "commentaire invtrouvable" });
