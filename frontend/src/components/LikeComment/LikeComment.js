@@ -3,15 +3,23 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const LikeDislikeComment = ({ commentId, commentLike, commentDislike, changeLikeComment }) => {
+const LikeDislikeComment = ({
+  commentId,
+  commentLike,
+  commentDislike,
+  changeLikeComment,
+  messageCommentLikeByCurrentUser,
+}) => {
   const [pushLike, setPushLike] = useState(["far", "thumbs-up"]);
   const [pushDislike, setPushDislike] = useState(["far", "thumbs-down"]);
 
   useEffect(() => {
-    if (commentLike === 1) {
-      setPushLike(["fas", "thumbs-up"]);
-    } else if (commentDislike === 1) {
-      setPushDislike(["fas", "thumbs-down"]);
+    if (messageCommentLikeByCurrentUser?.length) {
+      if (messageCommentLikeByCurrentUser[0].userLike) {
+        setPushLike(["fas", "thumbs-up"]);
+      } else if (messageCommentLikeByCurrentUser[0].userDislike) {
+        setPushDislike(["fas", "thumbs-down"]);
+      }
     }
   }, []);
 

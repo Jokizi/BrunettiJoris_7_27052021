@@ -99,12 +99,15 @@ module.exports = {
           model: models.User,
           attributes: ["username"],
         },
+        {
+          model: models.CommentsLike,
+        },
       ],
     })
-      .then(function (messages) {
-        const test = JSON.parse(JSON.stringify(messages));
+      .then((messages) => {
+        const messagesParsed = JSON.parse(JSON.stringify(messages));
         if (messages) {
-          const messagesFormated = test.map((element) => {
+          const messagesFormated = messagesParsed.map((element) => {
             const date = moment(element.createdAt).local().format("LL");
             const hour = moment(element.createdAt).local().format("LT");
             element.createdAt = `Le ${date} à ${hour}`;

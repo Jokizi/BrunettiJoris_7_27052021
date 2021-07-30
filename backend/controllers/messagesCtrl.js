@@ -81,10 +81,10 @@ module.exports = {
             /*console.log("-------------allMessageFound-----------------------");
             console.log(allMessageFound);
             console.log("------------------------------------");*/
-            const test = JSON.parse(JSON.stringify(allMessageFound));
+            const allMessageFoundParsed = JSON.parse(JSON.stringify(allMessageFound));
 
             if (allMessageFound) {
-              const messagesFormated = test.map((element) => {
+              const messagesFormated = allMessageFoundParsed.map((element) => {
                 /*console.log("----------------element--------------------");
                 console.log(element.createdAt);
                 console.log("------------------------------------");*/
@@ -173,10 +173,10 @@ module.exports = {
             /*console.log("-------------allMessageFound-----------------------");
             console.log(allMessageFound);
             console.log("------------------------------------");*/
-            const test = JSON.parse(JSON.stringify(allMessageFound));
+            const allMessageFoundParsed = JSON.parse(JSON.stringify(allMessageFound));
 
             if (allMessageFound) {
-              const messagesFormated = test.map((element) => {
+              const messagesFormated = allMessageFoundParsed.map((element) => {
                 /*console.log("----------------element--------------------");
                 console.log(element.createdAt);
                 console.log("------------------------------------");*/
@@ -223,7 +223,7 @@ module.exports = {
       ],
     })
       .then(function (messages) {
-        const test = JSON.parse(JSON.stringify(messages));
+        const messagesParsed = JSON.parse(JSON.stringify(messages));
         /*console.log("-----------------messagesRecus-------------------");
         console.log(test[0].createdAt);
         console.log("------------------------------------");
@@ -234,7 +234,7 @@ module.exports = {
         console.log(moment(test[0].createdAt).local().format("DD MM YYYY hh:mm:ss"));
         console.log("------------------------------------");*/
         if (messages) {
-          const messagesFormated = test.map((element) => {
+          const messagesFormated = messagesParsed.map((element) => {
             /*console.log("----------------element--------------------");
             console.log(element.createdAt);
             console.log("------------------------------------");*/

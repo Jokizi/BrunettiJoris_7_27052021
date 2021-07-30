@@ -78,9 +78,6 @@ const Home = ({ myUserId }) => {
       <PostMessage viewMessagesPost={viewMessagesPost} />
       {allMessages.map((element) => {
         const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
-        console.log("----------------messageLikeByCurrentUser--------------------");
-        console.log(messageLikeByCurrentUser);
-        console.log("------------------------------------");
         return (
           <div key={element.id}>
             <div>{element.User.username}</div>

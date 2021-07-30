@@ -6,7 +6,7 @@ import DeleteComment from "../DeleteComment/DeleteComment";
 
 const Accordion = ({ myUserId, title, messageId, allComments, setAllComments, setAllMessages }) => {
   const [active, setActive] = useState(false);
-
+  const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
   const getAllComments = async (e) => {
     if (sessionStorage.getItem("test")) {
       const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
@@ -46,6 +46,9 @@ const Accordion = ({ myUserId, title, messageId, allComments, setAllComments, se
       </div>
       <div className="accordion__content">
         {allComments.map((element) => {
+          const messageCommentLikeByCurrentUser = element?.CommentsLikes?.filter(
+            (elt) => groupomaniaUser.id === elt.userId
+          );
           return (
             <div key={element.id}>
               <div>{element.createdAt}</div>
@@ -56,6 +59,7 @@ const Accordion = ({ myUserId, title, messageId, allComments, setAllComments, se
                 commentLike={element.commentLikes}
                 commentDislike={element.commentDislikes}
                 commentId={element.id}
+                messageCommentLikeByCurrentUser={messageCommentLikeByCurrentUser}
               />
               <DeleteComment
                 setAllMessages={setAllMessages}
