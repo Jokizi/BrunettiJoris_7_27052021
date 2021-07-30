@@ -8,7 +8,7 @@ const LikeDislikeMessage = ({ messageId, like, dislike, changeLike, messageLikeB
   const [pushDislike, setPushDislike] = useState(["far", "thumbs-down"]);
 
   useEffect(() => {
-    if (messageLikeByCurrentUser.length) {
+    if (messageLikeByCurrentUser?.length) {
       if (messageLikeByCurrentUser[0].userLike) {
         setPushLike(["fas", "thumbs-up"]);
       } else if (messageLikeByCurrentUser[0].userDislike) {
