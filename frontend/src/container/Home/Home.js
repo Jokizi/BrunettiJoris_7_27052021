@@ -10,6 +10,7 @@ const Home = ({ myUserId }) => {
   const [allMessages, setAllMessages] = useState([]);
   const [user, setUser] = useState({});
   const history = useHistory();
+  const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
 
   useEffect(() => {
     if (sessionStorage.getItem("test")) {
@@ -76,6 +77,8 @@ const Home = ({ myUserId }) => {
       <div className="grpm-home">C'est la home page</div>
       <PostMessage viewMessagesPost={viewMessagesPost} />
       {allMessages.map((element) => {
+        const messageLikeByCurrentUser = element.Likes.filter((elt) => groupomaniaUser.id === elt.userId);
+
         return (
           <div key={element.id}>
             <div>{element.User.username}</div>
@@ -94,6 +97,7 @@ const Home = ({ myUserId }) => {
               like={element.likes}
               dislike={element.dislikes}
               messageId={element.id}
+              messageLikeByCurrentUser={messageLikeByCurrentUser}
             />
             <CommentMessage
               setAllMessages={setAllMessages}

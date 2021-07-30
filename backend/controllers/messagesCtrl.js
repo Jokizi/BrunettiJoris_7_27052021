@@ -217,6 +217,9 @@ module.exports = {
           model: models.User,
           attributes: ["username"],
         },
+        {
+          model: models.Like,
+        },
       ],
     })
       .then(function (messages) {

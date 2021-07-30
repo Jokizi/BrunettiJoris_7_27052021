@@ -3,15 +3,17 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const LikeDislikeMessage = ({ messageId, like, dislike, changeLike }) => {
+const LikeDislikeMessage = ({ messageId, like, dislike, changeLike, messageLikeByCurrentUser }) => {
   const [pushLike, setPushLike] = useState(["far", "thumbs-up"]);
   const [pushDislike, setPushDislike] = useState(["far", "thumbs-down"]);
 
   useEffect(() => {
-    if (like === 1) {
-      setPushLike(["fas", "thumbs-up"]);
-    } else if (dislike === 1) {
-      setPushDislike(["fas", "thumbs-down"]);
+    if (messageLikeByCurrentUser.length) {
+      if (messageLikeByCurrentUser[0].userLike) {
+        setPushLike(["fas", "thumbs-up"]);
+      } else if (messageLikeByCurrentUser[0].userDislike) {
+        setPushDislike(["fas", "thumbs-down"]);
+      }
     }
   }, []);
 
@@ -26,9 +28,6 @@ const LikeDislikeMessage = ({ messageId, like, dislike, changeLike }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("----------------resData--------------------");
-      console.log(response.data);
-      console.log("------------------------------------");
       if (response.data === "like ajouté") {
         like = like + 1;
         setPushLike(["fas", "thumbs-up"]);
@@ -56,9 +55,7 @@ const LikeDislikeMessage = ({ messageId, like, dislike, changeLike }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("----------------resData----2----------------");
-      console.log(response.data);
-      console.log("------------------------------------");
+
       if (response.data === "dislike ajouté") {
         dislike = dislike + 1;
         setPushDislike(["fas", "thumbs-down"]);
