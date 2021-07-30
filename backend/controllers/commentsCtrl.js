@@ -2,12 +2,11 @@
 const models = require("../models");
 const asyncLib = require("async");
 const jwt = require("jsonwebtoken");
+const moment = require("moment"); // pour formater les dates et heures
+moment.locale("fr");
 
 module.exports = {
   createComment: function (req, res) {
-    console.log("---------------req.bodyComment---------------------");
-    console.log(req.body);
-    console.log("------------------------------------");
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN);
     const userId = decodedToken.userId;
@@ -103,8 +102,15 @@ module.exports = {
       ],
     })
       .then(function (messages) {
+        const test = JSON.parse(JSON.stringify(messages));
         if (messages) {
-          res.status(200).json(messages);
+          const messagesFormated = test.map((element) => {
+            const date = moment(element.createdAt).local().format("LL");
+            const hour = moment(element.createdAt).local().format("LT");
+            element.createdAt = `Le ${date} à ${hour}`;
+            return element;
+          });
+          res.status(200).json(messagesFormated);
         } else {
           res.status(404).json({ error: "publications introuvable" });
         }

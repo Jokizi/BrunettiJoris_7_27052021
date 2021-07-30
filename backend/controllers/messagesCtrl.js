@@ -3,6 +3,8 @@ const models = require("../models");
 const asyncLib = require("async");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
+const moment = require("moment"); // pour formater les dates et heures
+moment.locale("fr");
 
 // Constantes
 const title_limit = 2;
@@ -76,7 +78,26 @@ module.exports = {
               },
             ],
           }).then(function (allMessageFound) {
-            return res.status(201).json(allMessageFound);
+            /*console.log("-------------allMessageFound-----------------------");
+            console.log(allMessageFound);
+            console.log("------------------------------------");*/
+            const test = JSON.parse(JSON.stringify(allMessageFound));
+
+            if (allMessageFound) {
+              const messagesFormated = test.map((element) => {
+                /*console.log("----------------element--------------------");
+                console.log(element.createdAt);
+                console.log("------------------------------------");*/
+                const date = moment(element.createdAt).local().format("LL");
+                const hour = moment(element.createdAt).local().format("LT");
+                element.createdAt = `Le ${date} à ${hour}`;
+                return element;
+              });
+              /*console.log("---------------messagesFormated---------------------");
+              console.log(messagesFormated);
+              console.log("------------------------------------");*/
+              return res.status(201).json(messagesFormated);
+            }
           });
         } else {
           return res.status(500).json({ error: "cannot post message" });
@@ -149,7 +170,26 @@ module.exports = {
               },
             ],
           }).then(function (allMessageFound) {
-            return res.status(201).json(allMessageFound);
+            /*console.log("-------------allMessageFound-----------------------");
+            console.log(allMessageFound);
+            console.log("------------------------------------");*/
+            const test = JSON.parse(JSON.stringify(allMessageFound));
+
+            if (allMessageFound) {
+              const messagesFormated = test.map((element) => {
+                /*console.log("----------------element--------------------");
+                console.log(element.createdAt);
+                console.log("------------------------------------");*/
+                const date = moment(element.createdAt).local().format("LL");
+                const hour = moment(element.createdAt).local().format("LT");
+                element.createdAt = `Le ${date} à ${hour}`;
+                return element;
+              });
+              /*console.log("---------------messagesFormated---------------------");
+              console.log(messagesFormated);
+              console.log("------------------------------------");*/
+              return res.status(201).json(messagesFormated);
+            }
           });
         } else {
           return res.status(500).json({ error: "cannot post message" });
@@ -180,8 +220,31 @@ module.exports = {
       ],
     })
       .then(function (messages) {
+        const test = JSON.parse(JSON.stringify(messages));
+        /*console.log("-----------------messagesRecus-------------------");
+        console.log(test[0].createdAt);
+        console.log("------------------------------------");
+        console.log("------------------------------------");
+        console.log(moment(test[0].createdAt).local().format("DD MM YYYY hh:mm:ss"));
+        console.log("------------------------------------");
+        console.log("------------------------------------");
+        console.log(moment(test[0].createdAt).local().format("DD MM YYYY hh:mm:ss"));
+        console.log("------------------------------------");*/
         if (messages) {
-          res.status(200).json(messages);
+          const messagesFormated = test.map((element) => {
+            /*console.log("----------------element--------------------");
+            console.log(element.createdAt);
+            console.log("------------------------------------");*/
+            const date = moment(element.createdAt).local().format("LL");
+            const hour = moment(element.createdAt).local().format("LT");
+            element.createdAt = `Le ${date} à ${hour}`;
+            return element;
+          });
+
+          /*console.log("---------------messagesFormated---------------------");
+          console.log(messagesFormated);
+          console.log("------------------------------------");*/
+          res.status(200).json(messagesFormated);
         } else {
           res.status(404).json({ error: "message(s) introuvable(s)" });
         }
