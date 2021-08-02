@@ -44,6 +44,7 @@ const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMe
           headers: { Authorization: `Bearer ${token}` },
         });
         setAllComments(response.data);
+        setContent("");
       } catch (error) {}
       // setAllComments([
       //   ...allComments,
@@ -69,7 +70,7 @@ const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMe
         </div>
       </div>
       <div>
-        <Input onChange={onChangeContent} label="votre commentaire" type="text" />
+        <Input value={content} onChange={onChangeContent} label="votre commentaire" type="text" />
         <Button onClick={onComment} title="commenter" />
       </div>
     </div>

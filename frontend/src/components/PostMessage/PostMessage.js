@@ -1,4 +1,5 @@
 import Input from "../../components/Input/Input";
+import InputTextArea from "../../components/Input/InputTextARea";
 import Button from "../../components/Button/Button";
 import api from "../../Config/Api";
 import { useState } from "react";
@@ -41,6 +42,12 @@ const PostMessage = ({ viewMessagesPost }) => {
           },
         });
         viewMessagesPost(response.data);
+        setFile("");
+        console.log("-------------file-----------------------");
+        console.log(file);
+        console.log("------------------------------------");
+        setTitle("");
+        setContent("");
       } else {
         const response = await api({
           url: "/messages/new/",
@@ -49,15 +56,28 @@ const PostMessage = ({ viewMessagesPost }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
         viewMessagesPost(response.data);
+        setTitle("");
+        setContent("");
+        console.log("--------------file sans photo----------------------");
+        console.log(file);
+        console.log("------------------------------------");
       }
     } catch (error) {}
   };
 
   return (
     <div>
-      <Input onChange={onChangeTitle} label="Titre" type="text" />
-      <Input onChange={onUploadFile} label="Photo" type="file" />
-      <Input onChange={onChangeContent} label="Publication" type="text" />
+      <Input value={title} onChange={onChangeTitle} label="Titre" type="text" />
+      <Input onChange={onUploadFile} type="file" />
+
+      <InputTextArea
+        id="outlined-multiline-static"
+        label="Publication"
+        rows={4}
+        variant="outlined"
+        onChange={onChangeContent}
+        value={content}
+      />
       <Button onClick={onPublish} title="Publier" />
     </div>
   );
