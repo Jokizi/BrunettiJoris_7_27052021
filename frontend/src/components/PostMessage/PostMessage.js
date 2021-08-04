@@ -10,7 +10,7 @@ const PostMessage = ({ viewMessagesPost }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const [resetFile, setResetFile] = useState(file.name);
+  const [resetFile, setResetFile] = useState("");
 
   const onUploadFile = (e) => {
     setFile(e.target.files[0]);

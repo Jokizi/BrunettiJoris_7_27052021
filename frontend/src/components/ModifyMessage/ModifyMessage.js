@@ -3,7 +3,7 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import ModifPopUp from "../ModifPopUp/ModifPopUp";
 
-const ModifyMessage = ({ myUserId, idUserMessage }) => {
+const ModifyMessage = ({ myUserId, idUserMessage, messageId, title, content, attachment }) => {
   const [open, setOpen] = useState(false);
 
   const handleModal = () => {
@@ -23,6 +23,10 @@ const ModifyMessage = ({ myUserId, idUserMessage }) => {
         modalTitle="Modifier la publication"
         buttonTitle1="Sauvegarder Modifications"
         buttonTitle2="Annuler Modifications"
+        messageId={messageId}
+        title={title}
+        attachment={attachment}
+        content={content}
       />
     </div>
   );

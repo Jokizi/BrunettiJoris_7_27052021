@@ -20,8 +20,17 @@ module.exports = {
     // Paramètres
 
     const formMessage = JSON.parse(req.body.message);
+    console.log("=========formMessage===========================");
+    console.log(formMessage);
+    console.log("====================================");
     const { title, content } = formMessage;
-    if (title == null || (content == null && attachment == null)) {
+    console.log("=======attachment=============================");
+    console.log();
+    console.log("====================================");
+    console.log("==================req file==================");
+    console.log(req.file);
+    console.log("====================================");
+    if (title === null || (content === null && attachment === null)) {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
 
