@@ -105,7 +105,7 @@ const Home = ({ myUserId }) => {
               messageId={element.id}
               myUserId={myUserId}
             />
-            <ModifyMessage />
+            <ModifyMessage myUserId={myUserId} idUserMessage={element.UserId} />
             <DeleteMessage
               changeDeleteMessage={changeDeleteMessage}
               messageId={element.id}

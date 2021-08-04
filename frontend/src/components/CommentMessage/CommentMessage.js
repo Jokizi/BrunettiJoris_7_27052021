@@ -5,7 +5,7 @@ import Accordion from "../Accordion/Accordion";
 import api from "../../Config/Api";
 import { useState } from "react";
 import { useEffect } from "react";
-import { nanoid } from "nanoid";
+//import { nanoid } from "nanoid";
 
 const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMessages }) => {
   const [allComments, setAllComments] = useState([]);

@@ -10,6 +10,8 @@ const PostMessage = ({ viewMessagesPost }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
+  const [resetFile, setResetFile] = useState(file.name);
+
   const onUploadFile = (e) => {
     setFile(e.target.files[0]);
   };
@@ -42,12 +44,15 @@ const PostMessage = ({ viewMessagesPost }) => {
           },
         });
         viewMessagesPost(response.data);
-        setFile("");
-        console.log("-------------file-----------------------");
-        console.log(file);
+        console.log("--------------fileName----------------------");
+        console.log(file.name);
         console.log("------------------------------------");
         setTitle("");
         setContent("");
+        if (file) {
+          setResetFile("");
+        }
+        setFile("");
       } else {
         const response = await api({
           url: "/messages/new/",
@@ -68,7 +73,7 @@ const PostMessage = ({ viewMessagesPost }) => {
   return (
     <div>
       <Input value={title} onChange={onChangeTitle} label="Titre" type="text" />
-      <Input onChange={onUploadFile} type="file" />
+      <Input value={resetFile} onChange={onUploadFile} type="file" />
 
       <InputTextArea
         id="outlined-multiline-static"
