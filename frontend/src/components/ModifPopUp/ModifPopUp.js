@@ -4,7 +4,6 @@ import Input from "../../components/Input/Input";
 import InputTextArea from "../../components/Input/InputTextARea";
 import Button from "../Button/Button";
 import "./modif-pop-up.css";
-import { useState } from "react";
 
 const ModifPopUp = ({
   open,
@@ -12,20 +11,21 @@ const ModifPopUp = ({
   modalTitle,
   buttonTitle1,
   buttonTitle2,
-  messageId,
-  title,
-  content,
-  attachment,
-}) => {
-  const [newFile, setNewFile] = useState(attachment);
-  const [newTitle, setNewTitle] = useState(title);
-  const [newContent, setNewContent] = useState(content);
 
+  newTitle,
+  newContent,
+  newFile,
+  setNewFile,
+  setNewTitle,
+  setNewContent,
+  attachment,
+  onUpdate,
+  setFileToSend,
+}) => {
   const onUploadFile = (e) => {
     setNewFile(URL.createObjectURL(e.target.files[0]));
-    console.log("---------------e.target.files---------------------");
-    console.log(e.target.files[0]);
-    console.log("------------------------------------");
+
+    setFileToSend(e.target.files[0]);
   };
 
   const onChangeTitle = (e) => {
@@ -55,7 +55,7 @@ const ModifPopUp = ({
           rows={4}
           variant="outlined"
         />
-        <Button title={buttonTitle1} />
+        <Button title={buttonTitle1} onClick={onUpdate} />
         <Button title={buttonTitle2} onClick={handleModal} />
       </div>
     </Dialog>

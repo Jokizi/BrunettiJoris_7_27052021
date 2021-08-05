@@ -333,9 +333,10 @@ module.exports = {
     const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
     const userId = decodedToken.userId;
 
-    const title = req.body.title;
-    const content = req.body.content;
     const messageId = parseInt(req.params.messageId);
+    const formMessage = JSON.parse(req.body.message);
+    const title = formMessage.title;
+    const content = formMessage.content;
 
     asyncLib.waterfall(
       [
@@ -363,14 +364,26 @@ module.exports = {
         },
         function (messageFound, userFound, done) {
           if (messageFound) {
-            messageFound
-              .update({
-                title: title ? title : messageFound.title,
-                content: content ? content : message.content,
-              })
-              .then(function (newMessageFound) {
-                done(newMessageFound);
-              });
+            if (req.file) {
+              messageFound
+                .update({
+                  title: title ? title : messageFound.title,
+                  content: content ? content : messageFound.content,
+                  attachment: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+                })
+                .then(function (newMessageFound) {
+                  done(newMessageFound);
+                });
+            } else {
+              messageFound
+                .update({
+                  title: title ? title : messageFound.title,
+                  content: content ? content : messageFound.content,
+                })
+                .then(function (newMessageFound) {
+                  done(newMessageFound);
+                });
+            }
           } else {
             res.status(404).json({ error: "utilisateur introuvable" });
           }

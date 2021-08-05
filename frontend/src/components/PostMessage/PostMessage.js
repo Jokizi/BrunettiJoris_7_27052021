@@ -9,9 +9,9 @@ const PostMessage = ({ viewMessagesPost }) => {
   const [file, setFile] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-
+  // A voir
   const [resetFile, setResetFile] = useState("");
-
+  //file.name
   const onUploadFile = (e) => {
     setFile(e.target.files[0]);
   };
@@ -44,9 +44,7 @@ const PostMessage = ({ viewMessagesPost }) => {
           },
         });
         viewMessagesPost(response.data);
-        console.log("--------------fileName----------------------");
-        console.log(file.name);
-        console.log("------------------------------------");
+
         setTitle("");
         setContent("");
         if (file) {
@@ -63,9 +61,6 @@ const PostMessage = ({ viewMessagesPost }) => {
         viewMessagesPost(response.data);
         setTitle("");
         setContent("");
-        console.log("--------------file sans photo----------------------");
-        console.log(file);
-        console.log("------------------------------------");
       }
     } catch (error) {}
   };

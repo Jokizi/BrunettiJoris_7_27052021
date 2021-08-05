@@ -78,9 +78,7 @@ const Home = ({ myUserId }) => {
       <PostMessage viewMessagesPost={viewMessagesPost} />
       {allMessages.map((element) => {
         const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
-        console.log("-------------elementAttach-----------------------");
-        console.log(element.attachment);
-        console.log("------------------------------------");
+
         return (
           <div key={element.id}>
             <div>{element.User.username}</div>
@@ -113,6 +111,7 @@ const Home = ({ myUserId }) => {
               content={element.content}
               myUserId={myUserId}
               idUserMessage={element.UserId}
+              setAllMessages={setAllMessages}
             />
             <DeleteMessage
               changeDeleteMessage={changeDeleteMessage}
