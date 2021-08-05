@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./Accordion.css";
 import api from "../../Config/Api";
 import LikeDislikeComment from "../LikeComment/LikeComment";
+import ModifyComment from "../ModifyComment/ModifyComment";
 import DeleteComment from "../DeleteComment/DeleteComment";
 
 const Accordion = ({ myUserId, title, messageId, allComments, setAllComments, setAllMessages }) => {
@@ -60,6 +61,14 @@ const Accordion = ({ myUserId, title, messageId, allComments, setAllComments, se
                 commentDislike={element.commentDislikes}
                 commentId={element.id}
                 messageCommentLikeByCurrentUser={messageCommentLikeByCurrentUser}
+              />
+              <ModifyComment
+                setAllComments={setAllComments}
+                myUserId={myUserId}
+                idUserComment={element.UserId}
+                messageId={messageId}
+                commentId={element.id}
+                content={element.content}
               />
               <DeleteComment
                 setAllMessages={setAllMessages}
