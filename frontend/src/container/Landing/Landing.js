@@ -22,12 +22,14 @@ const Landing = ({ setIsLoggedin }) => {
       }}
     >
       <div>
-        Notre entreprise, spécialisée dans la grande distribution, est en pleine
-        expansion. Nous avons actuellement plus de 600 collaborateurs.
+        Notre entreprise, spécialisée dans la grande distribution, est en pleine expansion. Nous avons actuellement plus
+        de 600 collaborateurs.
         <br />
         Ce site est fait pour vous rassembler!
       </div>
-      <Button onClick={goRegister} title="Inscription" />
+      <div>
+        <Button onClick={goRegister} title="Inscription" />
+      </div>
       <Button onClick={goLogin} title="Connexion" />
     </div>
   );
