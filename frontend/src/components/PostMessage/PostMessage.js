@@ -1,30 +1,30 @@
+import React, { Component } from "react";
 import Input from "../../components/Input/Input";
 import InputTextArea from "../../components/Input/InputTextARea";
 import Button from "../../components/Button/Button";
 import api from "../../Config/Api";
-import { useState } from "react";
 import FormData from "form-data";
 
-const PostMessage = ({ viewMessagesPost }) => {
-  const [file, setFile] = useState("");
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  // A voir
-  const [resetFile, setResetFile] = useState("");
-  //file.name
-  const onUploadFile = (e) => {
-    setFile(e.target.files[0]);
+class PostMessage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { file: {}, title: "", content: "", theInputKey: "" };
+  }
+
+  onUploadFile = (e) => {
+    this.setState({ file: e.target.files[0] });
   };
 
-  const onChangeTitle = (e) => {
-    setTitle(e.target.value);
+  onChangeTitle = (e) => {
+    this.setState({ title: e.target.value });
   };
 
-  const onChangeContent = (e) => {
-    setContent(e.target.value);
+  onChangeContent = (e) => {
+    this.setState({ content: e.target.value });
   };
 
-  const onPublish = async () => {
+  onPublish = async () => {
+    const { title, content, file } = this.state;
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
     const obj = { title, content };
     const json = JSON.stringify(obj);
@@ -43,14 +43,8 @@ const PostMessage = ({ viewMessagesPost }) => {
             "Content-Type": "multipart/from-data",
           },
         });
-        viewMessagesPost(response.data);
-
-        setTitle("");
-        setContent("");
-        if (file) {
-          setResetFile("");
-        }
-        setFile("");
+        this.props.viewMessagesPost(response.data);
+        this.setState({ title: "", content: "", file: "", theInputKey: Math.random().toString(36) });
       } else {
         const response = await api({
           url: "/messages/new/",
@@ -58,29 +52,33 @@ const PostMessage = ({ viewMessagesPost }) => {
           data: obj,
           headers: { Authorization: `Bearer ${token}` },
         });
-        viewMessagesPost(response.data);
-        setTitle("");
-        setContent("");
+        this.props.viewMessagesPost(response.data);
+        this.setState({ title: "", content: "" });
       }
     } catch (error) {}
   };
 
-  return (
-    <div>
-      <Input value={title} onChange={onChangeTitle} label="Titre" type="text" />
-      <Input value={resetFile} onChange={onUploadFile} type="file" />
+  render() {
+    const { title, content } = this.state;
+    return (
+      <div>
+        <Input value={title} onChange={this.onChangeTitle} label="Titre" type="text" />
+        <div style={{ width: "350px" }}>
+          <Input onChange={this.onUploadFile} type="file" theInputKey={this.state.theInputKey} />
+        </div>
 
-      <InputTextArea
-        id="outlined-multiline-static"
-        label="Publication"
-        rows={4}
-        variant="outlined"
-        onChange={onChangeContent}
-        value={content}
-      />
-      <Button onClick={onPublish} title="Publier" />
-    </div>
-  );
-};
+        <InputTextArea
+          id="outlined-multiline-static"
+          label="Publication"
+          rows={4}
+          variant="outlined"
+          onChange={this.onChangeContent}
+          value={content}
+        />
+        <Button onClick={this.onPublish} title="Publier" />
+      </div>
+    );
+  }
+}
 
 export default PostMessage;

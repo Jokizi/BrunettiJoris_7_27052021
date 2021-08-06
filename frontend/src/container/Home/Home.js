@@ -41,6 +41,9 @@ const Home = ({ myUserId }) => {
   }, [history]);
   // rendre dynamique l'affichage des messages
   const viewMessagesPost = (newMessages) => {
+    console.log("========newMessages============================");
+    console.log(newMessages);
+    console.log("====================================");
     setAllMessages(newMessages);
   };
 
