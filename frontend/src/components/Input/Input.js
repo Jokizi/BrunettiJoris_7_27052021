@@ -6,7 +6,6 @@ const Input = ({ label, type = "text", onChange, value, theInputKey }) => {
     <TextField
       value={value}
       onChange={onChange}
-      id="outlined-basic"
       label={label}
       variant="outlined"
       type={type}

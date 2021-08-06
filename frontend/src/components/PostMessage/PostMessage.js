@@ -8,7 +8,7 @@ import FormData from "form-data";
 class PostMessage extends Component {
   constructor(props) {
     super(props);
-    this.state = { file: {}, title: "", content: "", theInputKey: "" };
+    this.state = { file: "", title: "", content: "", theInputKey: "" };
   }
 
   onUploadFile = (e) => {
@@ -31,6 +31,7 @@ class PostMessage extends Component {
     const formData = new FormData();
     formData.append("image", file);
     formData.append("message", json);
+
     try {
       if (file) {
         const response = await api({
