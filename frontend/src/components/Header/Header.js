@@ -25,7 +25,7 @@ const Header = ({ isLoggedin, setIsLoggedin }) => {
       </div>
       {isLoggedin ? (
         <div className="grpm-buttons-log">
-          <Button className="button-profil" title="Profil" />
+          <Button className="button-profil" onClick={() => history.push("/profil")} title="Profil" />
           <Button className="button-logout" title="Déconnexion" onClick={onLogout} />
         </div>
       ) : (

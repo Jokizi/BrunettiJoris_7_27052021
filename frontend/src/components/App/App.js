@@ -6,6 +6,7 @@ import Login from "../../container/Login/Login";
 import Register from "../../container/Register/Register";
 import Home from "../../container/Home/Home";
 import Landing from "../../container/Landing/Landing";
+import UserProfil from "../../container/UserProfil/UserProfil";
 
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import api from "../../Config/Api";
@@ -15,7 +16,6 @@ const App = () => {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [checkLogin, setCheckLogin] = useState(false);
   const [myUserId, setMyUserId] = useState("");
-
   useEffect(() => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
 
@@ -47,6 +47,9 @@ const App = () => {
       <Switch>
         {checkLogin && (
           <PrivateRoute exact path="/accueil" myUserId={myUserId} component={Home} isLoggedin={isLoggedin} />
+        )}
+        {checkLogin && (
+          <PrivateRoute exact path="/profil" myUserId={myUserId} component={UserProfil} isLoggedin={isLoggedin} />
         )}
         <Route
           exact
