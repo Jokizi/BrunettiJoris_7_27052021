@@ -31,32 +31,69 @@ class PostMessage extends Component {
     const formData = new FormData();
     formData.append("image", file);
     formData.append("message", json);
-
-    try {
-      if (file) {
-        const response = await api({
-          url: "/messagesImages/new/",
-          method: "post",
-          data: formData,
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-            "Content-Type": "multipart/from-data",
-          },
-        });
-        this.props.viewMessagesPost(response.data);
-        this.setState({ title: "", content: "", file: "", theInputKey: Math.random().toString(36) });
-      } else {
-        const response = await api({
-          url: "/messages/new/",
-          method: "post",
-          data: obj,
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        this.props.viewMessagesPost(response.data);
-        this.setState({ title: "", content: "" });
-      }
-    } catch (error) {}
+    if (this.props.isProfil) {
+      try {
+        if (file) {
+          await api({
+            url: "/messagesImages/new/",
+            method: "post",
+            data: formData,
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+              "Content-Type": "multipart/from-data",
+            },
+          });
+          const response = await api({
+            url: "/user/messages",
+            method: "get",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          this.props.viewMessagesPost(response.data);
+          this.setState({ title: "", content: "", file: "", theInputKey: Math.random().toString(36) });
+        } else {
+          await api({
+            url: "/messages/new/",
+            method: "post",
+            data: obj,
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const response = await api({
+            url: "/user/messages",
+            method: "get",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          this.props.viewMessagesPost(response.data);
+          this.setState({ title: "", content: "" });
+        }
+      } catch (error) {}
+    } else {
+      try {
+        if (file) {
+          const response = await api({
+            url: "/messagesImages/new/",
+            method: "post",
+            data: formData,
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+              "Content-Type": "multipart/from-data",
+            },
+          });
+          this.props.viewMessagesPost(response.data);
+          this.setState({ title: "", content: "", file: "", theInputKey: Math.random().toString(36) });
+        } else {
+          const response = await api({
+            url: "/messages/new/",
+            method: "post",
+            data: obj,
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          this.props.viewMessagesPost(response.data);
+          this.setState({ title: "", content: "" });
+        }
+      } catch (error) {}
+    }
   };
 
   render() {
@@ -67,7 +104,6 @@ class PostMessage extends Component {
         <div style={{ width: "350px" }}>
           <Input onChange={this.onUploadFile} type="file" theInputKey={this.state.theInputKey} />
         </div>
-
         <InputTextArea
           id="outlined-multiline-static"
           label="Publication"

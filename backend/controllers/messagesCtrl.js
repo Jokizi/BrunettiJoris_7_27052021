@@ -275,7 +275,7 @@ module.exports = {
 
     models.Message.findAll({
       where: { userId },
-      order: [order != null ? order.split(":") : ["title", "ASC"]],
+      order: [order != null ? order.split(":") : ["createdAt", "DESC"]],
       attributes: fields !== "*" && fields != null ? fields.split(",") : null,
       limit: !isNaN(limit) ? limit : null,
       offset: !isNaN(offset) ? offset : null,
@@ -287,8 +287,15 @@ module.exports = {
       ],
     })
       .then(function (messages) {
+        const messagesParsed = JSON.parse(JSON.stringify(messages));
         if (messages) {
-          res.status(200).json(messages);
+          const messagesFormated = messagesParsed.map((element) => {
+            const date = moment(element.createdAt).local().format("LL");
+            const hour = moment(element.createdAt).local().format("LT");
+            element.createdAt = `Le ${date} à ${hour}`;
+            return element;
+          });
+          res.status(200).json(messagesFormated);
         } else {
           res.status(404).json({ error: "publication(s) introuvable(s)" });
         }
