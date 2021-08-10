@@ -79,12 +79,15 @@ const Home = ({ myUserId }) => {
   return (
     <div>
       <div className="grpm-home">C'est la home page</div>
-      <PostMessage viewMessagesPost={viewMessagesPost} />
+      <div style={{ padding: "10px", border: "1px solid black" }}>
+        <PostMessage viewMessagesPost={viewMessagesPost} />
+      </div>
+
       {allMessages.map((element) => {
         const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
 
         return (
-          <div key={element.id}>
+          <div style={{ padding: "10px", border: "1px solid black" }} key={element.id}>
             <div>{element.User.username}</div>
             <div>{element.createdAt}</div>
             <div>{element.title}</div>

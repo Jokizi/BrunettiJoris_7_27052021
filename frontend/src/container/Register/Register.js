@@ -1,4 +1,5 @@
 import Input from "../../components/Input/Input";
+import InputTextArea from "../../components/Input/InputTextARea";
 import Button from "../../components/Button/Button";
 import api from "../../Config/Api";
 import { useState } from "react";
@@ -50,7 +51,7 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
       <Input onChange={onChangeEmail} value={email} label="e-mail" />
       <Input onChange={onChangeUsername} value={username} label="Pseudonyme" />
       <Input onChange={onChangePassword} value={password} label="mot de passe" type="password" />
-      <Input onChange={onChangeBio} value={bio} label="bio" />
+      <InputTextArea rows={4} variant="outlined" label="Description" onChange={onChangeBio} value={bio} />
       <Button onClick={onRegister} title="S'inscrire" />
     </div>
   );

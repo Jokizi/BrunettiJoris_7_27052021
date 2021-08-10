@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import api from "../../Config/Api";
+import ProfilDetails from "../../components/ProfilDetails/ProfilDetails";
 import PostMessage from "../../components/PostMessage/PostMessage";
 import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
 import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
 import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
 
-const UserProfil = ({ myUserId }) => {
+const UserProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [allMessages, setAllMessages] = useState([]);
   const history = useHistory();
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
@@ -69,8 +70,10 @@ const UserProfil = ({ myUserId }) => {
 
   return (
     <div>
-      <div>Page de profil</div>
-      <div>
+      <div style={{ padding: "10px", border: "1px solid black" }}>
+        <ProfilDetails myUserId={myUserId} setIsLoggedin={setIsLoggedin} setCheckLogin={setCheckLogin} />
+      </div>
+      <div style={{ padding: "10px", border: "1px solid black" }}>
         <PostMessage viewMessagesPost={viewMessagesPost} isProfil={true} />
       </div>
       {allMessages.map((element) => {

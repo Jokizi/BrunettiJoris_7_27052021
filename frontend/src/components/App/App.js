@@ -49,7 +49,15 @@ const App = () => {
           <PrivateRoute exact path="/accueil" myUserId={myUserId} component={Home} isLoggedin={isLoggedin} />
         )}
         {checkLogin && (
-          <PrivateRoute exact path="/profil" myUserId={myUserId} component={UserProfil} isLoggedin={isLoggedin} />
+          <PrivateRoute
+            exact
+            path="/profil"
+            myUserId={myUserId}
+            component={UserProfil}
+            setIsLoggedin={setIsLoggedin}
+            isLoggedin={isLoggedin}
+            setCheckLogin={setCheckLogin}
+          />
         )}
         <Route
           exact
