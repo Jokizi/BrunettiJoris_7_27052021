@@ -6,6 +6,8 @@ import Button from "../Button/Button";
 import Switch from "@material-ui/core/Switch";
 import ConfirmPopUp from "../ConfirmPopUp/ConfirmPopUp";
 import api from "../../Config/Api";
+import { toastTrigger } from "../../helper/toast";
+import { ToastContainer } from "react-toastify";
 
 const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -46,9 +48,6 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
   const onUpdateBio = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
-    console.log("--------------bioooo----------------------");
-    console.log(bio);
-    console.log("------------------------------------");
 
     try {
       const response = await api({
@@ -67,7 +66,10 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       setOpenUpdate(!openUpdate);
 
       setIsDisable(true);
-    } catch (error) {}
+      toastTrigger("success", "Profil Mis à Jour 👌🏼");
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
   };
 
   const onDeleteUser = async () => {
@@ -129,6 +131,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
         bio={bio}
         setBio={setBio}
       />
+
       <ConfirmPopUp
         open={openDelete}
         handleModal={handleDeleteModal}
@@ -137,6 +140,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
         buttonTitle1="Confirmer"
         buttonTitle2="Annuler"
       />
+      <ToastContainer />
     </div>
   );
 };
