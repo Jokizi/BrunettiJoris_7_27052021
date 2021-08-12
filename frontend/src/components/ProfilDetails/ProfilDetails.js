@@ -15,6 +15,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [pseudonyme, setPseudonyme] = useState("");
   const [isDisable, setIsDisable] = useState(true);
   const [bio, setBio] = useState("");
+
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
 
   useEffect(() => {
@@ -41,6 +42,32 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
   const handleDeleteModal = () => {
     setOpenDelete(!openDelete);
+  };
+
+  const onUpdateBio = async () => {
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+    console.log("--------------bioooo----------------------");
+    console.log(bio);
+    console.log("------------------------------------");
+
+    try {
+      const response = await api({
+        url: "/users/profile/",
+        method: "put",
+        data: { bio },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      let oldSessionStorage = groupomaniaUser;
+      oldSessionStorage.bio = response.data.bio;
+      sessionStorage.setItem("groupomania-user", JSON.stringify(oldSessionStorage));
+      setOpenUpdate(!openUpdate);
+
+      setIsDisable(true);
+    } catch (error) {}
   };
 
   const onDeleteUser = async () => {
@@ -98,6 +125,9 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
         modalTitle="Modifier la Description ?"
         buttonTitle1="Sauvegarder Modifications"
         buttonTitle2="Annuler Modifications"
+        confirmModalAction={onUpdateBio}
+        bio={bio}
+        setBio={setBio}
       />
       <ConfirmPopUp
         open={openDelete}
