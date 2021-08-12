@@ -7,7 +7,6 @@ import Switch from "@material-ui/core/Switch";
 import ConfirmPopUp from "../ConfirmPopUp/ConfirmPopUp";
 import api from "../../Config/Api";
 import { toastTrigger } from "../../helper/toast";
-import { ToastContainer } from "react-toastify";
 
 const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -47,7 +46,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   };
 
   const onUpdateBio = async () => {
-    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
     try {
       const response = await api({
@@ -73,7 +72,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   };
 
   const onDeleteUser = async () => {
-    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
     try {
       const response = await api({
@@ -87,7 +86,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       });
       setCheckLogin(false);
       setIsLoggedin(false);
-      sessionStorage.removeItem("test");
+      sessionStorage.removeItem("groupomania-token");
       sessionStorage.removeItem("groupomania-user");
       history.push("/");
     } catch (error) {}
@@ -140,7 +139,6 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
         buttonTitle1="Confirmer"
         buttonTitle2="Annuler"
       />
-      <ToastContainer />
     </div>
   );
 };

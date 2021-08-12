@@ -9,8 +9,8 @@ const Accordion = ({ myUserId, title, messageId, allComments, setAllComments, se
   const [active, setActive] = useState(false);
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
   const getAllComments = async (e) => {
-    if (sessionStorage.getItem("test")) {
-      const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+    if (sessionStorage.getItem("groupomania-token")) {
+      const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
       try {
         const response = await api({

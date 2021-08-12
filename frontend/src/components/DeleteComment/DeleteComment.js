@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import api from "../../Config/Api";
 import { useState } from "react";
 import ConfirmPopUp from "../ConfirmPopUp/ConfirmPopUp";
+import { toastTrigger } from "../../helper/toast";
 
 const DeleteComment = ({ messageId, commentId, myUserId, idUserComment, changeDeleteComment, setAllMessages }) => {
   const [open, setOpen] = useState(false);
@@ -11,7 +12,7 @@ const DeleteComment = ({ messageId, commentId, myUserId, idUserComment, changeDe
   };
 
   const onDeleteComment = async () => {
-    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
     try {
       const response = await api({
@@ -31,8 +32,11 @@ const DeleteComment = ({ messageId, commentId, myUserId, idUserComment, changeDe
           headers: { Authorization: `Bearer ${token}` },
         });
         setAllMessages(response.data);
+        toastTrigger("success", "Commentaire supprimé 👌🏼");
       } catch (error) {}
-    } catch (error) {}
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
   };
 
   return (

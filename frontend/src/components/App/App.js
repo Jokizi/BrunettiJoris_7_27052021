@@ -11,13 +11,14 @@ import UserProfil from "../../container/UserProfil/UserProfil";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import api from "../../Config/Api";
 import "../../assets/fontawesome";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [checkLogin, setCheckLogin] = useState(false);
   const [myUserId, setMyUserId] = useState("");
   useEffect(() => {
-    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
     if (!isLoggedin && token) {
       const getUser = async () => {
@@ -90,6 +91,7 @@ const App = () => {
         ></Route>
       </Switch>
       <Footer />
+      <ToastContainer />
     </Router>
   );
 };

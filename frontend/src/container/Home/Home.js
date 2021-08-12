@@ -14,9 +14,9 @@ const Home = ({ myUserId }) => {
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
 
   useEffect(() => {
-    if (sessionStorage.getItem("test")) {
+    if (sessionStorage.getItem("groupomania-token")) {
       const getMessages = async () => {
-        const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+        const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
         try {
           const response = await api({

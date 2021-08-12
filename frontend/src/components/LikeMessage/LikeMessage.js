@@ -19,7 +19,7 @@ const LikeDislikeMessage = ({ messageId, like, dislike, changeLike, messageLikeB
 
   const onLike = async () => {
     try {
-      const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+      const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
       const response = await api({
         url: "/messages/" + messageId + "/vote/like",
@@ -46,7 +46,7 @@ const LikeDislikeMessage = ({ messageId, like, dislike, changeLike, messageLikeB
 
   const onDislike = async () => {
     try {
-      const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+      const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
       const response = await api({
         url: "/messages/" + messageId + "/vote/dislike",

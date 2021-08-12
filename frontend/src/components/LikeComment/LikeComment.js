@@ -25,7 +25,7 @@ const LikeDislikeComment = ({
 
   const onLike = async () => {
     try {
-      const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+      const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
       const response = await api({
         url: "/" + commentId + "/vote/like",
@@ -55,7 +55,7 @@ const LikeDislikeComment = ({
 
   const onDislike = async () => {
     try {
-      const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+      const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
       const response = await api({
         url: "/" + commentId + "/vote/dislike",

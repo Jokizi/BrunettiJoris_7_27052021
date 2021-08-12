@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import api from "../../Config/Api";
 import { useState } from "react";
 import ModifCommentPopUp from "../ModifCommentPopUp/ModifCommentPopUP";
+import { toastTrigger } from "../../helper/toast";
 
 const ModifyComment = ({ myUserId, idUserComment, commentId, content, messageId, setAllComments }) => {
   const [open, setOpen] = useState(false);
@@ -11,7 +12,7 @@ const ModifyComment = ({ myUserId, idUserComment, commentId, content, messageId,
     setOpen(!open);
   };
   const onUpdate = async () => {
-    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     const obj = { content: newContent };
 
     try {
@@ -32,8 +33,11 @@ const ModifyComment = ({ myUserId, idUserComment, commentId, content, messageId,
           headers: { Authorization: `Bearer ${token}` },
         });
         setAllComments(response.data);
+        toastTrigger("success", "Commentaire modifié 👌🏼");
       } catch (error) {}
-    } catch (error) {}
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
   };
 
   return (

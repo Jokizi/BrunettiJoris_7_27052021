@@ -3,6 +3,7 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import ModifPopUp from "../ModifPopUp/ModifPopUp";
 import FormData from "form-data";
+import { toastTrigger } from "../../helper/toast";
 
 const ModifyMessage = ({ myUserId, idUserMessage, messageId, title, content, attachment, setAllMessages }) => {
   const [open, setOpen] = useState(false);
@@ -16,7 +17,7 @@ const ModifyMessage = ({ myUserId, idUserMessage, messageId, title, content, att
   };
 
   const onUpdate = async () => {
-    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     const obj = { title: newTitle, content: newContent };
     const json = JSON.stringify(obj);
     const formData = new FormData();
@@ -35,6 +36,7 @@ const ModifyMessage = ({ myUserId, idUserMessage, messageId, title, content, att
         },
       });
       setOpen(!open);
+      toastTrigger("success", "Publication modifié 👌🏼");
       try {
         const response = await api({
           url: "/messages/",
@@ -43,7 +45,9 @@ const ModifyMessage = ({ myUserId, idUserMessage, messageId, title, content, att
         });
         setAllMessages(response.data);
       } catch (error) {}
-    } catch (error) {}
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
   };
   return (
     <div>

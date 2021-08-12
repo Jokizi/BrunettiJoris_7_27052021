@@ -4,6 +4,7 @@ import InputTextArea from "../../components/Input/InputTextARea";
 import Button from "../../components/Button/Button";
 import api from "../../Config/Api";
 import FormData from "form-data";
+import { toastTrigger } from "../../helper/toast";
 
 class PostMessage extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class PostMessage extends Component {
 
   onPublish = async () => {
     const { title, content, file } = this.state;
-    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     const obj = { title, content };
     const json = JSON.stringify(obj);
     const formData = new FormData();
@@ -51,6 +52,7 @@ class PostMessage extends Component {
           });
           this.props.viewMessagesPost(response.data);
           this.setState({ title: "", content: "", file: "", theInputKey: Math.random().toString(36) });
+          toastTrigger("success", "Publication ajouté 👌🏼");
         } else {
           await api({
             url: "/messages/new/",
@@ -65,8 +67,11 @@ class PostMessage extends Component {
           });
           this.props.viewMessagesPost(response.data);
           this.setState({ title: "", content: "" });
+          toastTrigger("success", "Publication ajouté 👌🏼");
         }
-      } catch (error) {}
+      } catch (error) {
+        toastTrigger("error", "Une erreur est survenue ⛔️");
+      }
     } else {
       try {
         if (file) {
@@ -82,6 +87,7 @@ class PostMessage extends Component {
           });
           this.props.viewMessagesPost(response.data);
           this.setState({ title: "", content: "", file: "", theInputKey: Math.random().toString(36) });
+          toastTrigger("success", "Publication ajouté 👌🏼");
         } else {
           const response = await api({
             url: "/messages/new/",
@@ -91,8 +97,11 @@ class PostMessage extends Component {
           });
           this.props.viewMessagesPost(response.data);
           this.setState({ title: "", content: "" });
+          toastTrigger("success", "Publication ajouté 👌🏼");
         }
-      } catch (error) {}
+      } catch (error) {
+        toastTrigger("error", "Une erreur est survenue ⛔️");
+      }
     }
   };
 

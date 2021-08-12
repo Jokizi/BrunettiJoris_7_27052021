@@ -139,6 +139,7 @@ module.exports = {
         if (userFound) {
           return res.status(201).json({
             userId: userFound.id,
+            username: userFound.username,
             token: jwt.sign(
               {
                 userId: userFound.id,

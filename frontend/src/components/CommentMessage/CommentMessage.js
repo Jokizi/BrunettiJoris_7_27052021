@@ -5,7 +5,7 @@ import Accordion from "../Accordion/Accordion";
 import api from "../../Config/Api";
 import { useState } from "react";
 import { useEffect } from "react";
-//import { nanoid } from "nanoid";
+import { toastTrigger } from "../../helper/toast";
 
 const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMessages }) => {
   const [allComments, setAllComments] = useState([]);
@@ -23,7 +23,7 @@ const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMe
   };
 
   const onComment = async () => {
-    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("test")));
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     const obj = { content };
     const user = JSON.parse(sessionStorage.getItem("groupomania-user"));
     try {
@@ -45,12 +45,11 @@ const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMe
         });
         setAllComments(response.data);
         setContent("");
+        toastTrigger("success", "Commentaire ajouté 👌🏼");
       } catch (error) {}
-      // setAllComments([
-      //   ...allComments,
-      //   { id: nanoid(), createdAt: "à l'instant", User: { username: user.username }, content },
-      // ]);
-    } catch (error) {}
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
   };
   return (
     <div>

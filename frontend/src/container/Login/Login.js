@@ -3,6 +3,7 @@ import Button from "../../components/Button/Button";
 import api from "../../Config/Api";
 import { useState } from "react";
 import { useHistory } from "react-router";
+import { toastTrigger } from "../../helper/toast";
 
 const Login = ({ setIsLoggedin, setMyUserId }) => {
   const history = useHistory();
@@ -23,13 +24,15 @@ const Login = ({ setIsLoggedin, setMyUserId }) => {
         email,
         password,
       });
-      sessionStorage.setItem("test", response.data.token);
+      sessionStorage.setItem("groupomania-token", response.data.token);
       setIsLoggedin(true);
       setMyUserId(response.data.userId);
-      history.push("/accueil");
-    } catch (error) {}
+      toastTrigger("success", `Bonjour ${response.data.username} ✌🏼`);
+      history.push({ pathname: "/accueil" });
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
   };
-
   return (
     <div>
       Login

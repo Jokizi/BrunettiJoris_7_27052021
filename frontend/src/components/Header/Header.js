@@ -10,7 +10,7 @@ const Header = ({ isLoggedin, setIsLoggedin }) => {
 
   const onLogout = () => {
     setIsLoggedin(false);
-    sessionStorage.removeItem("test");
+    sessionStorage.removeItem("groupomania-token");
     sessionStorage.removeItem("groupomania-user");
     history.push("/");
   };
