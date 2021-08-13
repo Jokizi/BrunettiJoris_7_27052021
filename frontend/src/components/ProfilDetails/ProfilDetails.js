@@ -27,7 +27,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
     } else {
       history.push("/");
     }
-  }, [history]);
+  }, [history, groupomaniaUser]);
 
   const onChangeBio = (e) => {
     setBio(e.target.value);
@@ -47,7 +47,11 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
   const onUpdateBio = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
-
+    if (bio === groupomaniaUser.bio) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+      setOpenUpdate(false);
+      return;
+    }
     try {
       const response = await api({
         url: "/users/profile/",
@@ -75,7 +79,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
     try {
-      const response = await api({
+      await api({
         url: "/user/" + myUserId,
         method: "delete",
         headers: {

@@ -14,7 +14,11 @@ const ModifyComment = ({ myUserId, idUserComment, commentId, content, messageId,
   const onUpdate = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     const obj = { content: newContent };
-
+    if (content === newContent) {
+      toastTrigger("error", "Le commentaire n'a pas été modifié");
+      setOpen(false);
+      return;
+    }
     try {
       await api({
         url: commentId + "/comment/update",
@@ -25,7 +29,7 @@ const ModifyComment = ({ myUserId, idUserComment, commentId, content, messageId,
           Accept: "application/json",
         },
       });
-      setOpen(!open);
+      setOpen(false);
       try {
         const response = await api({
           url: "/" + messageId + "/comments",

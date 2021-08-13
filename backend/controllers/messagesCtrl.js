@@ -18,12 +18,17 @@ module.exports = {
     const userId = decodedToken.userId;
 
     // Paramètres
-
+    console.log("===================req.body)=================");
+    console.log(req.body);
+    console.log("====================================");
     const formMessage = JSON.parse(req.body.message);
 
     const { title, content } = formMessage;
+    console.log("--------------title, content, attahment----------------------");
+    console.log(title, content, req.file);
+    console.log("------------------------------------");
 
-    if (title === null || (content === null && attachment === null)) {
+    if (!title || !content || !req.file) {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
 
@@ -116,7 +121,7 @@ module.exports = {
     const title = req.body.title;
     const content = req.body.content;
 
-    if (title == null || content == null) {
+    if (!title || !content) {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
 

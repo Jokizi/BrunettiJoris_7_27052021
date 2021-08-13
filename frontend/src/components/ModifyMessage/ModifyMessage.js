@@ -23,7 +23,11 @@ const ModifyMessage = ({ myUserId, idUserMessage, messageId, title, content, att
     const formData = new FormData();
     formData.append("image", fileToSend);
     formData.append("message", json);
-
+    if (title === newTitle && content === newContent) {
+      toastTrigger("error", "Rien n'a été modifié");
+      setOpen(false);
+      return;
+    }
     try {
       await api({
         url: messageId + "/update",
@@ -35,7 +39,7 @@ const ModifyMessage = ({ myUserId, idUserMessage, messageId, title, content, att
           "Content-Type": "multipart/from-data",
         },
       });
-      setOpen(!open);
+      setOpen(false);
       toastTrigger("success", "Publication modifié 👌🏼");
       try {
         const response = await api({

@@ -15,7 +15,7 @@ const DeleteMessage = ({ messageId, myUserId, idUserMessage, changeDeleteMessage
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
     try {
-      const response = await api({
+      await api({
         url: "/messages/" + messageId,
         method: "delete",
         headers: {

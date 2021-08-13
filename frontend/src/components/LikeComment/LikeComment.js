@@ -21,7 +21,7 @@ const LikeDislikeComment = ({
         setPushDislike(["fas", "thumbs-down"]);
       }
     }
-  }, []);
+  }, [messageCommentLikeByCurrentUser]);
 
   const onLike = async () => {
     try {

@@ -15,7 +15,7 @@ const DeleteComment = ({ messageId, commentId, myUserId, idUserComment, changeDe
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
     try {
-      const response = await api({
+      await api({
         url: `/user/${messageId}/${commentId}`,
         method: "delete",
         headers: {

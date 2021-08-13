@@ -16,13 +16,17 @@ const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMe
     if (comments > 0) {
       setCommentIcon(["fas", "comment-dots"]);
     }
-  }, []);
+  }, [comments]);
 
   const onChangeContent = (e) => {
     setContent(e.target.value);
   };
 
   const onComment = async () => {
+    if (!content) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+      return;
+    }
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     const obj = { content };
     const user = JSON.parse(sessionStorage.getItem("groupomania-user"));

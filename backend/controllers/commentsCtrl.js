@@ -16,6 +16,10 @@ module.exports = {
     const content = req.body.content;
     const messageId = parseInt(req.params.messageId);
 
+    if (!content) {
+      return res.status(400).json({ error: "champ(s) manquant(s)" });
+    }
+
     asyncLib.waterfall(
       [
         function (done) {

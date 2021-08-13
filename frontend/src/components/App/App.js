@@ -7,11 +7,11 @@ import Register from "../../container/Register/Register";
 import Home from "../../container/Home/Home";
 import Landing from "../../container/Landing/Landing";
 import UserProfil from "../../container/UserProfil/UserProfil";
-
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import api from "../../Config/Api";
 import "../../assets/fontawesome";
 import { ToastContainer } from "react-toastify";
+import "./app.css";
 
 const App = () => {
   const [isLoggedin, setIsLoggedin] = useState(false);
