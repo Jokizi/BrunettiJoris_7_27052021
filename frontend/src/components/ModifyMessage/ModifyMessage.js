@@ -23,11 +23,12 @@ const ModifyMessage = ({ myUserId, idUserMessage, messageId, title, content, att
     const formData = new FormData();
     formData.append("image", fileToSend);
     formData.append("message", json);
-    if (title === newTitle && content === newContent) {
+    if ((title === newTitle && content === newContent) || newTitle === "" || newContent === "") {
       toastTrigger("error", "Rien n'a été modifié");
       setOpen(false);
       return;
     }
+
     try {
       await api({
         url: messageId + "/update",

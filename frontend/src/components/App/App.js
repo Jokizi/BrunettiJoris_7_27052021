@@ -7,6 +7,7 @@ import Register from "../../container/Register/Register";
 import Home from "../../container/Home/Home";
 import Landing from "../../container/Landing/Landing";
 import UserProfil from "../../container/UserProfil/UserProfil";
+import OtherProfil from "../../container/OtherProfil/OtherProfil";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import api from "../../Config/Api";
 import "../../assets/fontawesome";
@@ -55,6 +56,17 @@ const App = () => {
             path="/profil"
             myUserId={myUserId}
             component={UserProfil}
+            setIsLoggedin={setIsLoggedin}
+            isLoggedin={isLoggedin}
+            setCheckLogin={setCheckLogin}
+          />
+        )}
+        {checkLogin && (
+          <PrivateRoute
+            exact
+            path="/utilisateur/profil"
+            myUserId={myUserId}
+            component={OtherProfil}
             setIsLoggedin={setIsLoggedin}
             isLoggedin={isLoggedin}
             setCheckLogin={setCheckLogin}

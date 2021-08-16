@@ -76,6 +76,14 @@ const Home = ({ myUserId }) => {
     setAllMessages(displayMessages);
   };
 
+  const goToOtherProfil = (id) => {
+    if (id === myUserId) {
+      history.push("/profil");
+    } else {
+      history.push({ pathname: "/utilisateur/profil", state: { id } });
+    }
+  };
+
   return (
     <div>
       <div className="grpm-home">C'est la home page</div>
@@ -88,7 +96,7 @@ const Home = ({ myUserId }) => {
 
         return (
           <div style={{ padding: "10px", border: "1px solid black" }} key={element.id}>
-            <div>{element.User.username}</div>
+            <div onClick={() => goToOtherProfil(element.UserId)}>{element.User.username}</div>
             <div>{element.createdAt}</div>
             <div>{element.title}</div>
             {element.attachment && (

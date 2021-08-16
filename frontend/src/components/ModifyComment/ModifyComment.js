@@ -14,7 +14,7 @@ const ModifyComment = ({ myUserId, idUserComment, commentId, content, messageId,
   const onUpdate = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     const obj = { content: newContent };
-    if (content === newContent) {
+    if (content === newContent || newContent === "") {
       toastTrigger("error", "Le commentaire n'a pas été modifié");
       setOpen(false);
       return;
