@@ -5,7 +5,16 @@ import ModifPopUp from "../ModifPopUp/ModifPopUp";
 import FormData from "form-data";
 import { toastTrigger } from "../../helper/toast";
 
-const ModifyMessage = ({ myUserId, idUserMessage, messageId, title, content, attachment, setAllMessages }) => {
+const ModifyMessage = ({
+  myUserId,
+  idUserMessage,
+  messageId,
+  title,
+  content,
+  attachment,
+  setAllMessages,
+  getMessagesURI,
+}) => {
   const [open, setOpen] = useState(false);
   const [newFile, setNewFile] = useState(attachment);
   const [fileToSend, setFileToSend] = useState("");
@@ -44,7 +53,7 @@ const ModifyMessage = ({ myUserId, idUserMessage, messageId, title, content, att
       toastTrigger("success", "Publication modifié 👌🏼");
       try {
         const response = await api({
-          url: "/messages/",
+          url: getMessagesURI,
           method: "get",
           headers: { Authorization: `Bearer ${token}` },
         });

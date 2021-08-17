@@ -111,6 +111,7 @@ const UserProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
               myUserId={myUserId}
               idUserMessage={element.UserId}
               setAllMessages={setAllMessages}
+              getMessagesURI="/user/messages"
             />
             <DeleteMessage
               changeDeleteMessage={changeDeleteMessage}

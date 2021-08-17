@@ -127,6 +127,7 @@ const Home = ({ myUserId }) => {
               myUserId={myUserId}
               idUserMessage={element.UserId}
               setAllMessages={setAllMessages}
+              getMessagesURI="/messages"
             />
             <DeleteMessage
               changeDeleteMessage={changeDeleteMessage}

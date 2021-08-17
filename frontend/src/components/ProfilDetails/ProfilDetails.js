@@ -27,7 +27,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
     } else {
       history.push("/");
     }
-  }, [history, groupomaniaUser]);
+  }, [history, groupomaniaUser.email, groupomaniaUser.username, groupomaniaUser.bio]);
 
   const onChangeBio = (e) => {
     setBio(e.target.value);
