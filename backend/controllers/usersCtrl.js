@@ -16,6 +16,7 @@ module.exports = {
     const username = req.body.username;
     const password = req.body.password;
     const bio = req.body.bio;
+    const avatar = "/static/media/1.32581dfb.jpg";
 
     if (email === null || username === null || password === null) {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
@@ -70,6 +71,7 @@ module.exports = {
             username: username,
             password: bcryptedPassword,
             bio: bio,
+            avatar: avatar,
             isAdmin: 0,
           })
             .then(function (newUser) {
@@ -161,7 +163,7 @@ module.exports = {
     const userId = decodedToken.userId;
 
     models.User.findOne({
-      attributes: ["id", "email", "username", "bio"],
+      attributes: ["id", "email", "username", "bio", "avatar"],
       where: { id: userId },
     })
       .then(function (user) {
@@ -182,7 +184,7 @@ module.exports = {
     console.log("=============req.params=======================");
     console.log(req.params);
     console.log("====================================");
-    models.User.findByPk(req.params.userId, { attributes: ["username", "bio"] })
+    models.User.findByPk(req.params.userId, { attributes: ["username", "bio", "avatar"] })
       .then(function (user) {
         if (user) {
           res.status(201).json(user);
@@ -201,13 +203,14 @@ module.exports = {
 
     // Paramètres
     const bio = req.body.bio;
+    const avatar = req.body.avatar;
 
     asyncLib.waterfall(
       [
         // récupère l'utilisateur dans la DBase
         function (done) {
           models.User.findOne({
-            attributes: ["id", "bio"],
+            //attributes: ["id", "bio"],
             where: { id: userId },
           })
             .then(function (userFound) {
@@ -222,6 +225,7 @@ module.exports = {
             userFound
               .update({
                 bio: bio ? bio : userFound.bio,
+                avatar: avatar ? avatar : userFound.avatar,
               })
               .then(function () {
                 done(userFound);

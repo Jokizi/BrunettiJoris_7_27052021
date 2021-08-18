@@ -7,6 +7,8 @@ import Switch from "@material-ui/core/Switch";
 import ConfirmPopUp from "../ConfirmPopUp/ConfirmPopUp";
 import api from "../../Config/Api";
 import { toastTrigger } from "../../helper/toast";
+import Avatar from "../Avatars/Avatars";
+import "./profil-details.css";
 
 const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -16,6 +18,8 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [pseudonyme, setPseudonyme] = useState("");
   const [isDisable, setIsDisable] = useState(true);
   const [bio, setBio] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const [open, setOpen] = useState(false);
 
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
 
@@ -24,10 +28,15 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       setEmail(groupomaniaUser.email);
       setPseudonyme(groupomaniaUser.username);
       setBio(groupomaniaUser.bio);
+      setAvatar(groupomaniaUser.avatar);
     } else {
       history.push("/");
     }
-  }, [history, groupomaniaUser.email, groupomaniaUser.username, groupomaniaUser.bio]);
+  }, [history, groupomaniaUser.email, groupomaniaUser.username, groupomaniaUser.bio, groupomaniaUser.avatar]);
+
+  const onChangeAvatar = (newAvatar) => {
+    setAvatar(newAvatar);
+  };
 
   const onChangeBio = (e) => {
     setBio(e.target.value);
@@ -43,6 +52,10 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
   const handleDeleteModal = () => {
     setOpenDelete(!openDelete);
+  };
+
+  const handleModal = () => {
+    setOpen(!open);
   };
 
   const onUpdateBio = async () => {
@@ -105,6 +118,13 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       <div style={{ padding: "10px", border: "1px solid black" }}>
         <div> e-mail : {email} </div>
         <div> Pseudonyme : {pseudonyme} </div>
+        <div>
+          <div>Avatar :</div>
+
+          <img className="avatar-picture" src={avatar} />
+          <Button onClick={handleModal} title="Sélectionner Avatar" />
+          <Avatar onChangeAvatar={onChangeAvatar} open={open} close={handleModal} />
+        </div>
         <div>
           <InputTextArea
             disabled={isDisable}

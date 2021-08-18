@@ -81,7 +81,7 @@ module.exports = {
             include: [
               {
                 model: models.User,
-                attributes: ["username"],
+                attributes: ["username", "avatar"],
               },
             ],
           }).then(function (allMessageFound) {
@@ -173,7 +173,7 @@ module.exports = {
             include: [
               {
                 model: models.User,
-                attributes: ["username"],
+                attributes: ["username", "avatar"],
               },
             ],
           }).then(function (allMessageFound) {
@@ -222,7 +222,7 @@ module.exports = {
       include: [
         {
           model: models.User,
-          attributes: ["username"],
+          attributes: ["username", "avatar"],
         },
         {
           model: models.Like,
@@ -289,7 +289,7 @@ module.exports = {
       include: [
         {
           model: models.User,
-          attributes: ["username"],
+          attributes: ["username", "avatar"],
         },
       ],
     })
@@ -335,7 +335,7 @@ module.exports = {
       include: [
         {
           model: models.User,
-          attributes: ["username"],
+          attributes: ["username", "avatar"],
         },
       ],
     })

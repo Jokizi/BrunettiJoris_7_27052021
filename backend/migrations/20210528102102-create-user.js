@@ -21,6 +21,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING,
       },
+      avatar: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
       isAdmin: {
         type: Sequelize.BOOLEAN,
       },

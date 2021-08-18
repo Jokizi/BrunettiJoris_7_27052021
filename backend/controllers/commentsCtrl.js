@@ -101,7 +101,7 @@ module.exports = {
       include: [
         {
           model: models.User,
-          attributes: ["username"],
+          attributes: ["username", "avatar"],
         },
         {
           model: models.CommentsLike,
