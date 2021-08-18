@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
-
 import api from "../../Config/Api";
+import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
+import CommentMessage from "../../components/CommentMessage/CommentMessage";
 
 const OtherProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [infoPseudonyme, setInfoPseudonyme] = useState("");
   const [infoBio, setInfoBio] = useState("");
   const [messagesOtherUser, setMessagesOtherUser] = useState([]);
   const history = useHistory();
-
+  const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
   useEffect(() => {
     if (history.location?.state?.id) {
       const getInfos = async () => {
@@ -36,6 +37,25 @@ const OtherProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       history.push("/");
     }
   }, [history]);
+  const changeLike = ({ messageId, like, dislike }) => {
+    const displayLike = messagesOtherUser.filter((element) => {
+      if (element.id === messageId) {
+        element.likes = like;
+        element.dislikes = dislike;
+      }
+      return element;
+    });
+    setMessagesOtherUser(displayLike);
+  };
+  const changeComment = ({ messageId, comments }) => {
+    const displayComment = messagesOtherUser.filter((element) => {
+      if (element.id === messageId) {
+        element.comments = comments;
+      }
+      return element;
+    });
+    setMessagesOtherUser(displayComment);
+  };
 
   return (
     <div>
@@ -44,6 +64,7 @@ const OtherProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
         <div>Description : {infoBio}</div>
       </div>
       {messagesOtherUser.map((element) => {
+        const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
         return (
           <div key={element.id}>
             <div>{element.User.username}</div>
@@ -55,6 +76,20 @@ const OtherProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
               </div>
             )}
             <div>{element.content}</div>
+            <LikeDislikeMessage
+              changeLike={changeLike}
+              like={element.likes}
+              dislike={element.dislikes}
+              messageId={element.id}
+              messageLikeByCurrentUser={messageLikeByCurrentUser}
+            />
+            <CommentMessage
+              setMessagesOtherUser={setMessagesOtherUser}
+              changeComment={changeComment}
+              comments={element.comments}
+              messageId={element.id}
+              myUserId={myUserId}
+            />
           </div>
         );
       })}
