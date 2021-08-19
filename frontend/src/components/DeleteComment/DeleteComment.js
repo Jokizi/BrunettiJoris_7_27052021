@@ -3,17 +3,26 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import ConfirmPopUp from "../ConfirmPopUp/ConfirmPopUp";
 import { toastTrigger } from "../../helper/toast";
+import { useHistory } from "react-router";
 
-const DeleteComment = ({ messageId, commentId, myUserId, idUserComment, changeDeleteComment, setAllMessages }) => {
+const DeleteComment = ({
+  messageId,
+  commentId,
+  myUserId,
+  idUserComment,
+  changeDeleteComment,
+  setAllMessages,
+  setMessagesOtherUser,
+  locationState,
+}) => {
   const [open, setOpen] = useState(false);
-
+  const history = useHistory();
   const handleModal = () => {
     setOpen(!open);
   };
 
   const onDeleteComment = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
-
     try {
       await api({
         url: `/user/${messageId}/${commentId}`,
@@ -24,7 +33,12 @@ const DeleteComment = ({ messageId, commentId, myUserId, idUserComment, changeDe
           "Content-Type": "multipart/from-data",
         },
       });
+      toastTrigger("success", "Commentaire supprimé 👌🏼");
       changeDeleteComment(commentId);
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
+    if (history.location.pathname === "/accueil") {
       try {
         const response = await api({
           url: "/messages/",
@@ -32,10 +46,30 @@ const DeleteComment = ({ messageId, commentId, myUserId, idUserComment, changeDe
           headers: { Authorization: `Bearer ${token}` },
         });
         setAllMessages(response.data);
-        toastTrigger("success", "Commentaire supprimé 👌🏼");
       } catch (error) {}
-    } catch (error) {
-      toastTrigger("error", "Une erreur est survenue ⛔️");
+      return;
+    }
+    if (history.location.pathname === "/profil") {
+      try {
+        const response = await api({
+          url: "/user/messages",
+          method: "get",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAllMessages(response.data);
+      } catch (error) {}
+      return;
+    }
+    if (history.location.pathname === "/utilisateur/profil") {
+      try {
+        const response = await api({
+          url: locationState,
+          method: "get",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setMessagesOtherUser(response.data);
+      } catch (error) {}
+      return;
     }
   };
 

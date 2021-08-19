@@ -9,6 +9,7 @@ const OtherProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [infoBio, setInfoBio] = useState("");
   const [infoAvatar, setInfoAvatar] = useState("");
   const [messagesOtherUser, setMessagesOtherUser] = useState([]);
+
   const history = useHistory();
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
   useEffect(() => {
@@ -98,6 +99,7 @@ const OtherProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
               comments={element.comments}
               messageId={element.id}
               myUserId={myUserId}
+              locationState={"/view/" + history.location.state.id + "/messages"}
             />
           </div>
         );

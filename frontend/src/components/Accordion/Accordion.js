@@ -5,7 +5,16 @@ import LikeDislikeComment from "../LikeComment/LikeComment";
 import ModifyComment from "../ModifyComment/ModifyComment";
 import DeleteComment from "../DeleteComment/DeleteComment";
 
-const Accordion = ({ myUserId, title, messageId, allComments, setAllComments, setAllMessages }) => {
+const Accordion = ({
+  myUserId,
+  title,
+  messageId,
+  allComments,
+  setAllComments,
+  setAllMessages,
+  setMessagesOtherUser,
+  locationState,
+}) => {
   const [active, setActive] = useState(false);
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
   const getAllComments = async (e) => {
@@ -81,6 +90,8 @@ const Accordion = ({ myUserId, title, messageId, allComments, setAllComments, se
                 messageId={messageId}
                 myUserId={myUserId}
                 idUserComment={element.UserId}
+                setMessagesOtherUser={setMessagesOtherUser}
+                locationState={locationState}
               />
             </div>
           );

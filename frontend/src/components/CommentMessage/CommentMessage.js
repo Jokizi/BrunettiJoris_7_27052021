@@ -7,7 +7,15 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { toastTrigger } from "../../helper/toast";
 
-const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMessages }) => {
+const CommentMessage = ({
+  messageId,
+  comments,
+  changeComment,
+  myUserId,
+  setAllMessages,
+  setMessagesOtherUser,
+  locationState,
+}) => {
   const [allComments, setAllComments] = useState([]);
   const [commentIcon, setCommentIcon] = useState(["far", "comment-dots"]);
   const [content, setContent] = useState("");
@@ -37,9 +45,7 @@ const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMe
         data: obj,
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log("-------------messageId-----------------------");
-      console.log(messageId);
-      console.log("------------------------------------");
+
       comments = response.data.comments;
       setCommentIcon(["fas", "comment-dots"]);
 
@@ -72,6 +78,8 @@ const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMe
             allComments={allComments}
             setAllComments={setAllComments}
             myUserId={myUserId}
+            setMessagesOtherUser={setMessagesOtherUser}
+            locationState={locationState}
           />
         </div>
       </div>
