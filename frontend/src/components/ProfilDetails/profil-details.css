@@ -1,5 +1,6 @@
 .avatar-picture {
   border: 1px black solid;
-  width: 35%;
-  height: 16em;
+  width: 5%;
+  height: 5em;
+  border-radius: 50%;
 }

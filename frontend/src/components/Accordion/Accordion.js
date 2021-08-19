@@ -18,6 +18,7 @@ const Accordion = ({ myUserId, title, messageId, allComments, setAllComments, se
           method: "get",
           headers: { Authorization: `Bearer ${token}` },
         });
+
         setAllComments(response.data);
       } catch (error) {}
     }
@@ -53,7 +54,10 @@ const Accordion = ({ myUserId, title, messageId, allComments, setAllComments, se
           return (
             <div key={element.id}>
               <div>{element.createdAt}</div>
-              <div>{element.User.username}</div>
+              <div>
+                <img className="avatar-picture-comment" src={element.User.avatar} />
+                {element.User.username}
+              </div>
               <div>{element.content}</div>
               <LikeDislikeComment
                 changeLikeComment={changeLikeComment}

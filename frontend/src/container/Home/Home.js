@@ -96,7 +96,10 @@ const Home = ({ myUserId }) => {
 
         return (
           <div style={{ padding: "10px", border: "1px solid black" }} key={element.id}>
-            <div onClick={() => goToOtherProfil(element.UserId)}>{element.User.username}</div>
+            <div onClick={() => goToOtherProfil(element.UserId)}>
+              <img className="avatar-picture" src={element.User.avatar} />
+              {element.User.username}
+            </div>
             <div>{element.createdAt}</div>
             <div>{element.title}</div>
             {element.attachment && (

@@ -37,6 +37,9 @@ const CommentMessage = ({ messageId, comments, changeComment, myUserId, setAllMe
         data: obj,
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log("-------------messageId-----------------------");
+      console.log(messageId);
+      console.log("------------------------------------");
       comments = response.data.comments;
       setCommentIcon(["fas", "comment-dots"]);
 

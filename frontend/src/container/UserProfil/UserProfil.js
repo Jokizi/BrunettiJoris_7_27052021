@@ -80,7 +80,10 @@ const UserProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
         const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
         return (
           <div key={element.id}>
-            <div>{element.User.username}</div>
+            <div>
+              <img className="avatar-picture" src={element.User.avatar} />
+              {element.User.username}
+            </div>
             <div>{element.createdAt}</div>
             <div>{element.title}</div>
             {element.attachment && (

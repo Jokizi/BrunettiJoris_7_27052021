@@ -7,6 +7,7 @@ import CommentMessage from "../../components/CommentMessage/CommentMessage";
 const OtherProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [infoPseudonyme, setInfoPseudonyme] = useState("");
   const [infoBio, setInfoBio] = useState("");
+  const [infoAvatar, setInfoAvatar] = useState("");
   const [messagesOtherUser, setMessagesOtherUser] = useState([]);
   const history = useHistory();
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
@@ -20,6 +21,7 @@ const OtherProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
             method: "get",
             headers: { Authorization: `Bearer ${token}` },
           });
+          setInfoAvatar(response.data.avatar);
           setInfoPseudonyme(response.data.username);
           setInfoBio(response.data.bio);
           try {
@@ -60,6 +62,10 @@ const OtherProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   return (
     <div>
       <div>
+        <div>
+          Avatar :
+          <img className="avatar-picture" src={infoAvatar} />
+        </div>
         <div>Pseudonyme : {infoPseudonyme}</div>
         <div>Description : {infoBio}</div>
       </div>
@@ -67,7 +73,10 @@ const OtherProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
         const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
         return (
           <div key={element.id}>
-            <div>{element.User.username}</div>
+            <div>
+              <img className="avatar-picture" src={element.User.avatar} />
+              {element.User.username}
+            </div>
             <div>{element.createdAt}</div>
             <div>{element.title}</div>
             {element.attachment && (
