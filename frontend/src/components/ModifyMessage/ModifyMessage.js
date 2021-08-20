@@ -6,6 +6,7 @@ import FormData from "form-data";
 import { toastTrigger } from "../../helper/toast";
 
 const ModifyMessage = ({
+  admin,
   myUserId,
   idUserMessage,
   messageId,
@@ -65,7 +66,7 @@ const ModifyMessage = ({
   };
   return (
     <div>
-      {myUserId === idUserMessage && (
+      {(myUserId === idUserMessage || admin === true) && (
         <div>
           <FontAwesomeIcon onClick={handleModal} color="green" icon={["far", "edit"]} />
           modifier

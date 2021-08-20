@@ -4,7 +4,7 @@ import api from "../../Config/Api";
 import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
 
-const OtherProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
+const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
   const [infoPseudonyme, setInfoPseudonyme] = useState("");
   const [infoBio, setInfoBio] = useState("");
   const [infoAvatar, setInfoAvatar] = useState("");

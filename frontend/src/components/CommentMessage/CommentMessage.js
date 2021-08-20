@@ -9,6 +9,7 @@ import { toastTrigger } from "../../helper/toast";
 
 const CommentMessage = ({
   messageId,
+  admin,
   comments,
   changeComment,
   myUserId,
@@ -71,6 +72,7 @@ const CommentMessage = ({
         {comments}
         <div className="accordions">
           <Accordion
+            admin={admin}
             setAllMessages={setAllMessages}
             title="afficher commentaires"
             content={content}

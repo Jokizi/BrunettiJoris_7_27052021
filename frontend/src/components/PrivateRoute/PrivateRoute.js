@@ -1,12 +1,28 @@
 import { Route, Redirect } from "react-router-dom";
 
-const PrivateRoute = ({ component: Component, isLoggedin, setIsLoggedin, myUserId, setCheckLogin, ...rest }) => {
+const PrivateRoute = ({
+  component: Component,
+  isLoggedin,
+  setIsLoggedin,
+  myUserId,
+  setCheckLogin,
+  admin,
+  setAdmin,
+  ...rest
+}) => {
   return (
     <Route
       {...rest}
       render={(props) =>
         isLoggedin ? (
-          <Component myUserId={myUserId} setIsLoggedin={setIsLoggedin} setCheckLogin={setCheckLogin} {...props} />
+          <Component
+            myUserId={myUserId}
+            admin={admin}
+            setAdmin={setAdmin}
+            setIsLoggedin={setIsLoggedin}
+            setCheckLogin={setCheckLogin}
+            {...props}
+          />
         ) : (
           <Redirect to={{ pathname: "/" }} />
         )

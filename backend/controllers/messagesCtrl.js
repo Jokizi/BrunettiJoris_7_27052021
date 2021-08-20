@@ -395,7 +395,7 @@ module.exports = {
       [
         function (done) {
           models.Message.findOne({
-            where: { id: messageId, userId },
+            where: { id: messageId },
           })
             .then(function (messageFound) {
               done(null, messageFound);
@@ -416,26 +416,44 @@ module.exports = {
             });
         },
         function (messageFound, userFound, done) {
+          models.User.findOne({
+            where: { isAdmin: true },
+          })
+            .then(function (userFoundAdmin) {
+              done(null, messageFound, userFound, userFoundAdmin);
+            })
+            .catch(function (err) {
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
+            });
+        },
+        function (messageFound, userFound, userFoundAdmin, done) {
           if (messageFound) {
-            if (req.file) {
-              messageFound
-                .update({
-                  title: title ? title : messageFound.title,
-                  content: content ? content : messageFound.content,
-                  attachment: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
-                })
-                .then(function (newMessageFound) {
-                  done(newMessageFound);
-                });
+            if (
+              (userFoundAdmin.isAdmin === true && userFoundAdmin.id === userId) ||
+              messageFound.UserId === userFound.id
+            ) {
+              if (req.file) {
+                messageFound
+                  .update({
+                    title: title ? title : messageFound.title,
+                    content: content ? content : messageFound.content,
+                    attachment: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+                  })
+                  .then(function (newMessageFound) {
+                    done(newMessageFound);
+                  });
+              } else {
+                messageFound
+                  .update({
+                    title: title ? title : messageFound.title,
+                    content: content ? content : messageFound.content,
+                  })
+                  .then(function (newMessageFound) {
+                    done(newMessageFound);
+                  });
+              }
             } else {
-              messageFound
-                .update({
-                  title: title ? title : messageFound.title,
-                  content: content ? content : messageFound.content,
-                })
-                .then(function (newMessageFound) {
-                  done(newMessageFound);
-                });
+              res.status(404).json({ error: "cette publication ne vous appartient guère" });
             }
           } else {
             res.status(404).json({ error: "utilisateur introuvable" });
@@ -513,7 +531,18 @@ module.exports = {
           });
       },
       function (messageFound, done) {
-        if (messageFound.UserId === userId) {
+        models.User.findOne({
+          where: { isAdmin: true },
+        })
+          .then(function (userFoundAdmin) {
+            done(null, messageFound, userFoundAdmin);
+          })
+          .catch(function (err) {
+            res.status(500).json({ error: "admin not found" });
+          });
+      },
+      function (messageFound, userFoundAdmin, done) {
+        if (messageFound.UserId === userId || (userFoundAdmin.isAdmin === true && userFoundAdmin.id === userId)) {
           if (messageFound.attachment === null) {
             messageFound
               .destroy({

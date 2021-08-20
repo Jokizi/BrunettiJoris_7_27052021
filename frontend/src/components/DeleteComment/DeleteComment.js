@@ -7,6 +7,7 @@ import { useHistory } from "react-router";
 
 const DeleteComment = ({
   messageId,
+  admin,
   commentId,
   myUserId,
   idUserComment,
@@ -75,7 +76,7 @@ const DeleteComment = ({
 
   return (
     <div>
-      {myUserId === idUserComment && (
+      {(myUserId === idUserComment || admin === true) && (
         <div>
           <FontAwesomeIcon onClick={handleModal} color="red" icon={["far", "trash-alt"]} />
           supprimer

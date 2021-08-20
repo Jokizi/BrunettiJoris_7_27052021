@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useHistory } from "react-router";
 import { toastTrigger } from "../../helper/toast";
 
-const Login = ({ setIsLoggedin, setMyUserId }) => {
+const Login = ({ setIsLoggedin, setMyUserId /*setAdmin*/ }) => {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,16 +19,30 @@ const Login = ({ setIsLoggedin, setMyUserId }) => {
   };
 
   const onLogin = async () => {
+    let token;
     try {
       const response = await api.post("/users/login/", {
         email,
         password,
       });
+      token = response.data.token;
       sessionStorage.setItem("groupomania-token", response.data.token);
       setIsLoggedin(true);
       setMyUserId(response.data.userId);
       toastTrigger("success", `Bonjour ${response.data.username} ✌🏼`);
       history.push({ pathname: "/accueil" });
+
+      /*try {
+        const response = await api({
+          url: "/users/profile/",
+          method: "get",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAdmin(response.data.isAdmin);
+        console.log("------------LOGIN------------------------");
+        console.log(response.data);
+        console.log("------------------------------------");
+      } catch (error) {}*/
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
     }

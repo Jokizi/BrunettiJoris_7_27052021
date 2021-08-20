@@ -18,6 +18,8 @@ const App = () => {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [checkLogin, setCheckLogin] = useState(false);
   const [myUserId, setMyUserId] = useState("");
+  const [admin, setAdmin] = useState(false);
+
   useEffect(() => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
@@ -29,8 +31,11 @@ const App = () => {
             method: "get",
             headers: { Authorization: `Bearer ${token}` },
           });
-
+          console.log("-------------APP-----------------------");
+          console.log(response.data);
+          console.log("------------------------------------");
           setMyUserId(response.data.id);
+          setAdmin(response.data.isAdmin);
           setIsLoggedin(true);
           setCheckLogin(true);
         } catch (error) {
@@ -42,13 +47,22 @@ const App = () => {
       setCheckLogin(true);
     }
   }, [isLoggedin]);
+
   return (
     <Router>
       <Header isLoggedin={isLoggedin} setIsLoggedin={setIsLoggedin} />
 
       <Switch>
         {checkLogin && (
-          <PrivateRoute exact path="/accueil" myUserId={myUserId} component={Home} isLoggedin={isLoggedin} />
+          <PrivateRoute
+            exact
+            path="/accueil"
+            myUserId={myUserId}
+            admin={admin}
+            component={Home}
+            isLoggedin={isLoggedin}
+            setAdmin={setAdmin}
+          />
         )}
         {checkLogin && (
           <PrivateRoute
@@ -66,6 +80,7 @@ const App = () => {
             exact
             path="/utilisateur/profil"
             myUserId={myUserId}
+            admin={admin}
             component={OtherProfil}
             setIsLoggedin={setIsLoggedin}
             isLoggedin={isLoggedin}
@@ -86,7 +101,12 @@ const App = () => {
             isLoggedin ? (
               <Redirect to="/accueil" />
             ) : (
-              <Login setMyUserId={setMyUserId} setIsLoggedin={setIsLoggedin} isLoggedin={isLoggedin} />
+              <Login
+                setMyUserId={setMyUserId}
+                setAdmin={setAdmin}
+                setIsLoggedin={setIsLoggedin}
+                isLoggedin={isLoggedin}
+              />
             )
           }
         ></Route>

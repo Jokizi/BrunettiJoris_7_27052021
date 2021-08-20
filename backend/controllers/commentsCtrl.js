@@ -227,7 +227,7 @@ module.exports = {
             return res.status(500).json({ error: "impossible de vérifier le commentaire" });
           });
       },
-      function (messageFound, commentFound, done) {
+      /*function (messageFound, commentFound, done) {
         models.User.findOne({
           where: { id: userId },
         })
@@ -237,17 +237,27 @@ module.exports = {
           .catch(function (err) {
             return res.status(500).json({ error: "impossible de vérifier l'utilisateur" });
           });
+      },*/
+      function (messageFound, commentFound, done) {
+        models.User.findOne({
+          where: { isAdmin: true },
+        })
+          .then(function (userFoundAdmin) {
+            done(null, messageFound, commentFound, /*userFound,*/ userFoundAdmin);
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "impossible de vérifier l'utilisateur" });
+          });
       },
-      function (messageFound, commentFound, userFound, done) {
+      function (messageFound, commentFound, /*userFound,*/ userFoundAdmin, done) {
         if (commentFound) {
           models.Comment.findOne({
             where: {
-              userId: userId,
               messageId: messageId,
             },
           })
             .then(function (commentFound) {
-              done(null, messageFound, commentFound, userFound);
+              done(null, messageFound, commentFound, /*userFound,*/ userFoundAdmin);
             })
             .catch(function (err) {
               return res.status(500).json({
@@ -258,7 +268,7 @@ module.exports = {
           return res.status(500).json({ error: "ce commentaire n'existe pas" });
         }
       },
-      function (messageFound, userFound, commentFound, done) {
+      function (messageFound, /*userFound,*/ commentFound, userFoundAdmin, done) {
         models.CommentsLike.findAll({
           where: { commentId },
           attributes: ["id"],
@@ -270,7 +280,7 @@ module.exports = {
               commentLikeIds.push(id);
             });
 
-            done(null, messageFound, userFound, commentFound, commentLikeIds);
+            done(null, messageFound, /*userFound,*/ commentFound, userFoundAdmin, commentLikeIds);
           })
           .catch(function (err) {
             res.status(500).json({
@@ -278,12 +288,12 @@ module.exports = {
             });
           });
       },
-      function (messageFound, userFound, commentFound, commentLikeIds, done) {
+      function (messageFound, /*userFound,*/ commentFound, userFoundAdmin, commentLikeIds, done) {
         models.CommentsLike.destroy({
           where: { id: commentLikeIds },
         })
           .then(function () {
-            done(null, messageFound, userFound, commentFound);
+            done(null, messageFound, /*userFound,*/ commentFound, userFoundAdmin);
           })
           .catch(function (err) {
             res.status(500).json({
@@ -291,20 +301,22 @@ module.exports = {
             });
           });
       },
-      function (messageFound, userFound, commentFound, done) {
+      function (messageFound, /*userFound,*/ commentFound, userFoundAdmin, done) {
         if (commentFound) {
-          models.Comment.destroy({
-            where: { id: commentId },
-          })
-            .then((commentFound) => {
-              messageFound.update({
-                comments: messageFound.comments - 1,
-              });
-              return res.status(201).json(messageFound);
+          if (commentFound.UserId === userId || (userFoundAdmin.isAdmin === true && userFoundAdmin.id === userId)) {
+            models.Comment.destroy({
+              where: { id: commentId },
             })
-            .catch((err) => {
-              return res.status(500).json({ error: "impossible de supprimer ce commentaire" });
-            });
+              .then((commentFound) => {
+                messageFound.update({
+                  comments: messageFound.comments - 1,
+                });
+                return res.status(201).json(messageFound);
+              })
+              .catch((err) => {
+                return res.status(500).json({ error: "impossible de supprimer ce commentaire" });
+              });
+          }
         } else {
           return res.status(500).json({ error: "commentaire invtrouvable" });
         }

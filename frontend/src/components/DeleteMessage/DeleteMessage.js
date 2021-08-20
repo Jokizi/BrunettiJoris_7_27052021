@@ -4,7 +4,7 @@ import { useState } from "react";
 import ConfirmPopUp from "../ConfirmPopUp/ConfirmPopUp";
 import { toastTrigger } from "../../helper/toast";
 
-const DeleteMessage = ({ messageId, myUserId, idUserMessage, changeDeleteMessage }) => {
+const DeleteMessage = ({ messageId, myUserId, idUserMessage, changeDeleteMessage, admin }) => {
   const [open, setOpen] = useState(false);
 
   const handleModal = () => {
@@ -32,7 +32,7 @@ const DeleteMessage = ({ messageId, myUserId, idUserMessage, changeDeleteMessage
   };
   return (
     <div>
-      {myUserId === idUserMessage && (
+      {(myUserId === idUserMessage || admin === true) && (
         <div>
           <FontAwesomeIcon onClick={handleModal} color="red" icon={["far", "trash-alt"]} />
           supprimer

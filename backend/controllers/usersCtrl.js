@@ -163,7 +163,7 @@ module.exports = {
     const userId = decodedToken.userId;
 
     models.User.findOne({
-      attributes: ["id", "email", "username", "bio", "avatar"],
+      attributes: ["id", "email", "username", "bio", "avatar", "isAdmin"],
       where: { id: userId },
     })
       .then(function (user) {

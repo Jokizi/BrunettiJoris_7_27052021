@@ -7,6 +7,7 @@ import DeleteComment from "../DeleteComment/DeleteComment";
 
 const Accordion = ({
   myUserId,
+  admin,
   title,
   messageId,
   allComments,
@@ -17,6 +18,7 @@ const Accordion = ({
 }) => {
   const [active, setActive] = useState(false);
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
+
   const getAllComments = async (e) => {
     if (sessionStorage.getItem("groupomania-token")) {
       const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
@@ -84,6 +86,7 @@ const Accordion = ({
                 content={element.content}
               />
               <DeleteComment
+                admin={admin}
                 setAllMessages={setAllMessages}
                 changeDeleteComment={changeDeleteComment}
                 commentId={element.id}

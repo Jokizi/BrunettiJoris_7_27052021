@@ -7,9 +7,10 @@ import CommentMessage from "../../components/CommentMessage/CommentMessage";
 import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
 import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
 
-const Home = ({ myUserId }) => {
+const Home = ({ myUserId, admin, setAdmin }) => {
   const [allMessages, setAllMessages] = useState([]);
   const [user, setUser] = useState({});
+
   const history = useHistory();
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
 
@@ -29,6 +30,10 @@ const Home = ({ myUserId }) => {
             method: "get",
             headers: { Authorization: `Bearer ${token}` },
           });
+          console.log("---------------HOME---------------------");
+          console.log(userDataResponse.data);
+          console.log("------------------------------------");
+          setAdmin(userDataResponse.data.isAdmin);
           setUser(userDataResponse.data);
           sessionStorage.setItem("groupomania-user", JSON.stringify(userDataResponse.data));
           setAllMessages(response.data);
@@ -116,6 +121,7 @@ const Home = ({ myUserId }) => {
               messageLikeByCurrentUser={messageLikeByCurrentUser}
             />
             <CommentMessage
+              admin={admin}
               setAllMessages={setAllMessages}
               changeComment={changeComment}
               comments={element.comments}
@@ -123,6 +129,7 @@ const Home = ({ myUserId }) => {
               myUserId={myUserId}
             />
             <ModifyMessage
+              admin={admin}
               messageId={element.id}
               title={element.title}
               attachment={element.attachment}
@@ -133,6 +140,7 @@ const Home = ({ myUserId }) => {
               getMessagesURI="/messages"
             />
             <DeleteMessage
+              admin={admin}
               changeDeleteMessage={changeDeleteMessage}
               messageId={element.id}
               myUserId={myUserId}
