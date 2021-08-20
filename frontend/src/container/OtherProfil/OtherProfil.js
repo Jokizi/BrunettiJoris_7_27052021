@@ -3,6 +3,8 @@ import { useHistory } from "react-router";
 import api from "../../Config/Api";
 import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
+import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
+import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
 
 const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
   const [infoPseudonyme, setInfoPseudonyme] = useState("");
@@ -60,6 +62,13 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
     setMessagesOtherUser(displayComment);
   };
 
+  // rendre dynamique la suppression de message
+  const changeDeleteMessage = (messageId) => {
+    const idToDelete = messageId;
+    const displayMessages = messagesOtherUser.filter((element) => element.id !== idToDelete);
+    setMessagesOtherUser(displayMessages);
+  };
+
   return (
     <div>
       <div>
@@ -94,12 +103,32 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
               messageLikeByCurrentUser={messageLikeByCurrentUser}
             />
             <CommentMessage
+              admin={admin}
               setMessagesOtherUser={setMessagesOtherUser}
               changeComment={changeComment}
               comments={element.comments}
               messageId={element.id}
               myUserId={myUserId}
               locationState={"/view/" + history.location.state.id + "/messages"}
+            />
+            <ModifyMessage
+              messagesOtherUser={messagesOtherUser}
+              admin={admin}
+              messageId={element.id}
+              title={element.title}
+              attachment={element.attachment}
+              content={element.content}
+              myUserId={myUserId}
+              idUserMessage={element.UserId}
+              setMessagesOtherUser={setMessagesOtherUser}
+              getMessagesURI={"/view/" + history.location.state.id + "/messages"}
+            />
+            <DeleteMessage
+              admin={admin}
+              changeDeleteMessage={changeDeleteMessage}
+              messageId={element.id}
+              myUserId={myUserId}
+              idUserMessage={element.UserId}
             />
           </div>
         );

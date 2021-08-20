@@ -31,9 +31,6 @@ const App = () => {
             method: "get",
             headers: { Authorization: `Bearer ${token}` },
           });
-          console.log("-------------APP-----------------------");
-          console.log(response.data);
-          console.log("------------------------------------");
           setMyUserId(response.data.id);
           setAdmin(response.data.isAdmin);
           setIsLoggedin(true);

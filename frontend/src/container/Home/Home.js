@@ -30,9 +30,6 @@ const Home = ({ myUserId, admin, setAdmin }) => {
             method: "get",
             headers: { Authorization: `Bearer ${token}` },
           });
-          console.log("---------------HOME---------------------");
-          console.log(userDataResponse.data);
-          console.log("------------------------------------");
           setAdmin(userDataResponse.data.isAdmin);
           setUser(userDataResponse.data);
           sessionStorage.setItem("groupomania-user", JSON.stringify(userDataResponse.data));
@@ -43,7 +40,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
     } else {
       history.push("/");
     }
-  }, [history]);
+  }, [history, setAdmin]);
   // rendre dynamique l'affichage des messages
   const viewMessagesPost = (newMessages) => {
     console.log("========newMessages============================");

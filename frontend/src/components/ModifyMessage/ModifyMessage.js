@@ -6,6 +6,7 @@ import FormData from "form-data";
 import { toastTrigger } from "../../helper/toast";
 
 const ModifyMessage = ({
+  messagesOtherUser,
   admin,
   myUserId,
   idUserMessage,
@@ -14,6 +15,7 @@ const ModifyMessage = ({
   content,
   attachment,
   setAllMessages,
+  setMessagesOtherUser,
   getMessagesURI,
 }) => {
   const [open, setOpen] = useState(false);
@@ -58,8 +60,14 @@ const ModifyMessage = ({
           method: "get",
           headers: { Authorization: `Bearer ${token}` },
         });
-        setAllMessages(response.data);
-      } catch (error) {}
+        if (messagesOtherUser) {
+          setMessagesOtherUser(response.data);
+        } else {
+          setAllMessages(response.data);
+        }
+      } catch (error) {
+        toastTrigger("error", "Une erreur est survenue ⛔️");
+      }
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
     }
