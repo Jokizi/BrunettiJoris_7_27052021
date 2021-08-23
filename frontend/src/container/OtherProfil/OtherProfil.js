@@ -5,12 +5,15 @@ import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
 import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
 import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
+import Button from "../../components/Button/Button";
+import ConfirmPopUp from "../../components/ConfirmPopUp/ConfirmPopUp";
 
 const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
   const [infoPseudonyme, setInfoPseudonyme] = useState("");
   const [infoBio, setInfoBio] = useState("");
   const [infoAvatar, setInfoAvatar] = useState("");
   const [messagesOtherUser, setMessagesOtherUser] = useState([]);
+  const [openDelete, setOpenDelete] = useState(false);
 
   const history = useHistory();
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
@@ -42,6 +45,28 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
       history.push("/");
     }
   }, [history]);
+
+  const handleDeleteModal = () => {
+    setOpenDelete(!openDelete);
+  };
+
+  const onDeleteOtherUser = async () => {
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
+
+    try {
+      await api({
+        url: "/user/" + history.location.state.id,
+        method: "delete",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "multipart/from-data",
+        },
+      });
+      history.push("/");
+    } catch (error) {}
+  };
+
   const changeLike = ({ messageId, like, dislike }) => {
     const displayLike = messagesOtherUser.filter((element) => {
       if (element.id === messageId) {
@@ -78,6 +103,19 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
         </div>
         <div>Pseudonyme : {infoPseudonyme}</div>
         <div>Description : {infoBio}</div>
+        {admin === true && (
+          <div>
+            <Button onClick={handleDeleteModal} title="Supprimer Son Compte" />
+            <ConfirmPopUp
+              open={openDelete}
+              handleModal={handleDeleteModal}
+              confirmModalAction={onDeleteOtherUser}
+              modalTitle="Supprimer le compte de cet Utilisateur ?"
+              buttonTitle1="Confirmer"
+              buttonTitle2="Annuler"
+            />
+          </div>
+        )}
       </div>
       {messagesOtherUser.map((element) => {
         const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);

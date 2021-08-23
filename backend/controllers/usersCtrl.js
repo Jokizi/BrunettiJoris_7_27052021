@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const models = require("../models");
 const jwt = require("jsonwebtoken");
 const asyncLib = require("async");
+const fs = require("fs");
 
 // Constantes
 const email_regex =
@@ -247,7 +248,8 @@ module.exports = {
       }
     );
   },
-  deleteUser: function (req, res) {
+
+  /*deleteUser: function (req, res) {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
     const userId = decodedToken.userId;
@@ -358,7 +360,7 @@ module.exports = {
           });
       },
 
-      /*===========================================================================*/
+      //===========================================================================
       function (done) {
         models.Comment.findAll({
           where: { userId },
@@ -381,7 +383,7 @@ module.exports = {
           });
       },
 
-      /*====================================================================*/
+      //====================================================================
       function (commentUserIds, commentMessageIds, done) {
         models.Message.findAll({
           where: { id: commentUserIds },
@@ -396,7 +398,7 @@ module.exports = {
           });
       },
 
-      /*==========================================================================*/
+      //==========================================================================
       function (commentUserIds, commentMessageIds, messageFound, done) {
         models.CommentsLike.findAll({
           where: { userId, userLike: true },
@@ -429,7 +431,7 @@ module.exports = {
           });
       },
 
-      /*=============================================================================*/
+      //=============================================================================
       function (commentUserIds, commentMessageIds, messageFound, done) {
         models.CommentsLike.findAll({
           where: { userId, userDislike: true },
@@ -459,7 +461,7 @@ module.exports = {
           });
       },
 
-      /*==============================================================================*/
+      //=============================================================================
       function (commentUserIds, commentMessageIds, messageFound, done) {
         models.CommentsLike.destroy({
           where: { commentId: commentUserIds },
@@ -475,7 +477,7 @@ module.exports = {
         });
       },
 
-      /*============================================================================*/
+      //============================================================================
       function (commentUserIds, commentMessageIds, messageFound, done) {
         models.Like.findAll({
           where: { userId, userLike: true },
@@ -506,7 +508,7 @@ module.exports = {
           });
       },
 
-      /*===========================================================================*/
+      //===========================================================================
       function (commentUserIds, commentMessageIds, messageFound, done) {
         models.Like.findAll({
           where: { userId, userDislike: true },
@@ -536,7 +538,7 @@ module.exports = {
           });
       },
 
-      /*===========================================================================*/
+      //===========================================================================
       function (commentUserIds, commentMessageIds, messageFound, done) {
         models.Like.destroy({
           where: { userId },
@@ -545,7 +547,7 @@ module.exports = {
         });
       },
 
-      /*====================================================================================*/
+      //===================================================================================
       function (commentUserIds, commentMessageIds, messageFound, done) {
         models.Message.findAll({
           where: { id: commentMessageIds },
@@ -590,8 +592,481 @@ module.exports = {
             res.status(500).json("impossible de supprimé l'utilisateur");
           });
       },
-      /*========================================================================================================================*/
-      /*function (done) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ]);
+  },*/
+
+  deleteUser: function (req, res) {
+    // Getting auth header
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN);
+    const userId = decodedToken.userId;
+    // Params
+
+    asyncLib.waterfall([
+      function (done) {
+        models.User.findByPk(req.params.id)
+          .then(function (userFound) {
+            done(null, userFound);
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "unable to verify user" });
+          });
+      },
+      function (userFound, done) {
+        models.User.findOne({
+          where: { isAdmin: true },
+        })
+          .then(function (userAdminFound) {
+            done(null, userFound, userAdminFound);
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "unable to verify user" });
+          });
+      },
+      function (userFound, userAdminFound, done) {
+        models.Message.findAll({
+          attributes: ["id", "attachment", "likes", "dislikes", "comments"],
+        })
+          .then((allMessageFound) => {
+            let messageIdTab = [];
+            allMessageFound.forEach((element) => {
+              messageIdTab.push(element.id);
+            });
+            done(null, userFound, userAdminFound, messageIdTab);
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "unable to verify all messages" });
+          });
+      },
+
+      function (userFound, userAdminFound, messageIdTab, done) {
+        models.Like.findAll({
+          where: { userId: userFound.id, userDislike: true },
+          attributes: ["messageId"],
+        })
+          .then(function (allLikeFoundDislike) {
+            done(null, userFound, userAdminFound, messageIdTab, allLikeFoundDislike);
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "unable to verify all userDislike" });
+          });
+      },
+
+      function (userFound, userAdminFound, messageIdTab, allLikeFoundDislike, done) {
+        models.Like.findAll({
+          where: { userId: userFound.id, userLike: true },
+          attributes: ["messageId"],
+        })
+          .then(function (allLikeFoundLike) {
+            done(null, userFound, userAdminFound, messageIdTab, allLikeFoundDislike, allLikeFoundLike);
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "unable to verify all userLike" });
+          });
+      },
+
+      function (userFound, userAdminFound, messageIdTab, allLikeFoundDislike, allLikeFoundLike, done) {
+        models.Comment.findAll({
+          where: { userId: userFound.id, messageId: messageIdTab },
+          attributes: ["id", "messageId"],
+        })
+          .then(function (allCommentFound) {
+            let messageToDelete = Object.values(
+              allCommentFound.reduce((a, { messageId }) => {
+                let key = `${messageId}`;
+                a[key] = a[key] || { messageId, count: 0 };
+                a[key].count++;
+                return a;
+              }, {})
+            );
+            const abc = JSON.parse(JSON.stringify(allCommentFound)).sort((a, b) =>
+              a.messageId < b.messageId ? 1 : b.messageId < a.messageId ? -1 : 0
+            );
+            const userMessageComment =
+              abc.length > 0
+                ? abc
+                    .map((item) => item.messageId)
+                    .filter((elt, i, a) => a.indexOf(elt) === i)
+                    .sort((a, b) => a - b)
+                : [];
+            done(
+              null,
+              userFound,
+              userAdminFound,
+              allLikeFoundDislike,
+              allLikeFoundLike,
+              messageToDelete,
+              userMessageComment
+            );
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "unable to verify all comment" });
+          });
+      },
+
+      function (
+        userFound,
+        userAdminFound,
+        allLikeFoundDislike,
+        allLikeFoundLike,
+        messageToDelete,
+        userMessageComment,
+        done
+      ) {
+        models.CommentsLike.findAll({
+          where: { userId: userFound.id, userLike: true },
+          attributes: ["commentId"],
+        })
+          .then(function (allCommentLikeFoundLike) {
+            done(
+              null,
+              userFound,
+              userAdminFound,
+              allLikeFoundDislike,
+              allLikeFoundLike,
+              allCommentLikeFoundLike,
+              messageToDelete,
+              userMessageComment
+            );
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "unable to verify all comment userLike" });
+          });
+      },
+
+      function (
+        userFound,
+        userAdminFound,
+        allLikeFoundDislike,
+        allLikeFoundLike,
+        allCommentLikeFoundLike,
+        messageToDelete,
+        userMessageComment,
+        done
+      ) {
+        models.CommentsLike.findAll({
+          where: { userId: userFound.id, userDislike: true },
+          attributes: ["commentId"],
+        })
+          .then(function (allCommentLikeFoundDislike) {
+            done(
+              null,
+              userFound,
+              userAdminFound,
+              allLikeFoundDislike,
+              allLikeFoundLike,
+              allCommentLikeFoundLike,
+              allCommentLikeFoundDislike,
+              messageToDelete,
+              userMessageComment
+            );
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "unable to verify all comment userDisike" });
+          });
+      },
+      function (
+        userFound,
+        userAdminFound,
+        allLikeFoundDislike,
+        allLikeFoundLike,
+        allCommentLikeFoundLike,
+        allCommentLikeFoundDislike,
+        messageToDelete,
+        userMessageComment,
+        done
+      ) {
+        if (userFound.id === userId || (userAdminFound.isAdmin === true && userAdminFound.id === userId)) {
+          models.Message.findAll({
+            where: { userId: userFound.id },
+            attributes: ["id"],
+          })
+            .then((result) => {
+              let tabMessageId = [];
+              result.forEach(({ id }) => {
+                tabMessageId.push(id);
+              });
+              models.Like.destroy({
+                where: { messageId: tabMessageId },
+              });
+            })
+            .then(() => {
+              models.Like.destroy({
+                where: { userId: userFound.id },
+              })
+                .then((result) => {
+                  let likeMessageIdTabDislike = [];
+                  allLikeFoundDislike.forEach((element) => {
+                    likeMessageIdTabDislike.push(element.messageId);
+                  });
+                  models.Message.decrement(
+                    { dislikes: 1 },
+                    {
+                      where: { id: likeMessageIdTabDislike },
+                    }
+                  );
+                })
+                .then((result) => {
+                  let likeMessageIdTabLike = [];
+                  allLikeFoundLike.forEach((element) => {
+                    likeMessageIdTabLike.push(element.messageId);
+                  });
+                  models.Message.decrement(
+                    { likes: 1 },
+                    {
+                      where: { id: likeMessageIdTabLike },
+                    }
+                  );
+                })
+                .then(function () {
+                  done(
+                    null,
+                    userFound,
+                    userAdminFound,
+                    allCommentLikeFoundLike,
+                    allCommentLikeFoundDislike,
+                    userMessageComment,
+                    messageToDelete
+                  );
+                })
+                .catch((err) => {
+                  return res.status(500).json({ error: "unable to delet  likes" });
+                });
+            });
+        } else {
+          return res.status(500).json({ error: "you do not have permission" });
+        }
+      },
+
+      function (
+        userFound,
+        userAdminFound,
+        allCommentLikeFoundLike,
+        allCommentLikeFoundDislike,
+        userMessageComment,
+        messageToDelete,
+        done
+      ) {
+        if (userFound.id === userId || (userAdminFound.isAdmin === true && userAdminFound.id === userId)) {
+          models.Message.findAll({
+            where: { userId: userFound.id },
+            attributes: ["id"],
+          })
+            .then((result) => {
+              let tabMessageId = [];
+              result.forEach(({ id }) => {
+                tabMessageId.push(id);
+              });
+              return tabMessageId;
+            })
+            .then((tabMessageId) => {
+              models.Comment.findAll({
+                where: { messageId: tabMessageId },
+                attributes: ["id"],
+              })
+                .then((result) => {
+                  let tabCommentId = [];
+                  result.forEach(({ id }) => {
+                    tabCommentId.push(id);
+                  });
+                  models.CommentsLike.destroy({
+                    where: { commentId: tabCommentId },
+                  });
+                })
+                .then(() => {
+                  models.CommentsLike.destroy({
+                    where: { userId: userFound.id },
+                  })
+                    .then(() => {
+                      let commentLikeMessageIdTablike = [];
+                      allCommentLikeFoundLike.forEach((element) => {
+                        commentLikeMessageIdTablike.push(element.commentId);
+                      });
+                      models.Comment.decrement(
+                        { commentLikes: 1 },
+                        {
+                          where: { id: commentLikeMessageIdTablike },
+                        }
+                      );
+                    })
+                    .then(() => {
+                      let commentLikeMessageIdTabDislike = [];
+                      allCommentLikeFoundDislike.forEach((element) => {
+                        commentLikeMessageIdTabDislike.push(element.commentId);
+                      });
+                      models.Comment.decrement(
+                        { commentDislikes: 1 },
+                        {
+                          where: { id: commentLikeMessageIdTabDislike },
+                        }
+                      );
+                    })
+                    .then(() => {
+                      done(null, userFound, userAdminFound, userMessageComment, messageToDelete);
+                    })
+                    .catch((err) => {
+                      return res.status(500).json({ error: "unable to delet comments" });
+                    });
+                });
+            });
+        } else {
+          return res.status(500).json({ error: "you do not have permission" });
+        }
+      },
+
+      function (userFound, userAdminFound, userMessageComment, messageToDelete, done) {
+        if (userFound.id === userId || (userAdminFound.isAdmin === true && userAdminFound.id === userId)) {
+          models.Message.findAll({
+            where: { userId: userFound.id },
+            attributes: ["id"],
+          })
+            .then((result) => {
+              let tabMessageId = [];
+              result.forEach(({ id }) => {
+                tabMessageId.push(id);
+              });
+              models.Comment.destroy({
+                where: { messageId: tabMessageId },
+              });
+            })
+            .then(() => {
+              if (userMessageComment) {
+                models.Message.findAll({
+                  where: { id: userMessageComment },
+                })
+                  .then((result) => {
+                    const finalTab = [];
+                    const objectsEqual = (o1, o2) => {
+                      Object.keys(o1).map((elt, p) => {
+                        if (o1[p].messageId === o2[p]?.id) {
+                          o2[p].comments = o2[p].comments - o1[p].count;
+                          finalTab.push(o2[p]);
+                        }
+                      });
+                    };
+                    objectsEqual(messageToDelete, result);
+                    userMessageComment.map((id, i) => {
+                      models.Message.update(
+                        { comments: finalTab[i].comments },
+                        {
+                          where: { id },
+                        }
+                      );
+                    });
+                  })
+                  .then(() => {
+                    models.Comment.destroy({
+                      where: { userId: userFound.id },
+                    });
+                  })
+                  .then(() => {
+                    done(null, userFound, userAdminFound);
+                  })
+                  .catch((err) => {
+                    return res.status(500).json({ error: "unable to delet commentlikes" });
+                  });
+              } else {
+                done(null, userFound);
+              }
+            });
+        } else {
+          return res.status(500).json({ error: "you do not have permission" });
+        }
+      },
+
+      function (userFound, userAdminFound, done) {
+        if (userFound.id === userId || (userAdminFound.isAdmin === true && userAdminFound.id === userId)) {
+          models.Message.findAll({
+            where: { userId: userFound.id },
+          }).then((result) => {
+            const resultAttachment = result.filter(({ attachment }) => {
+              return attachment !== null;
+            });
+            if (resultAttachment.length) {
+              const dynamiquePath = __dirname.split("controllers").shift();
+              const files = resultAttachment.map((message) => message.attachment);
+              const deleteFiles = (files, callback) => {
+                let i = files.length;
+                files.forEach((filepath) => {
+                  let fileName = filepath.split("http://localhost:8080/").pop();
+                  fileName = dynamiquePath + fileName;
+
+                  fs.unlink(fileName, (err) => {
+                    i--;
+                    if (err) {
+                      callback(err);
+                      return;
+                    } else if (i <= 0) {
+                      callback(null);
+                    }
+                  });
+                });
+              };
+              deleteFiles(files, (err) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  console.log("all files removed");
+                  models.Message.destroy({
+                    where: { userId: userFound.id },
+                  })
+                    .then(() => {
+                      done(null, userFound, userAdminFound);
+                    })
+                    .catch((err) => {
+                      return res.status(500).json({ error: "unable to delet messages" });
+                    });
+                }
+              });
+            } else {
+              models.Message.destroy({
+                where: { userId: userFound.id },
+              })
+                .then(() => {
+                  done(null, userFound, userAdminFound);
+                })
+                .catch((err) => {
+                  return res.status(500).json({ error: "unable to delet messages" });
+                });
+            }
+          });
+        } else {
+          return res.status(500).json({ error: "you do not have permission" });
+        }
+      },
+
+      function (userFound, userAdminFound, done) {
+        if (userFound.id === userId || (userAdminFound.isAdmin === true && userAdminFound.id === userId)) {
+          userFound
+            .destroy({
+              where: { userId: userFound.id },
+            })
+            .then(() => {
+              return res.status(201).json("delete your account successfully");
+            });
+        } else {
+          return res.status(500).json({ error: "you do not have permission" });
+        }
+      },
+    ]);
+  },
+};
+
+/*========================================================================================================================*/
+/*function (done) {
         models.CommentsLike.findAll({
           where: { userId },
           attributes: ["id"],
@@ -792,7 +1267,7 @@ module.exports = {
         });
       },*/
 
-      /*function (done) {
+/*function (done) {
         models.Comment.destroy({
           where: { commentId: commentIds },
         })
@@ -808,7 +1283,7 @@ module.exports = {
               .json({ error: "impossible de supprimer les commentaires" });
           });
       },*/
-      /*function (done) {
+/*function (done) {
         models.User.findOne({
           where: { id: userId },
         })
@@ -875,6 +1350,3 @@ module.exports = {
             });
           });
       },*/
-    ]);
-  },
-};
