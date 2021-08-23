@@ -301,7 +301,7 @@ module.exports = {
             });
           });
       },
-      function (messageFound, /*userFound,*/ commentFound, userFoundAdmin, done) {
+      /*function (messageFound, userFound, commentFound, userFoundAdmin, done) {
         if (commentFound) {
           if (commentFound.UserId === userId || (userFoundAdmin.isAdmin === true && userFoundAdmin.id === userId)) {
             models.Comment.destroy({
@@ -319,6 +319,41 @@ module.exports = {
           }
         } else {
           return res.status(500).json({ error: "commentaire invtrouvable" });
+        }
+      },*/
+      function (messageFound, commentFound, userFoundAdmin, done) {
+        if (commentFound) {
+          if (userFoundAdmin.isAdmin === true && userFoundAdmin.id === userId) {
+            models.Comment.destroy({
+              where: { id: commentId },
+            })
+              .then((commentFound) => {
+                messageFound.update({
+                  comments: messageFound.comments - 1,
+                });
+
+                return res.status(201).json(commentFound);
+              })
+              .catch((err) => {
+                return res.status(500).json({ error: "unable to delet this comment" });
+              });
+          } else {
+            models.Comment.destroy({
+              where: { id: commentId, userId: userId },
+            })
+              .then((commentFound) => {
+                messageFound.update({
+                  comments: messageFound.comments - 1,
+                });
+
+                return res.status(201).json(commentFound);
+              })
+              .catch((err) => {
+                return res.status(500).json({ error: "unable to delet this comment" });
+              });
+          }
+        } else {
+          return res.status(500).json({ error: "comment not found" });
         }
       },
     ]);

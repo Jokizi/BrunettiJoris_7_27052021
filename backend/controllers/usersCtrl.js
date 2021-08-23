@@ -16,7 +16,7 @@ module.exports = {
     const username = req.body.username;
     const password = req.body.password;
     const bio = req.body.bio;
-    const avatar = "/static/media/1.32581dfb.jpg";
+    const avatar = "/static/media/1.589279a0.jpg";
 
     if (email === null || username === null || password === null) {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
