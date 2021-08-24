@@ -622,7 +622,7 @@ module.exports = {
             done(null, userFound);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify user" });
+            return res.status(500).json({ error: " 1 impossible de vérifier l'utilisateur " });
           });
       },
       function (userFound, done) {
@@ -633,7 +633,7 @@ module.exports = {
             done(null, userFound, userAdminFound);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify user" });
+            return res.status(500).json({ error: " 2 impossible de vérifier l'utilisateur " });
           });
       },
       function (userFound, userAdminFound, done) {
@@ -648,7 +648,7 @@ module.exports = {
             done(null, userFound, userAdminFound, messageIdTab);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify all messages" });
+            return res.status(500).json({ error: " 3 impossible de vérifier tous les messages " });
           });
       },
 
@@ -661,7 +661,7 @@ module.exports = {
             done(null, userFound, userAdminFound, messageIdTab, allLikeFoundDislike);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify all userDislike" });
+            return res.status(500).json({ error: " 4 impossible de vérifier tous les userDislike " });
           });
       },
 
@@ -674,7 +674,7 @@ module.exports = {
             done(null, userFound, userAdminFound, messageIdTab, allLikeFoundDislike, allLikeFoundLike);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify all userLike" });
+            return res.status(500).json({ error: " 5 impossible de vérifier tous les userLike" });
           });
       },
 
@@ -713,7 +713,7 @@ module.exports = {
             );
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify all comment" });
+            return res.status(500).json({ error: " 6 impossible de vérifier tous les commentaires" });
           });
       },
 
@@ -743,7 +743,7 @@ module.exports = {
             );
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify all comment userLike" });
+            return res.status(500).json({ error: " 7 impossible de vérifier tous les commentsLike " });
           });
       },
 
@@ -775,7 +775,7 @@ module.exports = {
             );
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "unable to verify all comment userDisike" });
+            return res.status(500).json({ error: " 8 impossible de vérifier tous les commentsDislike " });
           });
       },
       function (
@@ -843,11 +843,11 @@ module.exports = {
                   );
                 })
                 .catch((err) => {
-                  return res.status(500).json({ error: "unable to delet  likes" });
+                  return res.status(500).json({ error: " 9 impossible de supprimer les likes " });
                 });
             });
         } else {
-          return res.status(500).json({ error: "you do not have permission" });
+          return res.status(500).json({ error: " Vous n'avez pas les droits " });
         }
       },
 
@@ -918,12 +918,12 @@ module.exports = {
                       done(null, userFound, userAdminFound, userMessageComment, messageToDelete);
                     })
                     .catch((err) => {
-                      return res.status(500).json({ error: "unable to delet comments" });
+                      return res.status(500).json({ error: " 10 impossible de supprimer les commentaires " });
                     });
                 });
             });
         } else {
-          return res.status(500).json({ error: "you do not have permission" });
+          return res.status(500).json({ error: " Vous n'avez pas les droits " });
         }
       },
 
@@ -976,14 +976,14 @@ module.exports = {
                     done(null, userFound, userAdminFound);
                   })
                   .catch((err) => {
-                    return res.status(500).json({ error: "unable to delet commentlikes" });
+                    return res.status(500).json({ error: " 11 impossible de supprimer les commentLikes " });
                   });
               } else {
                 done(null, userFound);
               }
             });
         } else {
-          return res.status(500).json({ error: "you do not have permission" });
+          return res.status(500).json({ error: " Vous n'avez pas les droits " });
         }
       },
 
@@ -1027,7 +1027,7 @@ module.exports = {
                       done(null, userFound, userAdminFound);
                     })
                     .catch((err) => {
-                      return res.status(500).json({ error: "unable to delet messages" });
+                      return res.status(500).json({ error: " 12 impossible de supprimer les messages " });
                     });
                 }
               });
@@ -1039,12 +1039,12 @@ module.exports = {
                   done(null, userFound, userAdminFound);
                 })
                 .catch((err) => {
-                  return res.status(500).json({ error: "unable to delet messages" });
+                  return res.status(500).json({ error: " 13 impossible de supprimer les messages " });
                 });
             }
           });
         } else {
-          return res.status(500).json({ error: "you do not have permission" });
+          return res.status(500).json({ error: " vous n'avez pas les droits " });
         }
       },
 
@@ -1055,298 +1055,12 @@ module.exports = {
               where: { userId: userFound.id },
             })
             .then(() => {
-              return res.status(201).json("delete your account successfully");
+              return res.status(201).json(" Le compte à été supprimé avec succès ");
             });
         } else {
-          return res.status(500).json({ error: "you do not have permission" });
+          return res.status(500).json({ error: " vous n'avez pas les droits " });
         }
       },
     ]);
   },
 };
-
-/*========================================================================================================================*/
-/*function (done) {
-        models.CommentsLike.findAll({
-          where: { userId },
-          attributes: ["id"],
-        })
-          .then(function (commentsLikeFound) {
-            let commentsLikeIds = [];
-
-            commentsLikeFound.map(({ id }) => {
-              commentsLikeIds.push(id);
-            });
-            done(null, commentsLikeIds);
-          })
-          .catch(function (err) {
-            res.status(500).json({
-              error: "1 vérification commentaireLike de l'user ID impossible",
-            });
-          });
-      },
-      function (commentsLikeIds, done) {
-        models.CommentsLike.destroy({
-          where: { id: commentsLikeIds },
-        })
-          .then(function () {
-            done(null);
-          })
-          .catch(function (err) {
-            res.status(500).json({
-              error:
-                "2 impossible de supprimer les commentaires like de l'user ID",
-            });
-          });
-      },
-      function (done) {
-        models.Comment.findAll({
-          where: { userId },
-          attributes: ["id"],
-        })
-          .then(function (commentsFound) {
-            let commentIds = [];
-
-            commentsFound.map(({ id }) => {
-              commentIds.push(id);
-            });
-            done(null, commentIds);
-          })
-          .catch(function (err) {
-            res.status(500).json({
-              error: "3 vérification commentaire de l'user ID impossible",
-            });
-          });
-      },
-      function (commentIds, done) {
-        models.CommentsLike.destroy({
-          where: { commentId: commentIds },
-        })
-          .then(function () {
-            done(null, commentIds);
-          })
-          .catch(function (err) {
-            res.status(500).json({
-              error: "4 impossible de supprimer les commentaires like",
-            });
-          });
-      },
-      function (commentIds, done) {
-        models.Comment.destroy({
-          where: { id: commentIds },
-        })
-          .then(function () {
-            done(null);
-          })
-          .catch(function (err) {
-            res.status(500).json({
-              error: "5 impossible de supprimer les commentaires like",
-            });
-          });
-      },
-      function (done) {
-        models.Like.findAll({
-          where: { userId },
-          attributes: ["id"],
-        })
-          .then(function (likeFound) {
-            let likeIds = [];
-
-            likeFound.map(({ id }) => {
-              likeIds.push(id);
-            });
-            done(null, likeIds);
-          })
-          .catch(function (err) {
-            res
-              .status(500)
-              .json({ error: "6 vérification commentaire impossible" });
-          });
-      },
-      function (likeIds, done) {
-        models.Like.destroy({
-          where: { id: likeIds },
-        })
-          .then(function () {
-            done(null);
-          })
-          .catch(function (err) {
-            res.status(500).json({
-              error: "7 impossible de supprimer les commentaires like",
-            });
-          });
-      },
-      function (done) {
-        models.Message.findAll({
-          where: { userId },
-          attributes: ["id"],
-        })
-          .then(function (messagesFound) {
-            let messageIds = [];
-
-            messagesFound.map(({ id }) => {
-              messageIds.push(id);
-            });
-            done(null, messageIds);
-          })
-          .catch(function (err) {
-            res
-              .status(500)
-              .json({ error: "8 vérification commentaire impossible" });
-          });
-      },
-      function (messageIds, done) {
-        models.Like.destroy({
-          where: { messageId: messageIds },
-        })
-          .then(function () {
-            done(null, messageIds);
-          })
-          .catch(function (err) {
-            res.status(500).json({
-              error: "9 impossible de supprimer les commentaires like",
-            });
-          });
-      },
-      function (messageIds, done) {
-        models.CommentsLike.destroy({
-          where: { commentId: messageIds },
-        })
-          .then(function () {
-            done(null, messageIds);
-          })
-          .catch(function (err) {
-            console.log("--------------err à 10----------------------");
-            console.log(err);
-            console.log("------------------------------------");
-            res.status(500).json({
-              error: "10 impossible de supprimer les commentaires like",
-            });
-          });
-      },
-      function (messageIds, done) {
-        models.Comment.destroy({
-          where: { messageId: messageIds },
-        })
-          .then(function () {
-            done(null, messageIds);
-          })
-          .catch(function (err) {
-            res.status(500).json({
-              error: "11 impossible de supprimer les commentaires like",
-            });
-          });
-      },
-      function (messageIds, done) {
-        console.log("---------------messIDS---------------------");
-        console.log(messageIds);
-        console.log("------------------------------------");
-        models.Message.destroy({
-          where: { id: messageIds },
-        })
-          .then(function () (destroyMessagesFound) {
-            //return res.status(201).json(destroyMessagesFound);
-            done(null, messageIds);
-          })
-          .catch(function (err) {
-            console.log("------------------------------------");
-            console.log(err);
-            console.log("------------------------------------");
-            res
-              .status(500)
-              .json({ error: "12 impossible de supprimer la publication" });
-          });
-      },
-      function (messageIds, done) {
-        models.Message.findAll({
-          attributes: ["id"],
-        }).then(function (allMessagesNoUser) {
-          console.log("--------------allmessause----------------------");
-          console.log(allMessagesNoUser);
-          console.log("------------------------------------");
-        });
-      },*/
-
-/*function (done) {
-        models.Comment.destroy({
-          where: { commentId: commentIds },
-        })
-          .then(() => {
-            models.Like.destroy({
-              where: { messageId: messageId },
-            });
-            done(null);
-          })
-          .catch((err) => {
-            return res
-              .status(500)
-              .json({ error: "impossible de supprimer les commentaires" });
-          });
-      },*/
-/*function (done) {
-        models.User.findOne({
-          where: { id: userId },
-        })
-          .then(function (userFound) {
-            done(null, userFound);
-          })
-          .catch(function (err) {
-            return res
-              .status(500)
-              .json({ error: "vérification utilisateur impossible" });
-          });
-      },
-      function (userFound, done) {
-        if (userFound) {
-        models.Message.findAll({
-          where: { userId },
-        })
-          .then(function () {
-            done(messagesFound);
-          })
-          .catch(function (err) {
-            return res
-              .status(500)
-              .json({ error: "publications de l'utilisateur introuvable" });
-          });
-        }
-      },
-      function (done) {
-        models.Like.findAll({
-          where: { userId },
-        })
-          .then(function () {
-            done(likesFound);
-          })
-          .catch(function (err) {
-            return res
-              .status(500)
-              .json({ error: "likes de l'utilisateur introuvable" });
-          });
-      },
-      function (done) {
-        models.Comment.findAll({
-          where: { userId },
-        })
-          .then(function () {
-            done(commentsFound);
-          })
-          .catch(function (err) {
-            return res
-              .status(500)
-              .json({ error: "commentaires de l'utilisateur introuvable" });
-          });
-      },
-      function (done) {
-        models.CommentsLike.findAll({
-          where: { userId },
-        })
-          .then(function () {
-            done(commentsLikeFound);
-          })
-          .catch(function (err) {
-            return res.status(500).json({
-              error: "likes commentaires de l'utilisateur introuvable",
-            });
-          });
-      },*/
