@@ -19,6 +19,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [isDisable, setIsDisable] = useState(true);
   const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [isAdmin, setIsAdmin] = useState(null);
   const [open, setOpen] = useState(false);
 
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
@@ -29,10 +30,18 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       setPseudonyme(groupomaniaUser.username);
       setBio(groupomaniaUser.bio);
       setAvatar(groupomaniaUser.avatar);
+      setIsAdmin(groupomaniaUser.isAdmin);
     } else {
       history.push("/");
     }
-  }, [history, groupomaniaUser.email, groupomaniaUser.username, groupomaniaUser.bio, groupomaniaUser.avatar]);
+  }, [
+    history,
+    groupomaniaUser.email,
+    groupomaniaUser.username,
+    groupomaniaUser.bio,
+    groupomaniaUser.avatar,
+    groupomaniaUser.isAdmin,
+  ]);
 
   const onChangeAvatar = (newAvatar) => {
     setAvatar(newAvatar);
@@ -118,9 +127,9 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       <div style={{ padding: "10px", border: "1px solid black" }}>
         <div> e-mail : {email} </div>
         <div> Pseudonyme : {pseudonyme} </div>
+        <div> {isAdmin && "Administrateur "} </div>
         <div>
           <div>Avatar :</div>
-
           <img className="avatar-picture" src={avatar} />
           <Button onClick={handleModal} title="Sélectionner Avatar" />
           <Avatar onChangeAvatar={onChangeAvatar} open={open} close={handleModal} />

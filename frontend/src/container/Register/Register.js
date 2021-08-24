@@ -5,6 +5,7 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { toastTrigger } from "../../helper/toast";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 const Register = ({ setIsLoggedin, setMyUserId }) => {
   const history = useHistory();
@@ -12,6 +13,7 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
   const [bio, setBio] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onChangeUsername = (e) => {
     setUsername(e.target.value);
@@ -46,6 +48,7 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
       history.push("/accueil");
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
+      setErrorMessage(error.response.data.error);
     }
   };
 
@@ -57,6 +60,7 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
       <Input onChange={onChangePassword} value={password} label="mot de passe" type="password" />
       <InputTextArea rows={4} variant="outlined" label="Description" onChange={onChangeBio} value={bio} />
       <Button onClick={onRegister} title="S'inscrire" />
+      {errorMessage && <ErrorMessage message={errorMessage} />}
     </div>
   );
 };

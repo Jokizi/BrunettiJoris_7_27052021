@@ -15,6 +15,7 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
   const [messagesOtherUser, setMessagesOtherUser] = useState([]);
   const [openDelete, setOpenDelete] = useState(false);
   const [openAdminOtherUser, setOpenAdminOtherUser] = useState(false);
+  const [isOtherUserAdmin, setIsOtherUserAdmin] = useState(null);
 
   const history = useHistory();
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
@@ -28,9 +29,11 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
             method: "get",
             headers: { Authorization: `Bearer ${token}` },
           });
+
           setInfoAvatar(response.data.avatar);
           setInfoPseudonyme(response.data.username);
           setInfoBio(response.data.bio);
+          setIsOtherUserAdmin(response.data.isAdmin);
           try {
             const response = await api({
               url: "/view/" + history.location.state.id + "/messages",
@@ -38,6 +41,9 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
               headers: { Authorization: `Bearer ${token}` },
             });
             setMessagesOtherUser(response.data);
+            console.log("---------------data.isAdmin---------------------");
+            console.log(response.data);
+            console.log("------------------------------------");
           } catch (error) {}
         } catch (error) {}
       };
@@ -53,6 +59,19 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
 
   const handleAdminToUserModal = () => {
     setOpenAdminOtherUser(!openAdminOtherUser);
+  };
+
+  const adminPower = async () => {
+    try {
+      const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
+      const response = await api({
+        method: "put",
+        url: "/users/" + history.location.state.id,
+        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+      });
+      setOpenAdminOtherUser(false);
+      setIsOtherUserAdmin(response.data);
+    } catch (error) {}
   };
 
   const onDeleteOtherUser = async () => {
@@ -107,15 +126,19 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
           <img className="avatar-picture" src={infoAvatar} />
         </div>
         <div>Pseudonyme : {infoPseudonyme}</div>
+        <div>{isOtherUserAdmin && "Administrateur"}</div>
         <div>Description : {infoBio}</div>
-        {admin === true && (
+        {admin && (
           <div>
             <div>
-              <Button onClick={handleAdminToUserModal} title="Devenir Administateur" />
+              <Button
+                onClick={handleAdminToUserModal}
+                title={isOtherUserAdmin ? "Retirer les droits" : "Donner les droits"}
+              />
               <ConfirmPopUp
                 open={openAdminOtherUser}
                 handleModal={handleAdminToUserModal}
-                confirmModalAction
+                confirmModalAction={adminPower}
                 modalTitle="Donner les pouvoirs administrateur à cet Utilisateur ?"
                 buttonTitle1="Confirmer"
                 buttonTitle2="Annuler"
@@ -143,6 +166,7 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
               <img className="avatar-picture" src={element.User.avatar} />
               {element.User.username}
             </div>
+            <div>{element.User.isAdmin && "Administrateur"}</div>
             <div>{element.createdAt}</div>
             <div>{element.title}</div>
             {element.attachment && (

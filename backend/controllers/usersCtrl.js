@@ -13,28 +13,37 @@ const password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s
 module.exports = {
   registrer: function (req, res) {
     // Paramètres
-    const email = req.body.email;
-    const username = req.body.username;
-    const password = req.body.password;
-    const bio = req.body.bio;
+    let { email, username, password, bio } = req.body;
     const avatar = "/static/media/1.589279a0.jpg";
 
-    if (email === null || username === null || password === null) {
+    if (!email || !username || !password) {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
+    // .trim supprime les espaces
+    email = email.trim();
+    username = username.trim();
+    bio = bio.trim();
     // verifier la longueur pseudo, mail regex, password etc
     if (username.length >= 25 || username.length <= 4) {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
 
     if (!email_regex.test(email)) {
-      return res.status(400).json({ error: "email non valide" });
+      return res.status(400).json({ error: "e-mail non valide" });
     }
 
     if (!password_regex.test(password)) {
       return res.status(400).json({
         error:
           "mot de passe non valide, 8 caractères minimum, contenant au moins une lettre minuscule, une lettre majuscule, un chiffre numérique et un caractère spécial",
+      });
+    }
+
+    const groupomaniaEmail = email.split("@");
+
+    if (groupomaniaEmail[1] !== "groupomania.com") {
+      return res.status(400).json({
+        error: "Votre e-mail doit se terminer par @groupomania.com",
       });
     }
 
@@ -171,30 +180,28 @@ module.exports = {
         if (user) {
           res.status(201).json(user);
         } else {
-          res.status(404).json({ error: "utilisateur introuvable" });
+          res.status(404).json({ error: " utilisateur introuvable " });
         }
       })
       .catch(function (err) {
-        res.status(500).json({ error: "impossible de récupérer l'utilisateur" });
+        res.status(500).json({ error: " impossible de récupérer l'utilisateur " });
       });
   },
   getOtherUserProfile: function (req, res) {
     /*const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN);
     const userId = decodedToken.userId;*/
-    console.log("=============req.params=======================");
-    console.log(req.params);
-    console.log("====================================");
-    models.User.findByPk(req.params.userId, { attributes: ["username", "bio", "avatar"] })
+
+    models.User.findByPk(req.params.userId, { attributes: ["username", "bio", "avatar", "isAdmin"] })
       .then(function (user) {
         if (user) {
           res.status(201).json(user);
         } else {
-          res.status(404).json({ error: "utilisateur introuvable" });
+          res.status(404).json({ error: "  utilisateur introuvable " });
         }
       })
       .catch(function (err) {
-        res.status(500).json({ error: "unable to retrieve user" });
+        res.status(500).json({ error: "  impossible de récupérer l'utilisateur " });
       });
   },
   updateUserProfile: function (req, res) {
@@ -1062,5 +1069,66 @@ module.exports = {
         }
       },
     ]);
+  },
+  giveAdminOtherUser: function (req, res) {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN);
+    const userId = decodedToken.userId;
+
+    asyncLib.waterfall(
+      [
+        function (done) {
+          models.User.findByPk(req.params.id)
+            .then(function (userfound) {
+              done(null, userfound);
+            })
+            .catch(function (err) {
+              return res.status(500).json({ error: " impossible de vérifier l'utilisateur " });
+            });
+        },
+        function (userfound, done) {
+          models.User.findOne({
+            where: { isAdmin: true, id: userId },
+          })
+            .then(function (userAdminFound) {
+              done(null, userfound, userAdminFound);
+            })
+            .catch(function (err) {
+              return res.status(500).json({ error: " impossible de vérifier l'admin " });
+            });
+        },
+
+        function (userfound, userAdminFound, done) {
+          if (userAdminFound.isAdmin === true && userAdminFound.id === userId) {
+            if (userfound.isAdmin === false) {
+              userfound
+                .update({
+                  isAdmin: true,
+                })
+                .then(function (newUserAdmin) {
+                  return res.status(201).json(newUserAdmin.isAdmin);
+                });
+            } else if (userfound.isAdmin === true) {
+              userfound
+                .update({
+                  isAdmin: false,
+                })
+                .then(function (newUserAdmin) {
+                  return res.status(201).json(newUserAdmin.isAdmin);
+                });
+            }
+          } else {
+            return res.status(500).json({ error: " vous n'avez pas les droits " });
+          }
+        },
+      ],
+      function (userFound) {
+        if (userFound) {
+          return res.status(201).json(userFound);
+        } else {
+          return res.status(500).json({ error: " impossible de donner les droits à l'utilisateur " });
+        }
+      }
+    );
   },
 };

@@ -102,6 +102,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
               <img className="avatar-picture" src={element.User.avatar} />
               {element.User.username}
             </div>
+            <div> {element.User.isAdmin && "Administrateur"}</div>
             <div>{element.createdAt}</div>
             <div>{element.title}</div>
             {element.attachment && (

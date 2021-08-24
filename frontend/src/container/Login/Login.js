@@ -4,11 +4,13 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { toastTrigger } from "../../helper/toast";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 const Login = ({ setIsLoggedin, setMyUserId /*setAdmin*/ }) => {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -45,6 +47,7 @@ const Login = ({ setIsLoggedin, setMyUserId /*setAdmin*/ }) => {
       } catch (error) {}*/
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
+      setErrorMessage(error.response.data.error);
     }
   };
   return (
@@ -53,6 +56,7 @@ const Login = ({ setIsLoggedin, setMyUserId /*setAdmin*/ }) => {
       <Input onChange={onChangeEmail} label="e-mail" type="email" />
       <Input onChange={onChangePassword} label="mot de passe" type="password" />
       <Button onClick={onLogin} title="Connexion" />
+      {errorMessage && <ErrorMessage message={errorMessage} />}
     </div>
   );
 };
