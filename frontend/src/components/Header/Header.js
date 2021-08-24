@@ -3,6 +3,7 @@ import Button from "../Button/Button";
 import { useState } from "react";
 import { useHistory } from "react-router";
 import "./header.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Header = ({ isLoggedin, setIsLoggedin }) => {
   const history = useHistory();
@@ -29,15 +30,23 @@ const Header = ({ isLoggedin, setIsLoggedin }) => {
       </div>
       {isLoggedin && (
         <div className="grpm-buttons-log">
-          <Button className="button-profil" onClick={() => history.push("/accueil")} title="Accueil" />
-          <Button className="button-profil" onClick={() => history.push("/profil")} title="Votre Profil" />
-          <Button className="button-logout" title="Déconnexion" onClick={onLogout} />
+          <Button className="button-profil" onClick={() => history.push("/accueil")} title="Accueil">
+            <FontAwesomeIcon color="green" icon={["fas", "home"]} />
+          </Button>
+          <Button className="button-profil" onClick={() => history.push("/profil")} title="Votre Profil">
+            <FontAwesomeIcon color="blue" icon={["fas", "user-circle"]} />
+          </Button>
+          <Button className="button-logout" title="Déconnexion" onClick={onLogout}>
+            <FontAwesomeIcon color="red" icon={["fas", "stop-circle"]} />
+          </Button>
         </div>
       )}
 
       {isLogPage && (
         <div className="grpm-button-back">
-          <Button onClick={() => history.goBack()} title="Retour" />
+          <Button onClick={() => history.goBack()} title="Retour">
+            <FontAwesomeIcon color="black" icon={["fas", "arrow-alt-circle-left"]} />
+          </Button>
         </div>
       )}
     </div>

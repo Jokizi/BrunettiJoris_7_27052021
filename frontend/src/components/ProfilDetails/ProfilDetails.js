@@ -112,7 +112,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   return (
     <div>
       <div>
-        <FontAwesomeIcon color="green" icon={["fas", "user-circle"]} />
+        <FontAwesomeIcon color="blue" icon={["fas", "user-circle"]} />
         <div>Mon Profil</div>
       </div>
       <div style={{ padding: "10px", border: "1px solid black" }}>

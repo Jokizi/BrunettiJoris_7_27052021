@@ -14,6 +14,7 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
   const [infoAvatar, setInfoAvatar] = useState("");
   const [messagesOtherUser, setMessagesOtherUser] = useState([]);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openAdminOtherUser, setOpenAdminOtherUser] = useState(false);
 
   const history = useHistory();
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
@@ -48,6 +49,10 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
 
   const handleDeleteModal = () => {
     setOpenDelete(!openDelete);
+  };
+
+  const handleAdminToUserModal = () => {
+    setOpenAdminOtherUser(!openAdminOtherUser);
   };
 
   const onDeleteOtherUser = async () => {
@@ -105,15 +110,28 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
         <div>Description : {infoBio}</div>
         {admin === true && (
           <div>
-            <Button onClick={handleDeleteModal} title="Supprimer Son Compte" />
-            <ConfirmPopUp
-              open={openDelete}
-              handleModal={handleDeleteModal}
-              confirmModalAction={onDeleteOtherUser}
-              modalTitle="Supprimer le compte de cet Utilisateur ?"
-              buttonTitle1="Confirmer"
-              buttonTitle2="Annuler"
-            />
+            <div>
+              <Button onClick={handleAdminToUserModal} title="Devenir Administateur" />
+              <ConfirmPopUp
+                open={openAdminOtherUser}
+                handleModal={handleAdminToUserModal}
+                confirmModalAction
+                modalTitle="Donner les pouvoirs administrateur à cet Utilisateur ?"
+                buttonTitle1="Confirmer"
+                buttonTitle2="Annuler"
+              />
+            </div>
+            <div>
+              <Button onClick={handleDeleteModal} title="Supprimer Son Compte" />
+              <ConfirmPopUp
+                open={openDelete}
+                handleModal={handleDeleteModal}
+                confirmModalAction={onDeleteOtherUser}
+                modalTitle="Supprimer le compte de cet Utilisateur ?"
+                buttonTitle1="Confirmer"
+                buttonTitle2="Annuler"
+              />
+            </div>
           </div>
         )}
       </div>
