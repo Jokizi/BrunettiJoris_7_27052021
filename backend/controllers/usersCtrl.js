@@ -223,6 +223,24 @@ module.exports = {
         res.status(500).json({ error: "  impossible de récupérer l'utilisateur " });
       });
   },
+  getAllOtherUser: function (req, res) {
+    const order = req.query.order;
+
+    models.User.findAll({
+      order: [order != null ? order.split(":") : ["createdAt", "DESC"]],
+      attributes: ["username", "avatar", "isAdmin"],
+    })
+      .then(function (user) {
+        if (user) {
+          res.status(201).json(user);
+        } else {
+          res.status(404).json({ error: "  utilisateurs introuvable " });
+        }
+      })
+      .catch(function (err) {
+        res.status(500).json({ error: "  impossible de récupérer les utilisateurs " });
+      });
+  },
   updateUserProfile: function (req, res) {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
