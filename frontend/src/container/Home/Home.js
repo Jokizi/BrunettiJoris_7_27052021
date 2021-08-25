@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import api from "../../Config/Api";
 import PostMessage from "../../components/PostMessage/PostMessage";
+import SearchUsers from "../../components/SearchUsers/SearchUsers";
 import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
 import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
@@ -92,7 +93,9 @@ const Home = ({ myUserId, admin, setAdmin }) => {
       <div style={{ padding: "10px", border: "1px solid black" }}>
         <PostMessage viewMessagesPost={viewMessagesPost} />
       </div>
-
+      <div style={{ padding: "10px", border: "1px solid black" }}>
+        <SearchUsers />
+      </div>
       {allMessages.map((element) => {
         const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
 
