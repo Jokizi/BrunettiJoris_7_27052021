@@ -7,6 +7,7 @@ import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
 import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
 import Button from "../../components/Button/Button";
 import ConfirmPopUp from "../../components/ConfirmPopUp/ConfirmPopUp";
+import { toastTrigger } from "../../helper/toast";
 
 const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
   const [infoPseudonyme, setInfoPseudonyme] = useState("");
@@ -41,9 +42,6 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
               headers: { Authorization: `Bearer ${token}` },
             });
             setMessagesOtherUser(response.data);
-            console.log("---------------data.isAdmin---------------------");
-            console.log(response.data);
-            console.log("------------------------------------");
           } catch (error) {}
         } catch (error) {}
       };
@@ -71,7 +69,10 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
       });
       setOpenAdminOtherUser(false);
       setIsOtherUserAdmin(response.data);
-    } catch (error) {}
+      toastTrigger("success", "Les droits administrateur sont réattribués 👌🏼");
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
   };
 
   const onDeleteOtherUser = async () => {
@@ -87,8 +88,11 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
           "Content-Type": "multipart/from-data",
         },
       });
+      toastTrigger("success", "Ce compte utilisateur à été supprimé 👌🏼");
       history.push("/");
-    } catch (error) {}
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
   };
 
   const changeLike = ({ messageId, like, dislike }) => {
@@ -139,7 +143,7 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
                 open={openAdminOtherUser}
                 handleModal={handleAdminToUserModal}
                 confirmModalAction={adminPower}
-                modalTitle="Donner les pouvoirs administrateur à cet Utilisateur ?"
+                modalTitle="Donner ou Enlever les droits administrateur à cet utilisateur ?"
                 buttonTitle1="Confirmer"
                 buttonTitle2="Annuler"
               />

@@ -634,7 +634,7 @@ module.exports = {
       },
       function (userFound, done) {
         models.User.findOne({
-          where: { isAdmin: true },
+          where: { isAdmin: true, id: userId },
         })
           .then(function (userAdminFound) {
             done(null, userFound, userAdminFound);

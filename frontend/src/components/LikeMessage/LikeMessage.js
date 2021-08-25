@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import api from "../../Config/Api";
 import { useState } from "react";
 import { useEffect } from "react";
+import { toastTrigger } from "../../helper/toast";
 
 const LikeDislikeMessage = ({ messageId, like, dislike, changeLike, messageLikeByCurrentUser }) => {
   const [pushLike, setPushLike] = useState(["far", "thumbs-up"]);
@@ -31,11 +32,14 @@ const LikeDislikeMessage = ({ messageId, like, dislike, changeLike, messageLikeB
       if (response.data === "like ajouté") {
         like = like + 1;
         setPushLike(["fas", "thumbs-up"]);
+        toastTrigger("success", "Like ajouté 👍🏼");
       } else if (response.data === "like retiré") {
         like = like - 1;
         setPushLike(["far", "thumbs-up"]);
+        toastTrigger("success", "Like supprimé 👍🏼");
       } else if (response.data === "dislike retiré, like ajouté") {
         like = like + 1;
+        toastTrigger("success", "Like ajouté 👍🏼");
         setPushLike(["fas", "thumbs-up"]);
         dislike = dislike - 1;
         setPushDislike(["far", "thumbs-down"]);
@@ -59,12 +63,15 @@ const LikeDislikeMessage = ({ messageId, like, dislike, changeLike, messageLikeB
       if (response.data === "dislike ajouté") {
         dislike = dislike + 1;
         setPushDislike(["fas", "thumbs-down"]);
+        toastTrigger("success", "Dislike ajouté 👎🏼");
       } else if (response.data === "dislike retiré") {
         dislike = dislike - 1;
         setPushDislike(["far", "thumbs-down"]);
+        toastTrigger("success", "Dislike supprimé 👎🏼");
       } else if (response.data === "like retiré, dislike ajouté") {
         dislike = dislike + 1;
         setPushDislike(["fas", "thumbs-down"]);
+        toastTrigger("success", "Dislike ajouté 👎🏼");
         like = like - 1;
         setPushLike(["far", "thumbs-up"]);
       }

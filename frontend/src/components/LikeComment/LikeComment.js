@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import api from "../../Config/Api";
 import { useState } from "react";
 import { useEffect } from "react";
+import { toastTrigger } from "../../helper/toast";
 
 const LikeDislikeComment = ({
   commentId,
@@ -34,23 +35,26 @@ const LikeDislikeComment = ({
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("----------------resDataLike--------------------");
-      console.log(response.data);
-      console.log("------------------------------------");
+
       if (response.data === "like ajouté") {
         commentLike = commentLike + 1;
         setPushLike(["fas", "thumbs-up"]);
+        toastTrigger("success", "Like ajouté 👍🏼");
       } else if (response.data === "like retiré") {
         commentLike = commentLike - 1;
         setPushLike(["far", "thumbs-up"]);
+        toastTrigger("success", "Like supprimé 👍🏼");
       } else if (response.data === "dislike retiré, like ajouté") {
         commentLike = commentLike + 1;
         setPushLike(["fas", "thumbs-up"]);
+        toastTrigger("success", "Like ajouté 👍🏼");
         commentDislike = commentDislike - 1;
         setPushDislike(["far", "thumbs-down"]);
       }
       changeLikeComment({ commentId, commentLike, commentDislike });
-    } catch (error) {}
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
   };
 
   const onDislike = async () => {
@@ -64,23 +68,25 @@ const LikeDislikeComment = ({
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("----------------resDataDislike--------------------");
-      console.log(response.data);
-      console.log("------------------------------------");
       if (response.data === "dislike ajouté") {
         commentDislike = commentDislike + 1;
         setPushDislike(["fas", "thumbs-down"]);
+        toastTrigger("success", "Dislike ajouté 👎🏼");
       } else if (response.data === "dislike retiré") {
         commentDislike = commentDislike - 1;
         setPushDislike(["far", "thumbs-down"]);
+        toastTrigger("success", "Dislike supprimé 👎🏼");
       } else if (response.data === "like retiré, dislike ajouté") {
         commentDislike = commentDislike + 1;
         setPushDislike(["fas", "thumbs-down"]);
+        toastTrigger("success", "Dislike ajouté 👎🏼");
         commentLike = commentLike - 1;
         setPushLike(["far", "thumbs-up"]);
       }
       changeLikeComment({ commentId, commentLike, commentDislike });
-    } catch (error) {}
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
   };
 
   return (

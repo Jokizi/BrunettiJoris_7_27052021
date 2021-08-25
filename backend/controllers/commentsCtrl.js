@@ -240,7 +240,7 @@ module.exports = {
       },*/
       function (messageFound, commentFound, done) {
         models.User.findOne({
-          where: { isAdmin: true },
+          where: { isAdmin: true, id: userId },
         })
           .then(function (userFoundAdmin) {
             done(null, messageFound, commentFound, /*userFound,*/ userFoundAdmin);
@@ -323,7 +323,7 @@ module.exports = {
       },*/
       function (messageFound, commentFound, userFoundAdmin, done) {
         if (commentFound) {
-          if (userFoundAdmin.isAdmin === true && userFoundAdmin.id === userId) {
+          if (commentFound.userId === userId || (userFoundAdmin.isAdmin === true && userFoundAdmin.id === userId)) {
             models.Comment.destroy({
               where: { id: commentId },
             })

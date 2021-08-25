@@ -411,7 +411,7 @@ module.exports = {
         },
         function (messageFound, userFound, done) {
           models.User.findOne({
-            where: { isAdmin: true },
+            where: { isAdmin: true, id: userId },
           })
             .then(function (userFoundAdmin) {
               done(null, messageFound, userFound, userFoundAdmin);
@@ -526,7 +526,7 @@ module.exports = {
       },
       function (messageFound, done) {
         models.User.findOne({
-          where: { isAdmin: true },
+          where: { isAdmin: true, id: userId },
         })
           .then(function (userFoundAdmin) {
             done(null, messageFound, userFoundAdmin);
