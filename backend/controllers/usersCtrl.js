@@ -60,7 +60,7 @@ module.exports = {
               done(null, userFound);
             })
             .catch(function (err) {
-              return res.status(500).json({ error: "vérification utilisateur impossible" });
+              return res.status(500).json({ error: "1 vérification utilisateur impossible" });
             });
         },
         // si utilisateur n'est pas existant, on utilise bcrypt pour hasher le password
@@ -71,11 +71,30 @@ module.exports = {
               done(null, userFound, bcryptedPassword);
             });
           } else {
-            return res.status(409).json({ error: "utilisateur déjà existant" });
+            return res.status(409).json({ error: "e-mail déjà existant" });
+          }
+        },
+        function (userFound, bcryptedPassword, done) {
+          models.User.findOne({
+            attributes: ["username"],
+            where: { username },
+          })
+            .then(function (userNameFound) {
+              done(null, userFound, bcryptedPassword, userNameFound);
+            })
+            .catch(function (err) {
+              return res.status(500).json({ error: "2 vérification utilisateur impossible" });
+            });
+        },
+        function (userFound, bcryptedPassword, userNameFound, done) {
+          if (!userNameFound) {
+            done(null, userFound, bcryptedPassword, userNameFound);
+          } else {
+            return res.status(409).json({ error: "Pseudonyme déjà existant" });
           }
         },
         // si mot de passe hasher, on crée un nouvel utilisateur
-        function (userFound, bcryptedPassword, done) {
+        function (userFound, bcryptedPassword, userNameFound, done) {
           const newUser = models.User.create({
             email: email,
             username: username,
