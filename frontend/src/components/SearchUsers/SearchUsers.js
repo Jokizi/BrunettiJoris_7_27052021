@@ -1,9 +1,14 @@
 import Input from "../Input/Input";
-
-const SearchUsers = () => {
+import OutlinedChips from "../CardAllUsers/CardAllUsers";
+const SearchUsers = ({ myUserId }) => {
   return (
     <div>
-      <Input label="chercher un utilisateur" type="text" />
+      <div>
+        <Input label="chercher un utilisateur" type="search" />
+      </div>
+      <div>
+        <OutlinedChips myUserId={myUserId} />
+      </div>
     </div>
   );
 };

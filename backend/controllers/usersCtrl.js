@@ -228,7 +228,7 @@ module.exports = {
 
     models.User.findAll({
       order: [order != null ? order.split(":") : ["createdAt", "DESC"]],
-      attributes: ["username", "avatar", "isAdmin"],
+      attributes: ["id", "username", "avatar", "isAdmin"],
     })
       .then(function (user) {
         if (user) {

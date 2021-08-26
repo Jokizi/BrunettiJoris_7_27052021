@@ -94,7 +94,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
         <PostMessage viewMessagesPost={viewMessagesPost} />
       </div>
       <div style={{ padding: "10px", border: "1px solid black" }}>
-        <SearchUsers />
+        <SearchUsers myUserId={myUserId} />
       </div>
       {allMessages.map((element) => {
         const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
