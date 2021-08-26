@@ -5,6 +5,7 @@ import Chip from "@material-ui/core/Chip";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import api from "../../Config/Api";
+import Input from "../Input/Input";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +22,7 @@ export default function OutlinedChips({ myUserId }) {
   const classes = useStyles();
   const history = useHistory();
   const [allUsers, setAllUsers] = useState([]);
+  const [searchBarValue, setSearchBarValue] = useState("");
 
   useEffect(() => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
@@ -38,10 +40,11 @@ export default function OutlinedChips({ myUserId }) {
     getAllUsers();
   }, []);
 
+  const handleChange = (e) => {
+    setSearchBarValue(e.target.value);
+  };
+
   const handleClick = (id) => {
-    console.log("---------------id---------------------");
-    console.log(id);
-    console.log("------------------------------------");
     if (id === myUserId) {
       history.push("/profil");
     } else {
@@ -51,26 +54,30 @@ export default function OutlinedChips({ myUserId }) {
 
   return (
     <div className={classes.root}>
-      {allUsers.map((element) => {
-        console.log("---------------element.id---------------------");
-        console.log(element.id);
-        console.log("------------------------------------");
-        return (
-          <Chip
-            style={{ width: "20%", height: "5em" }}
-            key={element.id}
-            avatar={
-              <Avatar style={{ width: "25%", height: "52px" }}>
-                {<img src={element.avatar} style={{ width: "100%", height: "52px" }} />}
-              </Avatar>
-            }
-            label={element.username}
-            onClick={() => handleClick(element.id)}
-            color="primary"
-            variant="outlined"
-          />
-        );
-      })}
+      <div>
+        <Input label="Rechercher un utilisateur" type="search" value={searchBarValue} onChange={handleChange} />
+      </div>
+      {allUsers
+        .filter((element) => {
+          return element.username.toLowerCase().includes(searchBarValue.toLowerCase());
+        })
+        .map((element) => {
+          return (
+            <Chip
+              style={{ width: "20%", height: "5em" }}
+              key={element.id}
+              avatar={
+                <Avatar style={{ width: "25%", height: "52px" }}>
+                  {<img src={element.avatar} style={{ width: "100%", height: "52px" }} />}
+                </Avatar>
+              }
+              label={element.username}
+              onClick={() => handleClick(element.id)}
+              color="primary"
+              variant="outlined"
+            />
+          );
+        })}
     </div>
   );
 }
