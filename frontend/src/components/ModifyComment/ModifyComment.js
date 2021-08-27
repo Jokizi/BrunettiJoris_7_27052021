@@ -43,6 +43,9 @@ const ModifyComment = ({ myUserId, idUserComment, commentId, content, messageId,
       toastTrigger("error", "Une erreur est survenue ⛔️");
     }
   };
+  const onChangeContent = (e) => {
+    setNewContent(e.target.value);
+  };
 
   return (
     <div>
@@ -54,6 +57,7 @@ const ModifyComment = ({ myUserId, idUserComment, commentId, content, messageId,
       )}
       <ModifCommentPopUp
         open={open}
+        onChange={onChangeContent}
         handleModal={handleModal}
         onUpdate={onUpdate}
         modalTitle="Modifier votre commentaire"
@@ -61,6 +65,7 @@ const ModifyComment = ({ myUserId, idUserComment, commentId, content, messageId,
         buttonTitle2="Annuler Modifications"
         newContent={newContent}
         setNewContent={setNewContent}
+        label="Modifier commentaire"
       />
     </div>
   );

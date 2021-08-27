@@ -293,6 +293,56 @@ module.exports = {
     );
   },
 
+  updateUsername: function (req, res) {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
+    const userId = decodedToken.userId;
+
+    // Paramètres
+    const username = req.body.username;
+
+    asyncLib.waterfall(
+      [
+        // récupère l'utilisateur dans la DBase
+        function (done) {
+          models.User.findOne({
+            //attributes: ["id", "bio"],
+            where: { id: userId },
+          })
+            .then(function (userFound) {
+              done(null, userFound);
+            })
+            .catch(function (err) {
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
+            });
+        },
+        function (userFound, done) {
+          if (userFound) {
+            userFound
+              .update({
+                username: username ? username : userFound.username,
+              })
+              .then(function () {
+                done(userFound);
+              })
+              .catch(function (err) {
+                res.status(500).json({ error: "mise à jour utilisateur impossible" });
+              });
+          } else {
+            res.status(404).json({ error: "utilisateur introuvable" });
+          }
+        },
+      ],
+      function (userFound) {
+        if (userFound) {
+          return res.status(201).json(userFound);
+        } else {
+          return res.status(500).json({ error: "mise à jour du pseudonyme utilisateur impossible" });
+        }
+      }
+    );
+  },
+
   /*deleteUser: function (req, res) {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env

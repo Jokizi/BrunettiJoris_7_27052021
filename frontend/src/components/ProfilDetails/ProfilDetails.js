@@ -9,6 +9,7 @@ import api from "../../Config/Api";
 import { toastTrigger } from "../../helper/toast";
 import Avatar from "../Avatars/Avatars";
 import "./profil-details.css";
+import ModifCommentPopUp from "../ModifCommentPopUp/ModifCommentPopUP";
 
 const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -18,9 +19,12 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [pseudonyme, setPseudonyme] = useState("");
   const [isDisable, setIsDisable] = useState(true);
   const [bio, setBio] = useState("");
+
   const [avatar, setAvatar] = useState("");
   const [isAdmin, setIsAdmin] = useState(null);
   const [open, setOpen] = useState(false);
+  const [openUsername, setOpenUsername] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
 
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
 
@@ -51,6 +55,10 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
     setBio(e.target.value);
   };
 
+  const onChangeUsername = (e) => {
+    setNewUsername(e.target.value);
+  };
+
   const handleUpdate = () => {
     setIsDisable(!isDisable);
   };
@@ -65,6 +73,40 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
   const handleModal = () => {
     setOpen(!open);
+  };
+
+  const handleUpdateUsername = () => {
+    setOpenUsername(!openUsername);
+  };
+
+  const onUpdateUsername = async () => {
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
+    if (newUsername === groupomaniaUser.username) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+      setOpenUsername(false);
+      return;
+    }
+    try {
+      const response = await api({
+        url: "/users/username/",
+        method: "put",
+        data: { username: newUsername },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      setOpenUsername(false);
+
+      let oldSessionStorage = groupomaniaUser;
+      oldSessionStorage.username = response.data.username;
+      sessionStorage.setItem("groupomania-user", JSON.stringify(oldSessionStorage));
+      setPseudonyme(response.data.username);
+      toastTrigger("success", "Profil Mis à Jour 👌🏼");
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
   };
 
   const onUpdateBio = async () => {
@@ -126,12 +168,26 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       </div>
       <div style={{ padding: "10px", border: "1px solid black" }}>
         <div> e-mail : {email} </div>
-        <div> Pseudonyme : {pseudonyme} </div>
+        <div>Pseudonyme : {pseudonyme}</div>
+        <div onClick={handleUpdateUsername}>
+          <FontAwesomeIcon color="green" icon={["far", "edit"]} />
+          modifier pseudonyme
+        </div>
+        <ModifCommentPopUp
+          open={openUsername}
+          onChange={onChangeUsername}
+          handleModal={handleUpdateUsername}
+          onUpdate={onUpdateUsername}
+          modalTitle="Modifier votre pseudonyme"
+          label="Modifier pseudonyme"
+          buttonTitle1="Sauvegarder Modifications"
+          buttonTitle2="Annuler Modifications"
+        />
         <div> {isAdmin && "Administrateur "} </div>
         <div>
           <div>Avatar :</div>
           <img className="avatar-picture" src={avatar} />
-          <Button onClick={handleModal} title="Sélectionner Avatar" />
+          <Button onClick={handleModal} title="Modifier Avatar" />
           <Avatar onChangeAvatar={onChangeAvatar} open={open} close={handleModal} />
         </div>
         <div>
@@ -150,7 +206,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
         </div>
       </div>
       <div>
-        <Button onClick={handleUpdateModal} title="Modifier Profil" />
+        <Button onClick={handleUpdateModal} title="Modifier Ma Description" />
         <Button onClick={handleDeleteModal} title="Supprimer Mon Compte" />
       </div>
       <ConfirmPopUp

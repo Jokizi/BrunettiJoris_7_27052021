@@ -10,18 +10,15 @@ const ModifCommentPopUp = ({
   buttonTitle1,
   buttonTitle2,
   newContent,
-  setNewContent,
+  onChange,
   onUpdate,
+  label,
 }) => {
-  const onChangeContent = (e) => {
-    setNewContent(e.target.value);
-  };
-
   return (
     <Dialog open={open} onClose={handleModal}>
       <div>
         <DialogTitle>{modalTitle}</DialogTitle>
-        <Input value={newContent} onChange={onChangeContent} label="changer commentaire" type="text" />
+        <Input value={newContent} onChange={onChange} label={label} type="text" />
         <Button title={buttonTitle1} onClick={onUpdate} />
         <Button title={buttonTitle2} onClick={handleModal} />
       </div>
