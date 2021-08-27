@@ -8,7 +8,7 @@ import CommentMessage from "../../components/CommentMessage/CommentMessage";
 import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
 import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
 
-const UserProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
+const UserProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
   const [allMessages, setAllMessages] = useState([]);
   const history = useHistory();
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
@@ -71,7 +71,7 @@ const UserProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   return (
     <div>
       <div style={{ padding: "10px", border: "1px solid black" }}>
-        <ProfilDetails myUserId={myUserId} setIsLoggedin={setIsLoggedin} setCheckLogin={setCheckLogin} />
+        <ProfilDetails admin={admin} myUserId={myUserId} setIsLoggedin={setIsLoggedin} setCheckLogin={setCheckLogin} />
       </div>
       <div style={{ padding: "10px", border: "1px solid black" }}>
         <PostMessage viewMessagesPost={viewMessagesPost} isProfil={true} />
@@ -100,6 +100,7 @@ const UserProfil = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
               messageLikeByCurrentUser={messageLikeByCurrentUser}
             />
             <CommentMessage
+              admin={admin}
               setAllMessages={setAllMessages}
               changeComment={changeComment}
               comments={element.comments}

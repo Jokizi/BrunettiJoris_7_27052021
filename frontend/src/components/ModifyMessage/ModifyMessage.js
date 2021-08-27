@@ -76,7 +76,7 @@ const ModifyMessage = ({
     <div>
       {(myUserId === idUserMessage || admin === true) && (
         <div>
-          <FontAwesomeIcon onClick={handleModal} color="green" icon={["far", "edit"]} />
+          <FontAwesomeIcon onClick={handleModal} color="blue" icon={["far", "edit"]} />
           modifier
         </div>
       )}

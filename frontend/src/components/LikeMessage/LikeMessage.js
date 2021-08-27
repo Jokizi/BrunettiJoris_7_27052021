@@ -82,7 +82,7 @@ const LikeDislikeMessage = ({ messageId, like, dislike, changeLike, messageLikeB
   return (
     <div>
       <div>
-        <FontAwesomeIcon onClick={onLike} color="blue" icon={pushLike} />
+        <FontAwesomeIcon onClick={onLike} color="green" icon={pushLike} />
         {like}
       </div>
       <div>

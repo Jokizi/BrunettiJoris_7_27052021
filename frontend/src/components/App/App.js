@@ -66,6 +66,7 @@ const App = () => {
             exact
             path="/profil"
             myUserId={myUserId}
+            admin={admin}
             component={UserProfil}
             setIsLoggedin={setIsLoggedin}
             isLoggedin={isLoggedin}

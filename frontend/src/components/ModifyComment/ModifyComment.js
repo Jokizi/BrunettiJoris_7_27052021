@@ -51,7 +51,7 @@ const ModifyComment = ({ myUserId, idUserComment, commentId, content, messageId,
     <div>
       {myUserId === idUserComment && (
         <div>
-          <FontAwesomeIcon onClick={handleModal} color="green" icon={["far", "edit"]} />
+          <FontAwesomeIcon onClick={handleModal} color="blue" icon={["far", "edit"]} />
           modifier
         </div>
       )}

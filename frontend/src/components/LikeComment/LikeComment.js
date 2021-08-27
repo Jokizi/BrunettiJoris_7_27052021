@@ -92,7 +92,7 @@ const LikeDislikeComment = ({
   return (
     <div>
       <div>
-        <FontAwesomeIcon onClick={onLike} color="blue" icon={pushLike} />
+        <FontAwesomeIcon onClick={onLike} color="green" icon={pushLike} />
         {commentLike}
       </div>
       <div>

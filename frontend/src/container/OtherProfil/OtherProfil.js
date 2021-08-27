@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import api from "../../Config/Api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
 import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
@@ -130,7 +131,10 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
           <img className="avatar-picture" src={infoAvatar} />
         </div>
         <div>Pseudonyme : {infoPseudonyme}</div>
-        <div>{isOtherUserAdmin && "Administrateur"}</div>
+        <div>
+          {isOtherUserAdmin && <FontAwesomeIcon color="blue" icon={["fas", "user-cog"]} />}{" "}
+          {isOtherUserAdmin && "Administrateur"}
+        </div>
         <div>Description : {infoBio}</div>
         {admin && (
           <div>

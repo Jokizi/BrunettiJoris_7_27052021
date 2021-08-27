@@ -170,7 +170,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
         <div> e-mail : {email} </div>
         <div>Pseudonyme : {pseudonyme}</div>
         <div onClick={handleUpdateUsername}>
-          <FontAwesomeIcon color="green" icon={["far", "edit"]} />
+          <FontAwesomeIcon color="blue" icon={["far", "edit"]} />
           modifier pseudonyme
         </div>
         <ModifCommentPopUp
@@ -183,7 +183,9 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
           buttonTitle1="Sauvegarder Modifications"
           buttonTitle2="Annuler Modifications"
         />
-        <div> {isAdmin && "Administrateur "} </div>
+        <div>
+          {isAdmin && <FontAwesomeIcon color="blue" icon={["fas", "user-cog"]} />} {isAdmin && "Administrateur"}
+        </div>
         <div>
           <div>Avatar :</div>
           <img className="avatar-picture" src={avatar} />
