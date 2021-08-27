@@ -323,7 +323,7 @@ module.exports = {
       },*/
       function (messageFound, commentFound, userFoundAdmin, done) {
         if (commentFound) {
-          if (commentFound.userId === userId || (userFoundAdmin.isAdmin === true && userFoundAdmin.id === userId)) {
+          if (commentFound.userId === userId || (userFoundAdmin.isAdmin === true && userFoundAdmin.userId === userId)) {
             models.Comment.destroy({
               where: { id: commentId },
             })

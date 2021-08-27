@@ -422,10 +422,7 @@ module.exports = {
         },
         function (messageFound, userFound, userFoundAdmin, done) {
           if (messageFound) {
-            if (
-              (userFoundAdmin.isAdmin === true && userFoundAdmin.id === userId) ||
-              messageFound.UserId === userFound.id
-            ) {
+            if (messageFound.UserId === userFound.id || (userFoundAdmin.isAdmin && userFoundAdmin.id === userId)) {
               if (req.file) {
                 messageFound
                   .update({
