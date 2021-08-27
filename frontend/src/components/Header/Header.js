@@ -24,7 +24,7 @@ const Header = ({ isLoggedin, setIsLoggedin }) => {
     <div className="grpm-header">
       <div className="grpm-logo-title">
         <div className="grpm-logo_1">
-          <img src={logo_1} onClick={() => history.push("/accueil")} alt="logo groupomania" />
+          <img className="img-logo-1" src={logo_1} onClick={() => history.push("/accueil")} alt="logo groupomania" />
         </div>
         <h1 className="grpm-title">Une nouvelle vision de la grande distribution</h1>
       </div>

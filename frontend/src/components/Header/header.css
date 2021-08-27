@@ -13,12 +13,20 @@
 }
 
 .grpm-logo_1 {
-  height: 150px;
-  width: 250px;
+  height: auto;
+  width: 13em;
+}
+.img-logo-1 {
+  height: auto;
+  width: 100%;
+}
+
+.grpm-title {
+  font-size: 1.2em;
 }
 
 .grpm-buttons-log {
-  height: 40px;
+  height: 50px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
