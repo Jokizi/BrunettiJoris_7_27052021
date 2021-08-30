@@ -26,10 +26,29 @@
 }
 
 .grpm-buttons-log {
-  height: 50px;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
+}
+
+/*.button-profil {
+  border: inherit;
+  border-radius: 1.5em;
+  box-shadow: 0.2em 0.2em 0.2em 0.2em #e6e6e6;
+  padding-top: 1.2em;
+  padding-bottom: 1.2em;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-bottom: 1.5em;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #f6f6f6;
+}*/
+
+.icon-button-header {
 }
 
 .grpm-button-back {

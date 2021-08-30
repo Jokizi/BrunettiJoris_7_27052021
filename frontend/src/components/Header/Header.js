@@ -30,13 +30,13 @@ const Header = ({ isLoggedin, setIsLoggedin }) => {
       </div>
       {isLoggedin && (
         <div className="grpm-buttons-log">
-          <Button className="button-profil" onClick={() => history.push("/accueil")} title="Accueil">
+          <Button style={{ marginRight: "20px" }} onClick={() => history.push("/accueil")} title="Accueil">
             <FontAwesomeIcon color="green" icon={["fas", "home"]} />
           </Button>
-          <Button className="button-profil" onClick={() => history.push("/profil")} title="Votre Profil">
+          <Button style={{ marginRight: "20px" }} onClick={() => history.push("/profil")} title="Profil">
             <FontAwesomeIcon color="blue" icon={["fas", "user-circle"]} />
           </Button>
-          <Button className="button-logout" title="Déconnexion" onClick={onLogout}>
+          <Button style={{ marginRight: "20px" }} title="Déconnexion" onClick={onLogout}>
             <FontAwesomeIcon color="red" icon={["fas", "stop-circle"]} />
           </Button>
         </div>

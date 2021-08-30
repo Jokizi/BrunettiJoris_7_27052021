@@ -1,8 +1,10 @@
-const Button = ({ title, onClick, children }) => {
+import "./button.css";
+
+const Button = ({ title, onClick, children, style }) => {
   return (
-    <div style={{ padding: "10px", border: "1px solid black" }} onClick={onClick}>
-      <div>{children}</div>
-      {title}
+    <div className="button" style={style} onClick={onClick}>
+      <div className="icon-button">{children}</div>
+      <div>{title}</div>
     </div>
   );
 };
