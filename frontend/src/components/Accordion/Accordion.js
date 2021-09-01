@@ -66,8 +66,10 @@ const Accordion = ({
             <div key={element.id}>
               <div>{element.createdAt}</div>
               <div>
-                <img className="avatar-picture-comment" src={element.User.avatar} />
-                {element.User.username}
+                <div className="avatar-picture-comment">
+                  <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />
+                </div>
+                <div>{element.User.username}</div>
               </div>
               <div>{element.content}</div>
               <LikeDislikeComment

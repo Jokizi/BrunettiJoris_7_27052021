@@ -1,15 +1,9 @@
 .grpm-header {
   display: flex;
   flex-direction: row;
-  border-bottom: solid 8px black;
+  border-bottom: solid 3px #dcdcde;
   justify-content: space-between;
-}
-
-.grpm-logo-title {
-  display: flex;
-  flex-direction: column;
-
-  align-items: flex-start;
+  background-image: url(../../assets/4931029.jpg);
 }
 
 .grpm-logo_1 {
@@ -19,10 +13,6 @@
 .img-logo-1 {
   height: auto;
   width: 100%;
-}
-
-.grpm-title {
-  font-size: 1.2em;
 }
 
 .grpm-buttons-log {

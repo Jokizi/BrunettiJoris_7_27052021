@@ -22,22 +22,20 @@ const Header = ({ isLoggedin, setIsLoggedin }) => {
 
   return (
     <div className="grpm-header">
-      <div className="grpm-logo-title">
-        <div className="grpm-logo_1">
-          <img className="img-logo-1" src={logo_1} onClick={() => history.push("/accueil")} alt="logo groupomania" />
-        </div>
-        <h1 className="grpm-title">Une nouvelle vision de la grande distribution</h1>
+      <div className="grpm-logo_1">
+        <img className="img-logo-1" src={logo_1} onClick={() => history.push("/accueil")} alt="logo groupomania" />
       </div>
+
       {isLoggedin && (
         <div className="grpm-buttons-log">
           <Button style={{ marginRight: "20px" }} onClick={() => history.push("/accueil")} title="Accueil">
-            <FontAwesomeIcon color="green" icon={["fas", "home"]} />
+            <FontAwesomeIcon color="black" icon={["fas", "home"]} />
           </Button>
           <Button style={{ marginRight: "20px" }} onClick={() => history.push("/profil")} title="Profil">
-            <FontAwesomeIcon color="blue" icon={["fas", "user-circle"]} />
+            <FontAwesomeIcon color="black" icon={["fas", "user-circle"]} />
           </Button>
           <Button style={{ marginRight: "20px" }} title="Déconnexion" onClick={onLogout}>
-            <FontAwesomeIcon color="red" icon={["fas", "stop-circle"]} />
+            <FontAwesomeIcon color="black" icon={["fas", "stop-circle"]} />
           </Button>
         </div>
       )}

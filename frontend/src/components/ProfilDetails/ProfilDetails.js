@@ -188,7 +188,10 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
         </div>
         <div>
           <div>Avatar :</div>
-          <img className="avatar-picture" src={avatar} />
+          <div className="avatar-picture">
+            <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={avatar} />
+          </div>
+
           <Button onClick={handleModal} title="Modifier Avatar" />
           <Avatar onChangeAvatar={onChangeAvatar} open={open} close={handleModal} />
         </div>

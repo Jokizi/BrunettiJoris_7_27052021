@@ -1,0 +1,41 @@
+.message-user-card-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 600px;
+}
+
+.message-user-card {
+  padding: 10px;
+  border: 1px solid #dcdcde;
+  margin: 10px 0;
+  background-color: white;
+  box-shadow: 5px 5px 5px 5px #dcdcde;
+}
+
+@media screen and (max-width: 1700px) {
+  .message-user-card-container {
+    margin: 0 400px;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .message-user-card-container {
+    margin: 0 300px;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .message-user-card-container {
+    margin: 0 200px;
+  }
+}
+@media screen and (max-width: 800px) {
+  .message-user-card-container {
+    margin: 0 50px;
+  }
+}
+@media screen and (max-width: 640px) {
+  .message-user-card-container {
+    margin: auto;
+  }
+}

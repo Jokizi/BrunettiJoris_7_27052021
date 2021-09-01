@@ -57,8 +57,7 @@
 }
 
 .avatar-picture-comment {
-  border: 1px black solid;
-  width: 2%;
-  height: 2em;
+  width: 30px;
+
   border-radius: 50%;
 }

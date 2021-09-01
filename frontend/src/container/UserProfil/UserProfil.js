@@ -7,6 +7,7 @@ import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
 import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
 import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
+import "./user-profil.css";
 
 const UserProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
   const [allMessages, setAllMessages] = useState([]);
@@ -76,56 +77,60 @@ const UserProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
       <div style={{ padding: "10px", border: "1px solid black" }}>
         <PostMessage viewMessagesPost={viewMessagesPost} isProfil={true} />
       </div>
-      {allMessages.map((element) => {
-        const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
-        return (
-          <div key={element.id}>
-            <div>
-              <img className="avatar-picture" src={element.User.avatar} />
-              {element.User.username}
-            </div>
-            <div>{element.createdAt}</div>
-            <div>{element.title}</div>
-            {element.attachment && (
-              <div style={{ width: "50%", height: "20em" }}>
-                <img src={element.attachment} alt="img" style={{ width: "50%", height: "20em" }} />
+      <div className="message-user-card-container">
+        {allMessages.map((element) => {
+          const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
+          return (
+            <div className="message-user-card" key={element.id}>
+              <div className="avatar-name">
+                <div className="avatar-picture">
+                  <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />
+                </div>
+                <div>{element.User.username}</div>
               </div>
-            )}
-            <div>{element.content}</div>
-            <LikeDislikeMessage
-              changeLike={changeLike}
-              like={element.likes}
-              dislike={element.dislikes}
-              messageId={element.id}
-              messageLikeByCurrentUser={messageLikeByCurrentUser}
-            />
-            <CommentMessage
-              admin={admin}
-              setAllMessages={setAllMessages}
-              changeComment={changeComment}
-              comments={element.comments}
-              messageId={element.id}
-              myUserId={myUserId}
-            />
-            <ModifyMessage
-              messageId={element.id}
-              title={element.title}
-              attachment={element.attachment}
-              content={element.content}
-              myUserId={myUserId}
-              idUserMessage={element.UserId}
-              setAllMessages={setAllMessages}
-              getMessagesURI="/user/messages"
-            />
-            <DeleteMessage
-              changeDeleteMessage={changeDeleteMessage}
-              messageId={element.id}
-              myUserId={myUserId}
-              idUserMessage={element.UserId}
-            />
-          </div>
-        );
-      })}
+              <div>{element.createdAt}</div>
+              <div>{element.title}</div>
+              {element.attachment && (
+                <div className="picture-container">
+                  <img src={element.attachment} alt="img" width="100%" height="100%" />
+                </div>
+              )}
+              <div>{element.content}</div>
+              <LikeDislikeMessage
+                changeLike={changeLike}
+                like={element.likes}
+                dislike={element.dislikes}
+                messageId={element.id}
+                messageLikeByCurrentUser={messageLikeByCurrentUser}
+              />
+              <CommentMessage
+                admin={admin}
+                setAllMessages={setAllMessages}
+                changeComment={changeComment}
+                comments={element.comments}
+                messageId={element.id}
+                myUserId={myUserId}
+              />
+              <ModifyMessage
+                messageId={element.id}
+                title={element.title}
+                attachment={element.attachment}
+                content={element.content}
+                myUserId={myUserId}
+                idUserMessage={element.UserId}
+                setAllMessages={setAllMessages}
+                getMessagesURI="/user/messages"
+              />
+              <DeleteMessage
+                changeDeleteMessage={changeDeleteMessage}
+                messageId={element.id}
+                myUserId={myUserId}
+                idUserMessage={element.UserId}
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

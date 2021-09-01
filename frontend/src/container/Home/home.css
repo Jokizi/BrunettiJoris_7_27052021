@@ -1,0 +1,27 @@
+.message-card-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 300px;
+}
+
+.message-card {
+  padding: 10px;
+  border: 1px solid #dcdcde;
+  margin: 10px 0;
+  background-color: white;
+  box-shadow: 5px 5px 5px 5px #dcdcde;
+}
+
+.picture-container {
+  display: flex;
+
+  justify-content: center;
+  padding: 15px;
+}
+
+@media screen and (max-width: 640px) {
+  .message-card-container {
+    margin: auto;
+  }
+}

@@ -1,0 +1,20 @@
+.message-other-user-card-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 300px;
+}
+
+.message-other-user-card {
+  padding: 10px;
+  border: 1px solid #dcdcde;
+  margin: 10px 0;
+  background-color: white;
+  box-shadow: 5px 5px 5px 5px #dcdcde;
+}
+
+@media screen and (max-width: 640px) {
+  .message-other-user-card-container {
+    margin: auto;
+  }
+}

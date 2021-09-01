@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import api from "../../Config/Api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PostMessage from "../../components/PostMessage/PostMessage";
 import OutlinedChips from "../../components/CardAllUsers/CardAllUsers";
 import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
 import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
 import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
+import "./home.css";
 
 const Home = ({ myUserId, admin, setAdmin }) => {
   const [allMessages, setAllMessages] = useState([]);
@@ -96,60 +98,67 @@ const Home = ({ myUserId, admin, setAdmin }) => {
       <div style={{ padding: "10px", border: "1px solid black" }}>
         <OutlinedChips myUserId={myUserId} />
       </div>
-      {allMessages.map((element) => {
-        const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
+      <div className="message-card-container">
+        {allMessages.map((element) => {
+          const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
 
-        return (
-          <div style={{ padding: "10px", border: "1px solid black" }} key={element.id}>
-            <div onClick={() => goToOtherProfil(element.UserId)}>
-              <img className="avatar-picture" src={element.User.avatar} />
-              {element.User.username}
-            </div>
-            <div> {element.User.isAdmin && "Administrateur"}</div>
-            <div>{element.createdAt}</div>
-            <div>{element.title}</div>
-            {element.attachment && (
-              <div style={{ width: "50%", height: "20em" }}>
-                <img src={element.attachment} alt="img" style={{ width: "50%", height: "20em" }} />
+          return (
+            <div className="message-card" key={element.id}>
+              <div className="avatar-name" onClick={() => goToOtherProfil(element.UserId)}>
+                <div className="avatar-picture">
+                  <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />
+                </div>
+                <div>{element.User.username}</div>
               </div>
-            )}
-            <div>{element.content}</div>
-            <LikeDislikeMessage
-              changeLike={changeLike}
-              like={element.likes}
-              dislike={element.dislikes}
-              messageId={element.id}
-              messageLikeByCurrentUser={messageLikeByCurrentUser}
-            />
-            <CommentMessage
-              admin={admin}
-              setAllMessages={setAllMessages}
-              changeComment={changeComment}
-              comments={element.comments}
-              messageId={element.id}
-              myUserId={myUserId}
-            />
-            <ModifyMessage
-              admin={admin}
-              messageId={element.id}
-              title={element.title}
-              attachment={element.attachment}
-              content={element.content}
-              myUserId={myUserId}
-              idUserMessage={element.UserId}
-              setAllMessages={setAllMessages}
-              getMessagesURI="/messages"
-            />
-            <DeleteMessage
-              admin={admin}
-              changeDeleteMessage={changeDeleteMessage}
-              messageId={element.id}
-              myUserId={myUserId}
-              idUserMessage={element.UserId}
-            />
-          </div>
-        );
-      })}
+              <div>
+                {element.User.isAdmin && <FontAwesomeIcon color="blue" icon={["fas", "user-cog"]} />}{" "}
+                {element.User.isAdmin && "Administrateur"}
+              </div>
+              <div>{element.createdAt}</div>
+              <div>{element.title}</div>
+              {element.attachment && (
+                <div className="picture-container">
+                  <img src={element.attachment} alt="img" width="100%" height="100%" />
+                </div>
+              )}
+              <div>{element.content}</div>
+              <LikeDislikeMessage
+                changeLike={changeLike}
+                like={element.likes}
+                dislike={element.dislikes}
+                messageId={element.id}
+                messageLikeByCurrentUser={messageLikeByCurrentUser}
+              />
+              <CommentMessage
+                admin={admin}
+                setAllMessages={setAllMessages}
+                changeComment={changeComment}
+                comments={element.comments}
+                messageId={element.id}
+                myUserId={myUserId}
+              />
+              <ModifyMessage
+                admin={admin}
+                messageId={element.id}
+                title={element.title}
+                attachment={element.attachment}
+                content={element.content}
+                myUserId={myUserId}
+                idUserMessage={element.UserId}
+                setAllMessages={setAllMessages}
+                getMessagesURI="/messages"
+              />
+              <DeleteMessage
+                admin={admin}
+                changeDeleteMessage={changeDeleteMessage}
+                messageId={element.id}
+                myUserId={myUserId}
+                idUserMessage={element.UserId}
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

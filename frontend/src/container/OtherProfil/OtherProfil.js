@@ -9,6 +9,7 @@ import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
 import Button from "../../components/Button/Button";
 import ConfirmPopUp from "../../components/ConfirmPopUp/ConfirmPopUp";
 import { toastTrigger } from "../../helper/toast";
+import "./other-profil.css";
 
 const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
   const [infoPseudonyme, setInfoPseudonyme] = useState("");
@@ -166,61 +167,65 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
           </div>
         )}
       </div>
-      {messagesOtherUser.map((element) => {
-        const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
-        return (
-          <div key={element.id}>
-            <div>
-              <img className="avatar-picture" src={element.User.avatar} />
-              {element.User.username}
-            </div>
-            <div>{element.User.isAdmin && "Administrateur"}</div>
-            <div>{element.createdAt}</div>
-            <div>{element.title}</div>
-            {element.attachment && (
-              <div style={{ width: "50%", height: "20em" }}>
-                <img src={element.attachment} alt="img" style={{ width: "50%", height: "20em" }} />
+      <div className="message-other-user-card-container">
+        {messagesOtherUser.map((element) => {
+          const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
+          return (
+            <div className="message-other-user-card" key={element.id}>
+              <div className="avatar-name">
+                <div className="avatar-picture">
+                  <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />
+                </div>
+                <div>{element.User.username}</div>
               </div>
-            )}
-            <div>{element.content}</div>
-            <LikeDislikeMessage
-              changeLike={changeLike}
-              like={element.likes}
-              dislike={element.dislikes}
-              messageId={element.id}
-              messageLikeByCurrentUser={messageLikeByCurrentUser}
-            />
-            <CommentMessage
-              admin={admin}
-              setMessagesOtherUser={setMessagesOtherUser}
-              changeComment={changeComment}
-              comments={element.comments}
-              messageId={element.id}
-              myUserId={myUserId}
-              locationState={"/view/" + history.location.state.id + "/messages"}
-            />
-            <ModifyMessage
-              messagesOtherUser={messagesOtherUser}
-              admin={admin}
-              messageId={element.id}
-              title={element.title}
-              attachment={element.attachment}
-              content={element.content}
-              myUserId={myUserId}
-              idUserMessage={element.UserId}
-              setMessagesOtherUser={setMessagesOtherUser}
-              getMessagesURI={"/view/" + history.location.state.id + "/messages"}
-            />
-            <DeleteMessage
-              admin={admin}
-              changeDeleteMessage={changeDeleteMessage}
-              messageId={element.id}
-              myUserId={myUserId}
-              idUserMessage={element.UserId}
-            />
-          </div>
-        );
-      })}
+              <div>{element.User.isAdmin && "Administrateur"}</div>
+              <div>{element.createdAt}</div>
+              <div>{element.title}</div>
+              {element.attachment && (
+                <div className="picture-container">
+                  <img src={element.attachment} alt="img" width="100%" height="100%" />
+                </div>
+              )}
+              <div>{element.content}</div>
+              <LikeDislikeMessage
+                changeLike={changeLike}
+                like={element.likes}
+                dislike={element.dislikes}
+                messageId={element.id}
+                messageLikeByCurrentUser={messageLikeByCurrentUser}
+              />
+              <CommentMessage
+                admin={admin}
+                setMessagesOtherUser={setMessagesOtherUser}
+                changeComment={changeComment}
+                comments={element.comments}
+                messageId={element.id}
+                myUserId={myUserId}
+                locationState={"/view/" + history.location.state.id + "/messages"}
+              />
+              <ModifyMessage
+                messagesOtherUser={messagesOtherUser}
+                admin={admin}
+                messageId={element.id}
+                title={element.title}
+                attachment={element.attachment}
+                content={element.content}
+                myUserId={myUserId}
+                idUserMessage={element.UserId}
+                setMessagesOtherUser={setMessagesOtherUser}
+                getMessagesURI={"/view/" + history.location.state.id + "/messages"}
+              />
+              <DeleteMessage
+                admin={admin}
+                changeDeleteMessage={changeDeleteMessage}
+                messageId={element.id}
+                myUserId={myUserId}
+                idUserMessage={element.UserId}
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

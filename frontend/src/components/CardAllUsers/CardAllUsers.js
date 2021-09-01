@@ -64,7 +64,7 @@ export default function OutlinedChips({ myUserId }) {
         .map((element) => {
           return (
             <Chip
-              style={{ width: "20%", height: "5em" }}
+              style={{ width: "20%", height: "5em", color: "black", borderColor: "#fc930c" }}
               key={element.id}
               avatar={
                 <Avatar style={{ width: "25%", height: "52px" }}>

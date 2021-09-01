@@ -1,10 +1,32 @@
 import React from "react";
-
+import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+
+const CssTextField = withStyles({
+  root: {
+    "& label.Mui-focused": {
+      color: "black",
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#fc930c",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#fc930c",
+      },
+      "&:hover fieldset": {
+        borderColor: "#fc930c",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#fc930c",
+      },
+    },
+  },
+})(TextField);
 
 const TextArea = ({ rows, rowsMax, placeholder, onChange, value, id, label, variant, multilinerows, disabled }) => {
   return (
-    <TextField
+    <CssTextField
       multiline
       onChange={onChange}
       value={value}

@@ -1,18 +1,18 @@
 .button {
   border: inherit;
   border-radius: 0.5em;
-  box-shadow: 0.2em 0.2em 0.2em 0.2em #e6e6e6;
+  box-shadow: 0.12em 0.12em 0.12em 0.12em #dcdcde;
   padding-top: 11px;
   padding-bottom: 11px;
   padding-left: 1em;
   padding-right: 1em;
   margin-bottom: 1.5em;
-
+  color: black;
   min-width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f6f6f6;
+  background-color: #fc930c;
 }
 
 .icon-button {
