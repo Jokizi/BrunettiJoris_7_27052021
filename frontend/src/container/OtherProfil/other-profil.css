@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin: 0 300px;
+  margin: 0 550px;
 }
 
 .message-other-user-card {
@@ -11,6 +11,30 @@
   margin: 10px 0;
   background-color: white;
   box-shadow: 5px 5px 5px 5px #dcdcde;
+}
+
+@media screen and (max-width: 1700px) {
+  .message-other-user-card-container {
+    margin: 0 400px;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .message-other-user-card-container {
+    margin: 0 300px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .message-other-user-card-container {
+    margin: 0 200px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .message-other-user-card-container {
+    margin: 0 50px;
+  }
 }
 
 @media screen and (max-width: 640px) {

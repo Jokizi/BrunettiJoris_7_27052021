@@ -6,6 +6,7 @@ const CssTextField = withStyles({
   root: {
     "& label.Mui-focused": {
       color: "black",
+      fontWeight: "bold",
     },
     "& .MuiInput-underline:after": {
       borderBottomColor: "#fc930c",

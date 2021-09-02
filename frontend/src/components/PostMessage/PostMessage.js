@@ -5,6 +5,7 @@ import Button from "../../components/Button/Button";
 import api from "../../Config/Api";
 import FormData from "form-data";
 import { toastTrigger } from "../../helper/toast";
+import "./PostMessage.css";
 
 class PostMessage extends Component {
   constructor(props) {
@@ -113,20 +114,29 @@ class PostMessage extends Component {
   render() {
     const { title, content } = this.state;
     return (
-      <div>
-        <Input value={title} onChange={this.onChangeTitle} label="Titre" type="text" />
-        <div style={{ width: "350px" }}>
-          <Input onChange={this.onUploadFile} type="file" theInputKey={this.state.theInputKey} />
+      <div className="post-message">
+        <div className="post-message-title">Échanger avec vos collaborateurs</div>
+        <div className="input-container">
+          <div className="input-title">
+            <Input value={title} onChange={this.onChangeTitle} label="Titre" type="text" />
+          </div>
+          <div className="input-file">
+            <Input onChange={this.onUploadFile} type="file" theInputKey={this.state.theInputKey} />
+          </div>
+          <div className="input-content">
+            <InputTextArea
+              id="outlined-multiline-static"
+              label="Publication"
+              rows={1}
+              variant="outlined"
+              onChange={this.onChangeContent}
+              value={content}
+            />
+          </div>
         </div>
-        <InputTextArea
-          id="outlined-multiline-static"
-          label="Publication"
-          rows={4}
-          variant="outlined"
-          onChange={this.onChangeContent}
-          value={content}
-        />
-        <Button onClick={this.onPublish} title="Publier" />
+        <div className="button-publish">
+          <Button onClick={this.onPublish} title="Publier" />
+        </div>
       </div>
     );
   }

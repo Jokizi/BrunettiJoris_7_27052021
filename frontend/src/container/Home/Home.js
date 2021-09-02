@@ -90,12 +90,11 @@ const Home = ({ myUserId, admin, setAdmin }) => {
   };
 
   return (
-    <div>
-      <div className="grpm-home">C'est la home page</div>
-      <div style={{ padding: "10px", border: "1px solid black" }}>
+    <div className="grpm-home">
+      <div className="post-message-container">
         <PostMessage viewMessagesPost={viewMessagesPost} />
       </div>
-      <div style={{ padding: "10px", border: "1px solid black" }}>
+      <div className="search-user-container">
         <OutlinedChips myUserId={myUserId} />
       </div>
       <div className="message-card-container">

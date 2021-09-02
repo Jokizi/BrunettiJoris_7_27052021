@@ -1,0 +1,41 @@
+.post-message {
+  border: 1px solid #dcdcde;
+  background-color: #f9f9f9;
+  box-shadow: 5px 5px 5px 5px #dcdcde;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+}
+.post-message-title {
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.input-container {
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.input-title {
+  padding-left: 10px;
+  margin-right: 20px;
+}
+
+.input-file {
+  margin-right: 20px;
+  width: 336px;
+}
+
+.input-content {
+  padding-right: 10px;
+}
+
+.button-publish {
+  margin-bottom: 20px;
+  width: 100px;
+}

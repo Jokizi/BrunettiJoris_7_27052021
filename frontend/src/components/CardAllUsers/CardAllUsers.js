@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import api from "../../Config/Api";
 import Input from "../Input/Input";
+import "./card-all-users.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,8 +55,8 @@ export default function OutlinedChips({ myUserId }) {
 
   return (
     <div className={classes.root}>
-      <div>
-        <Input label="Rechercher un utilisateur" type="search" value={searchBarValue} onChange={handleChange} />
+      <div className="input-users">
+        <Input label="Rechercher utilisateur" type="search" value={searchBarValue} onChange={handleChange} />
       </div>
       {allUsers
         .filter((element) => {
