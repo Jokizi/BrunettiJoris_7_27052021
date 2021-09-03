@@ -28,6 +28,10 @@
   box-shadow: 5px 5px 5px 5px #dcdcde;
 }
 
+.avatar-name {
+  font-weight: bold;
+}
+
 .picture-container {
   display: flex;
 

@@ -133,7 +133,7 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
         </div>
         <div>Pseudonyme : {infoPseudonyme}</div>
         <div>
-          {isOtherUserAdmin && <FontAwesomeIcon color="blue" icon={["fas", "user-cog"]} />}{" "}
+          {isOtherUserAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
           {isOtherUserAdmin && "Administrateur"}
         </div>
         <div>Description : {infoBio}</div>
@@ -178,7 +178,10 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
                 </div>
                 <div>{element.User.username}</div>
               </div>
-              <div>{element.User.isAdmin && "Administrateur"}</div>
+              <div>
+                {element.User.isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
+                {element.User.isAdmin && "Administrateur"}
+              </div>
               <div>{element.createdAt}</div>
               <div>{element.title}</div>
               {element.attachment && (

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useHistory } from "react-router";
 import { toastTrigger } from "../../helper/toast";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import "./register.css";
 
 const Register = ({ setIsLoggedin, setMyUserId }) => {
   const history = useHistory();
@@ -53,13 +54,23 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
   };
 
   return (
-    <div>
-      Register
-      <Input onChange={onChangeEmail} value={email} label="e-mail" />
-      <Input onChange={onChangeUsername} value={username} label="Pseudonyme" />
-      <Input onChange={onChangePassword} value={password} label="mot de passe" type="password" />
-      <InputTextArea rows={4} variant="outlined" label="Description" onChange={onChangeBio} value={bio} />
-      <Button onClick={onRegister} title="S'inscrire" />
+    <div className="register-container">
+      <div className="register-title">Rejoignez vos collaborateurs en vous inscrivant</div>
+      <div className="register-input">
+        <Input onChange={onChangeEmail} value={email} label="e-mail" />
+      </div>
+      <div className="register-input">
+        <Input onChange={onChangeUsername} value={username} label="Pseudonyme" />
+      </div>
+      <div className="register-input">
+        <Input onChange={onChangePassword} value={password} label="mot de passe" type="password" />
+      </div>
+      <div className="register-input">
+        <InputTextArea rows={4} variant="outlined" label="Description" onChange={onChangeBio} value={bio} />
+      </div>
+      <div className="register-button">
+        <Button onClick={onRegister} title="S'inscrire" />
+      </div>
       {errorMessage && <ErrorMessage message={errorMessage} />}
     </div>
   );

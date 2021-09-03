@@ -184,7 +184,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
           buttonTitle2="Annuler Modifications"
         />
         <div>
-          {isAdmin && <FontAwesomeIcon color="blue" icon={["fas", "user-cog"]} />} {isAdmin && "Administrateur"}
+          {isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />} {isAdmin && "Administrateur"}
         </div>
         <div>
           <div>Avatar :</div>

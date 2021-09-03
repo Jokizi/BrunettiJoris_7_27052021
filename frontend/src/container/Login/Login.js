@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useHistory } from "react-router";
 import { toastTrigger } from "../../helper/toast";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import "./login.css";
 
 const Login = ({ setIsLoggedin, setMyUserId /*setAdmin*/ }) => {
   const history = useHistory();
@@ -33,29 +34,23 @@ const Login = ({ setIsLoggedin, setMyUserId /*setAdmin*/ }) => {
       setMyUserId(response.data.userId);
       toastTrigger("success", `Bonjour ${response.data.username} ✌🏼`);
       history.push({ pathname: "/accueil" });
-
-      /*try {
-        const response = await api({
-          url: "/users/profile/",
-          method: "get",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setAdmin(response.data.isAdmin);
-        console.log("------------LOGIN------------------------");
-        console.log(response.data);
-        console.log("------------------------------------");
-      } catch (error) {}*/
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
       setErrorMessage(error.response.data.error);
     }
   };
   return (
-    <div>
-      Login
-      <Input onChange={onChangeEmail} label="e-mail" type="email" />
-      <Input onChange={onChangePassword} label="mot de passe" type="password" />
-      <Button onClick={onLogin} title="Connexion" />
+    <div className="login-container">
+      <div className="login-title">Connectez-vous avec vos collaborateurs</div>
+      <div className="login-input-email">
+        <Input onChange={onChangeEmail} label="e-mail" type="email" />
+      </div>
+      <div className="login-input-password">
+        <Input onChange={onChangePassword} label="mot de passe" type="password" />
+      </div>
+      <div className="login-button">
+        <Button onClick={onLogin} title="Connexion" />
+      </div>
       {errorMessage && <ErrorMessage message={errorMessage} />}
     </div>
   );

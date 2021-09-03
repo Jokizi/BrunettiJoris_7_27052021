@@ -1,0 +1,27 @@
+.register-container {
+  border: 1px solid #dcdcde;
+  background-color: #f9f9f9;
+  box-shadow: 5px 5px 5px 5px #dcdcde;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 470px;
+  margin: 15px 20%;
+  padding: 10px;
+}
+
+.register-title {
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.register-input {
+  margin-top: 15px;
+}
+
+.register-button {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}

@@ -110,7 +110,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
                 <div>{element.User.username}</div>
               </div>
               <div>
-                {element.User.isAdmin && <FontAwesomeIcon color="blue" icon={["fas", "user-cog"]} />}{" "}
+                {element.User.isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
                 {element.User.isAdmin && "Administrateur"}
               </div>
               <div>{element.createdAt}</div>
