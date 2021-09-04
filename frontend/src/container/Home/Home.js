@@ -113,47 +113,59 @@ const Home = ({ myUserId, admin, setAdmin }) => {
                 {element.User.isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
                 {element.User.isAdmin && "Administrateur"}
               </div>
-              <div>{element.createdAt}</div>
-              <div>{element.title}</div>
-              {element.attachment && (
-                <div className="picture-container">
-                  <img src={element.attachment} alt="img" width="100%" height="100%" />
-                </div>
-              )}
-              <div>{element.content}</div>
-              <LikeDislikeMessage
-                changeLike={changeLike}
-                like={element.likes}
-                dislike={element.dislikes}
-                messageId={element.id}
-                messageLikeByCurrentUser={messageLikeByCurrentUser}
-              />
-              <CommentMessage
-                admin={admin}
-                setAllMessages={setAllMessages}
-                changeComment={changeComment}
-                comments={element.comments}
-                messageId={element.id}
-                myUserId={myUserId}
-              />
-              <ModifyMessage
-                admin={admin}
-                messageId={element.id}
-                title={element.title}
-                attachment={element.attachment}
-                content={element.content}
-                myUserId={myUserId}
-                idUserMessage={element.UserId}
-                setAllMessages={setAllMessages}
-                getMessagesURI="/messages"
-              />
-              <DeleteMessage
-                admin={admin}
-                changeDeleteMessage={changeDeleteMessage}
-                messageId={element.id}
-                myUserId={myUserId}
-                idUserMessage={element.UserId}
-              />
+              <div className="message-date">{element.createdAt}</div>
+              <div className="message-container">
+                <div>{element.title}</div>
+                {element.attachment && (
+                  <div className="picture-container">
+                    <img src={element.attachment} alt="img" width="100%" height="100%" />
+                  </div>
+                )}
+                <div className="message-content">{element.content}</div>
+              </div>
+              <div className="message-like-dislike">
+                <LikeDislikeMessage
+                  changeLike={changeLike}
+                  like={element.likes}
+                  dislike={element.dislikes}
+                  messageId={element.id}
+                  messageLikeByCurrentUser={messageLikeByCurrentUser}
+                />
+              </div>
+              <div className="message-comment">
+                <CommentMessage
+                  admin={admin}
+                  setAllMessages={setAllMessages}
+                  changeComment={changeComment}
+                  comments={element.comments}
+                  messageId={element.id}
+                  myUserId={myUserId}
+                />
+              </div>
+
+              <div className="message-modify">
+                <ModifyMessage
+                  admin={admin}
+                  messageId={element.id}
+                  title={element.title}
+                  attachment={element.attachment}
+                  content={element.content}
+                  myUserId={myUserId}
+                  idUserMessage={element.UserId}
+                  setAllMessages={setAllMessages}
+                  getMessagesURI="/messages"
+                />
+              </div>
+
+              <div className="message-delete">
+                <DeleteMessage
+                  admin={admin}
+                  changeDeleteMessage={changeDeleteMessage}
+                  messageId={element.id}
+                  myUserId={myUserId}
+                  idUserMessage={element.UserId}
+                />
+              </div>
             </div>
           );
         })}

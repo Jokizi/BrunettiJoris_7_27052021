@@ -63,13 +63,13 @@ const Accordion = ({
             (elt) => groupomaniaUser.id === elt.userId
           );
           return (
-            <div key={element.id}>
+            <div className="accordion-comment-card" key={element.id}>
               <div>{element.createdAt}</div>
-              <div>
-                <div className="avatar-picture-comment">
+              <div className="accordion-avatar-name">
+                <div className="avatar-comment-picture">
                   <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />
                 </div>
-                <div>{element.User.username}</div>
+                <div className="accordion-comment-username">{element.User.username}</div>
               </div>
               <div>{element.content}</div>
               <LikeDislikeComment

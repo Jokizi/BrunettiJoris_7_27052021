@@ -88,14 +88,16 @@ const UserProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
                 </div>
                 <div>{element.User.username}</div>
               </div>
-              <div>{element.createdAt}</div>
-              <div>{element.title}</div>
-              {element.attachment && (
-                <div className="picture-container">
-                  <img src={element.attachment} alt="img" width="100%" height="100%" />
-                </div>
-              )}
-              <div>{element.content}</div>
+              <div className="message-date">{element.createdAt}</div>
+              <div className="message-container">
+                <div>{element.title}</div>
+                {element.attachment && (
+                  <div className="picture-container">
+                    <img src={element.attachment} alt="img" width="100%" height="100%" />
+                  </div>
+                )}
+                <div className="message-content">{element.content}</div>
+              </div>
               <LikeDislikeMessage
                 changeLike={changeLike}
                 like={element.likes}

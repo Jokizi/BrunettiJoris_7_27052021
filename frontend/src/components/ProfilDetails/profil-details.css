@@ -8,3 +8,15 @@
   flex-direction: row;
   align-items: center;
 }
+
+.user-button-modify-avatar {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.user-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  margin-top: 20px;
+}

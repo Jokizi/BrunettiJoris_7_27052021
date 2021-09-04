@@ -166,7 +166,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
         <FontAwesomeIcon color="blue" icon={["fas", "user-circle"]} />
         <div>Mon Profil</div>
       </div>
-      <div style={{ padding: "10px", border: "1px solid black" }}>
+      <div style={{ padding: "10px" }}>
         <div> e-mail : {email} </div>
         <div>Pseudonyme : {pseudonyme}</div>
         <div onClick={handleUpdateUsername}>
@@ -191,8 +191,9 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
           <div className="avatar-picture">
             <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={avatar} />
           </div>
-
-          <Button onClick={handleModal} title="Modifier Avatar" />
+          <div className="user-button-modify-avatar">
+            <Button onClick={handleModal} title="Modifier Avatar" />
+          </div>
           <Avatar onChangeAvatar={onChangeAvatar} open={open} close={handleModal} />
         </div>
         <div>
@@ -210,9 +211,13 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
           <Switch color="primary" checked={!isDisable} onChange={handleUpdate} name="UpdateBio" />
         </div>
       </div>
-      <div>
-        <Button onClick={handleUpdateModal} title="Modifier Ma Description" />
-        <Button onClick={handleDeleteModal} title="Supprimer Mon Compte" />
+      <div className="user-buttons-container">
+        <div className="button-modify-bio">
+          <Button onClick={handleUpdateModal} title="Modifier Ma Description" />
+        </div>
+        <div className="button-delete-my-account">
+          <Button onClick={handleDeleteModal} title="Supprimer Mon Compte" />
+        </div>
       </div>
       <ConfirmPopUp
         open={openUpdate}

@@ -138,8 +138,8 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
         </div>
         <div>Description : {infoBio}</div>
         {admin && (
-          <div>
-            <div>
+          <div className="users-buttons-container">
+            <div className="users-button-be-admin">
               <Button
                 onClick={handleAdminToUserModal}
                 title={isOtherUserAdmin ? "Retirer les droits" : "Donner les droits"}
@@ -182,14 +182,16 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
                 {element.User.isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
                 {element.User.isAdmin && "Administrateur"}
               </div>
-              <div>{element.createdAt}</div>
-              <div>{element.title}</div>
-              {element.attachment && (
-                <div className="picture-container">
-                  <img src={element.attachment} alt="img" width="100%" height="100%" />
-                </div>
-              )}
-              <div>{element.content}</div>
+              <div className="message-date">{element.createdAt}</div>
+              <div className="message-container">
+                <div>{element.title}</div>
+                {element.attachment && (
+                  <div className="picture-container">
+                    <img src={element.attachment} alt="img" width="100%" height="100%" />
+                  </div>
+                )}
+                <div className="message-content">{element.content}</div>
+              </div>
               <LikeDislikeMessage
                 changeLike={changeLike}
                 like={element.likes}

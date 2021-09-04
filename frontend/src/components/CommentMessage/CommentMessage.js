@@ -6,6 +6,7 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import { useEffect } from "react";
 import { toastTrigger } from "../../helper/toast";
+import "./commentMessage.css";
 
 const CommentMessage = ({
   messageId,
@@ -67,27 +68,31 @@ const CommentMessage = ({
   };
   return (
     <div>
-      <div>
+      <div className="comment-icon">
         <FontAwesomeIcon color="blue" icon={commentIcon} />
         {comments}
-        <div className="accordions">
-          <Accordion
-            admin={admin}
-            setAllMessages={setAllMessages}
-            title="afficher commentaires"
-            content={content}
-            messageId={messageId}
-            allComments={allComments}
-            setAllComments={setAllComments}
-            myUserId={myUserId}
-            setMessagesOtherUser={setMessagesOtherUser}
-            locationState={locationState}
-          />
-        </div>
       </div>
-      <div>
-        <Input value={content} onChange={onChangeContent} label="votre commentaire" type="text" />
-        <Button onClick={onComment} title="commenter" />
+      <div className="accordions">
+        <Accordion
+          admin={admin}
+          setAllMessages={setAllMessages}
+          title="afficher commentaires"
+          content={content}
+          messageId={messageId}
+          allComments={allComments}
+          setAllComments={setAllComments}
+          myUserId={myUserId}
+          setMessagesOtherUser={setMessagesOtherUser}
+          locationState={locationState}
+        />
+      </div>
+      <div className="comment-input-button">
+        <div className="comment-input">
+          <Input value={content} onChange={onChangeContent} label="votre commentaire" type="text" />
+        </div>
+        <div className="comment-button">
+          <Button onClick={onComment} title="commenter" />
+        </div>
       </div>
     </div>
   );

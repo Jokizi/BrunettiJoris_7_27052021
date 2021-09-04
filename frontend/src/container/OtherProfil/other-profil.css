@@ -1,3 +1,14 @@
+.users-buttons-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  margin-top: 20px;
+}
+
+.users-button-be-admin {
+  margin-right: 15px;
+}
+
 .message-other-user-card-container {
   display: flex;
   justify-content: center;
