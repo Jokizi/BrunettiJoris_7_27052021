@@ -1,0 +1,8 @@
+.like-dislike-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.like-blue {
+  margin-right: 20px;
+}

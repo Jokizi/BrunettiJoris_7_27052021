@@ -4,9 +4,9 @@
   border-bottom: solid 3px #dcdcde;
   justify-content: space-between;
   background-image: url(../../assets/4931029.jpg);
-  /*position: fixed;
+  position: fixed;
   width: 100%;
-  z-index: 500;*/
+  z-index: 99;
 }
 
 .grpm-logo_1 {

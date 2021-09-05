@@ -90,8 +90,8 @@ const LikeDislikeComment = ({
   };
 
   return (
-    <div>
-      <div>
+    <div className="like-dislike-container">
+      <div className="like-blue">
         <FontAwesomeIcon onClick={onLike} color="blue" icon={pushLike} />
         {commentLike}
       </div>

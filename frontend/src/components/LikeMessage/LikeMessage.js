@@ -3,6 +3,7 @@ import api from "../../Config/Api";
 import { useState } from "react";
 import { useEffect } from "react";
 import { toastTrigger } from "../../helper/toast";
+import "./likemessage.css";
 
 const LikeDislikeMessage = ({ messageId, like, dislike, changeLike, messageLikeByCurrentUser }) => {
   const [pushLike, setPushLike] = useState(["far", "thumbs-up"]);
@@ -80,14 +81,12 @@ const LikeDislikeMessage = ({ messageId, like, dislike, changeLike, messageLikeB
   };
 
   return (
-    <div>
-      <div>
-        <FontAwesomeIcon onClick={onLike} color="blue" icon={pushLike} />
-        {like}
+    <div className="like-dislike-container">
+      <div className="like-blue">
+        <FontAwesomeIcon onClick={onLike} color="blue" icon={pushLike} /> {like}
       </div>
       <div>
-        <FontAwesomeIcon onClick={onDislike} color="red" icon={pushDislike} />
-        {dislike}
+        <FontAwesomeIcon onClick={onDislike} color="red" icon={pushDislike} /> {dislike}
       </div>
     </div>
   );
