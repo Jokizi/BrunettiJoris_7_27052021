@@ -50,9 +50,8 @@ const ModifyComment = ({ myUserId, idUserComment, commentId, content, messageId,
   return (
     <div>
       {myUserId === idUserComment && (
-        <div>
-          <FontAwesomeIcon onClick={handleModal} color="blue" icon={["far", "edit"]} />
-          modifier
+        <div onClick={handleModal}>
+          <FontAwesomeIcon color="blue" icon={["far", "edit"]} /> modifier
         </div>
       )}
       <ModifCommentPopUp

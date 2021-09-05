@@ -71,33 +71,40 @@ const Accordion = ({
                 </div>
                 <div className="accordion-comment-username">{element.User.username}</div>
               </div>
-              <div>{element.content}</div>
-              <LikeDislikeComment
-                changeLikeComment={changeLikeComment}
-                commentLike={element.commentLikes}
-                commentDislike={element.commentDislikes}
-                commentId={element.id}
-                messageCommentLikeByCurrentUser={messageCommentLikeByCurrentUser}
-              />
-              <ModifyComment
-                setAllComments={setAllComments}
-                myUserId={myUserId}
-                idUserComment={element.UserId}
-                messageId={messageId}
-                commentId={element.id}
-                content={element.content}
-              />
-              <DeleteComment
-                admin={admin}
-                setAllMessages={setAllMessages}
-                changeDeleteComment={changeDeleteComment}
-                commentId={element.id}
-                messageId={messageId}
-                myUserId={myUserId}
-                idUserComment={element.UserId}
-                setMessagesOtherUser={setMessagesOtherUser}
-                locationState={locationState}
-              />
+              <div className="accordion-comment-content">{element.content}</div>
+              <div className="accordion-comment-like-modify-delete-container">
+                <div className="accordion-comment-like-dislike">
+                  <LikeDislikeComment
+                    changeLikeComment={changeLikeComment}
+                    commentLike={element.commentLikes}
+                    commentDislike={element.commentDislikes}
+                    commentId={element.id}
+                    messageCommentLikeByCurrentUser={messageCommentLikeByCurrentUser}
+                  />
+                </div>
+                <div className="accordion-comment-modify-delete">
+                  <ModifyComment
+                    setAllComments={setAllComments}
+                    myUserId={myUserId}
+                    idUserComment={element.UserId}
+                    messageId={messageId}
+                    commentId={element.id}
+                    content={element.content}
+                  />
+
+                  <DeleteComment
+                    admin={admin}
+                    setAllMessages={setAllMessages}
+                    changeDeleteComment={changeDeleteComment}
+                    commentId={element.id}
+                    messageId={messageId}
+                    myUserId={myUserId}
+                    idUserComment={element.UserId}
+                    setMessagesOtherUser={setMessagesOtherUser}
+                    locationState={locationState}
+                  />
+                </div>
+              </div>
             </div>
           );
         })}

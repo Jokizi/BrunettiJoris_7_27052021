@@ -55,8 +55,10 @@ const ModifPopUp = ({
           rows={4}
           variant="outlined"
         />
-        <Button title={buttonTitle1} onClick={onUpdate} />
-        <Button title={buttonTitle2} onClick={handleModal} />
+        <div className="modif-pop-up-buttons">
+          <Button title={buttonTitle1} onClick={onUpdate} />
+          <Button title={buttonTitle2} onClick={handleModal} />
+        </div>
       </div>
     </Dialog>
   );

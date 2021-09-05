@@ -1,3 +1,9 @@
 .modif-pop-up-container {
   padding: 30px;
 }
+
+.modif-pop-up-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
