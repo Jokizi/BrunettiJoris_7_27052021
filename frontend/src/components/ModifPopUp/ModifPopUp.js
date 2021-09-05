@@ -55,7 +55,13 @@ const ModifPopUp = ({
             <Input onChange={onUploadFile} type="file" />
           </div>
           <div>
-            <InputTextArea value={newContent} onChange={onUploadFile} label="Publication" rows={4} variant="outlined" />
+            <InputTextArea
+              value={newContent}
+              onChange={onChangeContent}
+              label="Publication"
+              rows={4}
+              variant="outlined"
+            />
           </div>
         </div>
         <div className="modif-pop-up-buttons">
