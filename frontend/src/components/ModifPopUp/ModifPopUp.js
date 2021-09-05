@@ -46,7 +46,7 @@ const ModifPopUp = ({
           <div className="modif-pop-up-input-title">
             <Input value={newTitle} onChange={onChangeTitle} label="Titre" type="text" />
             {attachment && (
-              <div style={{ width: "60%%" }} className="modif-pop-up-picture">
+              <div style={{ width: "90%" }} className="modif-pop-up-picture">
                 <img src={newFile} alt="img" style={{ width: "100%", height: "100%" }} />
               </div>
             )}
