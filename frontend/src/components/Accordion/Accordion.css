@@ -79,6 +79,7 @@
 }
 
 .accordion-comment-content {
+  word-break: break-all;
   margin: 10px;
 }
 

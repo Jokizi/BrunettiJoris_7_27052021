@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Input from "../../components/Input/Input";
 import InputTextArea from "../../components/Input/InputTextARea";
 import Button from "../../components/Button/Button";
+import ButtonFile from "../Button/ButtonFile";
 import api from "../../Config/Api";
 import FormData from "form-data";
 import { toastTrigger } from "../../helper/toast";
@@ -10,11 +11,12 @@ import "./PostMessage.css";
 class PostMessage extends Component {
   constructor(props) {
     super(props);
-    this.state = { file: "", title: "", content: "", theInputKey: "" };
+    this.state = { file: "", title: "", content: "", theInputKey: "", activePicture: false };
   }
 
   onUploadFile = (e) => {
     this.setState({ file: e.target.files[0] });
+    this.setState({ activePicture: true });
   };
 
   onChangeTitle = (e) => {
@@ -36,6 +38,7 @@ class PostMessage extends Component {
     const obj = { title, content };
     const json = JSON.stringify(obj);
     const formData = new FormData();
+
     formData.append("image", file);
     formData.append("message", json);
     if (this.props.isProfil) {
@@ -121,7 +124,7 @@ class PostMessage extends Component {
             <Input value={title} onChange={this.onChangeTitle} label="Titre" type="text" />
           </div>
           <div className="input-file">
-            <Input onChange={this.onUploadFile} type="file" theInputKey={this.state.theInputKey} />
+            <ButtonFile onChange={this.onUploadFile} type="file" theInputKey={this.state.theInputKey} />
           </div>
           <div className="input-content">
             <InputTextArea
@@ -134,6 +137,9 @@ class PostMessage extends Component {
             />
           </div>
         </div>
+        {this.state.activePicture && this.state.file?.name !== undefined && (
+          <div className="picture-name">{this.state.file?.name}</div>
+        )}
         <div className="button-publish">
           <Button onClick={this.onPublish} title="Publier" />
         </div>

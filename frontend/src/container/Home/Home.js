@@ -91,8 +91,10 @@ const Home = ({ myUserId, admin, setAdmin }) => {
 
   return (
     <div className="grpm-home">
-      <div className="post-message-container">
-        <PostMessage viewMessagesPost={viewMessagesPost} />
+      <div>
+        <div className="post-message-container">
+          <PostMessage viewMessagesPost={viewMessagesPost} />
+        </div>
       </div>
       <div className="search-user-container">
         <OutlinedChips myUserId={myUserId} />
@@ -115,7 +117,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
               </div>
               <div className="message-date">{element.createdAt}</div>
               <div className="message-container">
-                <div>{element.title}</div>
+                <div className="message-title">{element.title}</div>
                 {element.attachment && (
                   <div className="picture-container">
                     <img src={element.attachment} alt="img" width="100%" height="100%" />
@@ -148,6 +150,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
                   admin={admin}
                   messageId={element.id}
                   title={element.title}
+                  oldAttachement={element.attachment}
                   attachment={element.attachment}
                   content={element.content}
                   myUserId={myUserId}

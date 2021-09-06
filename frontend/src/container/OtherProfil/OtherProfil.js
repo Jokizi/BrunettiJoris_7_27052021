@@ -184,7 +184,7 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
               </div>
               <div className="message-date">{element.createdAt}</div>
               <div className="message-container">
-                <div>{element.title}</div>
+                <div className="message-title">{element.title}</div>
                 {element.attachment && (
                   <div className="picture-container">
                     <img src={element.attachment} alt="img" width="100%" height="100%" />
@@ -214,6 +214,7 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
                 messageId={element.id}
                 title={element.title}
                 attachment={element.attachment}
+                oldAttachement={element.attachment}
                 content={element.content}
                 myUserId={myUserId}
                 idUserMessage={element.UserId}

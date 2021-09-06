@@ -27,4 +27,12 @@
 
 .modif-pop-up-input-file {
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.modif-pop-up-icon-picture {
+  font-size: 25px;
+  margin-right: 5px;
 }

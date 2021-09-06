@@ -7,6 +7,7 @@
   flex-direction: column;
   align-items: center;
   margin-top: 15px;
+  margin-bottom: 10px;
 }
 .post-message-title {
   font-weight: bold;
@@ -15,10 +16,10 @@
 }
 
 .input-container {
-  height: 80px;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-bottom: 10px;
 }
 
 .input-title {
@@ -28,7 +29,18 @@
 
 .input-file {
   margin-right: 20px;
-  width: 336px;
+
+  border: 1px solid #fc930c;
+  height: 54px;
+  border-radius: 4px;
+}
+
+.picture-name {
+  padding: 5px;
+  text-align: center;
+  word-break: break-all;
+  overflow-y: scroll;
+  margin-bottom: 10px;
 }
 
 .input-content {

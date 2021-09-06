@@ -14,6 +14,7 @@ const ModifyMessage = ({
   title,
   content,
   attachment,
+  oldAttachement,
   setAllMessages,
   setMessagesOtherUser,
   getMessagesURI,
@@ -26,6 +27,7 @@ const ModifyMessage = ({
 
   const handleModal = () => {
     setOpen(!open);
+    setNewFile(oldAttachement);
   };
 
   const onUpdate = async () => {
@@ -35,7 +37,11 @@ const ModifyMessage = ({
     const formData = new FormData();
     formData.append("image", fileToSend);
     formData.append("message", json);
-    if ((title === newTitle && content === newContent) || newTitle === "" || newContent === "") {
+    if (
+      (title === newTitle && content === newContent && newFile === oldAttachement) ||
+      newTitle === "" ||
+      newContent === ""
+    ) {
       toastTrigger("error", "Rien n'a été modifié");
       setOpen(false);
       return;
@@ -80,6 +86,7 @@ const ModifyMessage = ({
         </div>
       )}
       <ModifPopUp
+        oldAttachement={oldAttachement}
         open={open}
         handleModal={handleModal}
         modalTitle="Modifier la publication"

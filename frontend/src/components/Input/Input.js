@@ -25,7 +25,7 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
-const Input = ({ label, type = "text", onChange, value, theInputKey }) => {
+const Input = ({ label, type = "text", onChange, value, theInputKey, onClick }) => {
   return (
     <CssTextField
       value={value}
@@ -35,6 +35,7 @@ const Input = ({ label, type = "text", onChange, value, theInputKey }) => {
       type={type}
       autoComplete="off"
       key={theInputKey || ""}
+      onClick={onClick}
     />
   );
 };

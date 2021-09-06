@@ -46,6 +46,11 @@
   margin-bottom: 10px;
 }
 
+.message-title {
+  font-weight: bold;
+  word-break: break-all;
+}
+
 .picture-container {
   display: flex;
 
@@ -54,6 +59,7 @@
 }
 
 .message-content {
+  word-break: break-all;
   padding-bottom: 10px;
 }
 
