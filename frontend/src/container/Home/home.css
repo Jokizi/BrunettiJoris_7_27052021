@@ -33,6 +33,10 @@
   color: #fc930c;
 }
 
+.message-is-admin {
+  font-style: italic;
+}
+
 .message-date {
   padding-bottom: 20px;
 }

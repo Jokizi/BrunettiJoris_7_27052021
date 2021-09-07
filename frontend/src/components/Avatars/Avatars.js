@@ -58,8 +58,8 @@ const Avatar = ({ onChangeAvatar, close, open, handleModal }) => {
   return (
     <Dialog open={open} onClose={handleModal}>
       <div>
-        <div className="style">
-          <div className="test">
+        <div className="avatar-choice-container">
+          <div>
             {tab &&
               tab.map((element, i) => {
                 return (
@@ -70,7 +70,9 @@ const Avatar = ({ onChangeAvatar, close, open, handleModal }) => {
               })}
           </div>
         </div>
-        <Button onClick={onSubmit} title="Valider l'avatar" />
+        <div className="avatar-button">
+          <Button onClick={onSubmit} title="Valider l'avatar" />
+        </div>
       </div>
     </Dialog>
   );

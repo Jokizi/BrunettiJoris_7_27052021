@@ -1,5 +1,15 @@
 .grpm-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   height: 50px;
-  background-color: black;
+  background-image: url(../../assets/4931029.jpg);
   color: #fff;
+}
+
+.grpm-footer-content {
+  font-style: italic;
+  font-weight: bold;
+  margin-top: 15px;
+  color: #fc930c;
 }

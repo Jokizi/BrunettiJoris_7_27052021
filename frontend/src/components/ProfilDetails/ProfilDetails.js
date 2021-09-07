@@ -162,82 +162,89 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
   return (
     <div>
-      <div>
-        <FontAwesomeIcon color="blue" icon={["fas", "user-circle"]} />
-        <div>Mon Profil</div>
-      </div>
-      <div style={{ padding: "10px" }}>
-        <div> e-mail : {email} </div>
-        <div>Pseudonyme : {pseudonyme}</div>
-        <div onClick={handleUpdateUsername}>
-          <FontAwesomeIcon color="blue" icon={["far", "edit"]} />
-          modifier pseudonyme
+      <div className="user-profil-big-container">
+        <div className="user-profil-title">
+          <div>Mon Profil</div>
         </div>
-        <ModifCommentPopUp
-          open={openUsername}
-          onChange={onChangeUsername}
-          handleModal={handleUpdateUsername}
-          onUpdate={onUpdateUsername}
-          modalTitle="Modifier votre pseudonyme"
-          label="Modifier pseudonyme"
-          buttonTitle1="Sauvegarder Modifications"
-          buttonTitle2="Annuler Modifications"
-        />
-        <div>
-          {isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />} {isAdmin && "Administrateur"}
-        </div>
-        <div>
-          <div>Avatar :</div>
-          <div className="avatar-picture">
-            <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={avatar} />
+        <div className="user-profil-container">
+          <div className="avatar-container">
+            <div>Avatar :</div>
+            <div className="avatar-picture">
+              <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={avatar} />
+            </div>
+            <div className="user-button-modify-avatar">
+              <Button onClick={handleModal} title="Modifier Avatar" />
+            </div>
+            <Avatar onChangeAvatar={onChangeAvatar} open={open} close={handleModal} />
           </div>
-          <div className="user-button-modify-avatar">
-            <Button onClick={handleModal} title="Modifier Avatar" />
+
+          <div className="user-name-container">
+            <div className="user-email"> e-mail : {email} </div>
+            <div className="user-name">Pseudonyme : {pseudonyme}</div>
+            <div className="message-is-admin">
+              {isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />} {isAdmin && "Administrateur"}
+            </div>
+            <div onClick={handleUpdateUsername}>
+              <FontAwesomeIcon color="blue" icon={["far", "edit"]} /> modifier pseudonyme
+            </div>
+            <ModifCommentPopUp
+              open={openUsername}
+              onChange={onChangeUsername}
+              handleModal={handleUpdateUsername}
+              onUpdate={onUpdateUsername}
+              modalTitle="Modifier votre pseudonyme"
+              label="Modifier pseudonyme"
+              buttonTitle1="Sauvegarder Modifications"
+              buttonTitle2="Annuler Modifications"
+            />
           </div>
-          <Avatar onChangeAvatar={onChangeAvatar} open={open} close={handleModal} />
-        </div>
-        <div>
-          <InputTextArea
-            disabled={isDisable}
-            rows={4}
-            variant="outlined"
-            label="Description"
-            onChange={onChangeBio}
-            value={bio}
+          <div className="user-description-container">
+            <div className="user-description-input">
+              <InputTextArea
+                disabled={isDisable}
+                rows={4}
+                variant="outlined"
+                label="Description"
+                onChange={onChangeBio}
+                value={bio}
+              />
+            </div>
+            <div>
+              Mettre à jour votre description :
+              <div>
+                <Switch color="primary" checked={!isDisable} onChange={handleUpdate} name="UpdateBio" />
+              </div>
+              <div className="button-modify-bio">
+                <Button onClick={handleUpdateModal} title="Modifier Ma Description" />
+              </div>
+            </div>
+          </div>
+
+          <div className="button-delete-my-account">
+            <Button onClick={handleDeleteModal} title="Supprimer Mon Compte" />
+          </div>
+
+          <ConfirmPopUp
+            open={openUpdate}
+            handleModal={handleUpdateModal}
+            modalTitle="Modifier la Description ?"
+            buttonTitle1="Sauvegarder Modifications"
+            buttonTitle2="Annuler Modifications"
+            confirmModalAction={onUpdateBio}
+            bio={bio}
+            setBio={setBio}
+          />
+
+          <ConfirmPopUp
+            open={openDelete}
+            handleModal={handleDeleteModal}
+            confirmModalAction={onDeleteUser}
+            modalTitle="Supprimer votre compte ?"
+            buttonTitle1="Confirmer"
+            buttonTitle2="Annuler"
           />
         </div>
-        <div>Mettre à jour votre description :</div>
-        <div>
-          <Switch color="primary" checked={!isDisable} onChange={handleUpdate} name="UpdateBio" />
-        </div>
       </div>
-      <div className="user-buttons-container">
-        <div className="button-modify-bio">
-          <Button onClick={handleUpdateModal} title="Modifier Ma Description" />
-        </div>
-        <div className="button-delete-my-account">
-          <Button onClick={handleDeleteModal} title="Supprimer Mon Compte" />
-        </div>
-      </div>
-      <ConfirmPopUp
-        open={openUpdate}
-        handleModal={handleUpdateModal}
-        modalTitle="Modifier la Description ?"
-        buttonTitle1="Sauvegarder Modifications"
-        buttonTitle2="Annuler Modifications"
-        confirmModalAction={onUpdateBio}
-        bio={bio}
-        setBio={setBio}
-      />
-
-      <ConfirmPopUp
-        open={openDelete}
-        handleModal={handleDeleteModal}
-        confirmModalAction={onDeleteUser}
-        modalTitle="Supprimer votre compte ?"
-        buttonTitle1="Confirmer"
-        buttonTitle2="Annuler"
-      />
     </div>
   );
 };

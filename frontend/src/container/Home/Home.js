@@ -111,7 +111,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
                 </div>
                 <div>{element.User.username}</div>
               </div>
-              <div>
+              <div className="message-is-admin">
                 {element.User.isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
                 {element.User.isAdmin && "Administrateur"}
               </div>

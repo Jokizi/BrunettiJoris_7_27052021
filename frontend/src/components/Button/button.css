@@ -6,13 +6,14 @@
   padding-bottom: 11px;
   padding-left: 1em;
   padding-right: 1em;
-  /*margin-bottom: 1.5em;*/
+
   color: black;
   min-width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #fc930c;
+  cursor: pointer;
 }
 
 .icon-button {

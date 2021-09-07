@@ -132,7 +132,7 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
           <img className="avatar-picture" src={infoAvatar} />
         </div>
         <div>Pseudonyme : {infoPseudonyme}</div>
-        <div>
+        <div className="message-is-admin">
           {isOtherUserAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
           {isOtherUserAdmin && "Administrateur"}
         </div>
@@ -178,7 +178,7 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
                 </div>
                 <div>{element.User.username}</div>
               </div>
-              <div>
+              <div className="message-is-admin">
                 {element.User.isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
                 {element.User.isAdmin && "Administrateur"}
               </div>

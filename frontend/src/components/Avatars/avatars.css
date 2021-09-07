@@ -1,22 +1,14 @@
-.style {
-  display: flex;
-  flex-direction: row;
+.avatar-choice-container {
   font-size: 14px;
-  color: #4a4747;
-  font-family: roboto;
-  line-height: 23px;
+
+  line-height: 25px;
   margin-bottom: 0px;
-  padding: 0px 15px 0px;
+  padding: 15px 15px 0px 15px;
   height: 400px;
   overflow-y: scroll;
   text-align: justify;
 }
-.test {
-  display: flex;
-  flex-wrap: wrap;
-}
-.new {
-  width: 100px;
-  height: 20px;
-  margin-top: 10px;
+
+.avatar-button {
+  margin: 10px;
 }

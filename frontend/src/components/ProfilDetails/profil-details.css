@@ -1,7 +1,43 @@
+.user-profil-big-container {
+  padding: 10px;
+  border: 1px solid #dcdcde;
+  margin: 10px 0;
+  background-color: white;
+  box-shadow: 5px 5px 5px 5px #dcdcde;
+}
+
+.user-profil-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #fc930c;
+}
+
+.user-profil-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .avatar-picture {
   width: 60px;
   border-radius: 50%;
   margin-right: 8px;
+}
+
+.user-name-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .avatar-name {
   display: flex;
@@ -14,9 +50,20 @@
   margin-bottom: 20px;
 }
 
-.user-buttons-container {
-  display: flex;
-  justify-content: space-between;
+.user-email {
   margin-bottom: 30px;
-  margin-top: 20px;
+  word-break: break-all;
+}
+
+.user-name {
+  word-break: break-all;
+}
+
+.user-description-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.user-description-input {
+  margin-right: 10px;
 }
