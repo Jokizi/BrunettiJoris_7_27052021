@@ -125,8 +125,8 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
   };
 
   return (
-    <div>
-      <div>
+    <div className="profil-details-container">
+      <div className="user-profil-big-container">
         <div>
           Avatar :
           <img className="avatar-picture" src={infoAvatar} />

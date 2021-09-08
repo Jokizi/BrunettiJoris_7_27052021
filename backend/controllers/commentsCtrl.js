@@ -334,7 +334,7 @@ module.exports = {
                 return res.status(201).json(commentFound);
               })
               .catch((err) => {
-                return res.status(500).json({ error: "unable to delet this comment" });
+                return res.status(500).json({ error: "impossible de supprimer ce commentaire" });
               });
           } else {
             models.Comment.destroy({
@@ -348,11 +348,11 @@ module.exports = {
                 return res.status(201).json(commentFound);
               })
               .catch((err) => {
-                return res.status(500).json({ error: "unable to delet this comment" });
+                return res.status(500).json({ error: "impossible de supprimer ce commentaire" });
               });
           }
         } else {
-          return res.status(500).json({ error: "comment not found" });
+          return res.status(500).json({ error: "commentaire invtrouvable" });
         }
       },
     ]);

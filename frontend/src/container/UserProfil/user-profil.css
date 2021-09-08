@@ -1,3 +1,14 @@
+.profil-details-container {
+  padding: 20px;
+
+  border-bottom: 2px solid #dcdcde;
+}
+
+.post-message-container {
+  padding: 20px 0 20px 20px;
+  border-bottom: 2px solid #dcdcde;
+}
+
 .message-user-card-container {
   display: flex;
   justify-content: center;

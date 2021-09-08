@@ -19,13 +19,11 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [pseudonyme, setPseudonyme] = useState("");
   const [isDisable, setIsDisable] = useState(true);
   const [bio, setBio] = useState("");
-
   const [avatar, setAvatar] = useState("");
   const [isAdmin, setIsAdmin] = useState(null);
   const [open, setOpen] = useState(false);
   const [openUsername, setOpenUsername] = useState(false);
   const [newUsername, setNewUsername] = useState("");
-
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
 
   useEffect(() => {

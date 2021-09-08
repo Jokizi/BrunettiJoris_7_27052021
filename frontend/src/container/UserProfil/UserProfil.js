@@ -71,10 +71,10 @@ const UserProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
 
   return (
     <div>
-      <div style={{ padding: "10px", border: "1px solid black" }}>
+      <div className="profil-details-container">
         <ProfilDetails admin={admin} myUserId={myUserId} setIsLoggedin={setIsLoggedin} setCheckLogin={setCheckLogin} />
       </div>
-      <div style={{ padding: "10px", border: "1px solid black" }}>
+      <div className="post-message-container">
         <PostMessage viewMessagesPost={viewMessagesPost} isProfil={true} />
       </div>
       <div className="message-user-card-container">
