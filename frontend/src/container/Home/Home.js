@@ -91,10 +91,8 @@ const Home = ({ myUserId, admin, setAdmin }) => {
 
   return (
     <div className="grpm-home">
-      <div>
-        <div className="post-message-container">
-          <PostMessage viewMessagesPost={viewMessagesPost} />
-        </div>
+      <div className="post-message-container">
+        <PostMessage viewMessagesPost={viewMessagesPost} />
       </div>
       <div className="search-user-container">
         <OutlinedChips myUserId={myUserId} />

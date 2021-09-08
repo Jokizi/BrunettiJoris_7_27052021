@@ -8,6 +8,7 @@
   align-items: center;
   margin-top: 15px;
   margin-bottom: 10px;
+  width: 80%;
 }
 .post-message-title {
   font-weight: bold;
@@ -29,7 +30,6 @@
 
 .input-file {
   margin-right: 20px;
-
   border: 1px solid #fc930c;
   height: 54px;
   border-radius: 4px;

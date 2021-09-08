@@ -65,10 +65,10 @@ export default function OutlinedChips({ myUserId }) {
         .map((element) => {
           return (
             <Chip
-              style={{ width: "20%", height: "5em", color: "black", borderColor: "#fc930c" }}
+              style={{ width: "12%", height: "45px", color: "black", borderColor: "#fc930c" }}
               key={element.id}
               avatar={
-                <Avatar style={{ width: "25%", height: "52px" }}>
+                <Avatar style={{ width: "20%", height: "35px" }}>
                   {<img src={element.avatar} style={{ width: "100%", height: "52px" }} />}
                 </Avatar>
               }
