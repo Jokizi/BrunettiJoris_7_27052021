@@ -323,7 +323,7 @@ module.exports = {
       },*/
       function (messageFound, commentFound, userFoundAdmin, done) {
         if (commentFound) {
-          if (commentFound.userId === userId || (userFoundAdmin.isAdmin === true && userFoundAdmin.userId === userId)) {
+          if (commentFound.UserId === userId || (userFoundAdmin.isAdmin === true && userFoundAdmin.id === userId)) {
             models.Comment.destroy({
               where: { id: commentId },
             })
@@ -331,7 +331,6 @@ module.exports = {
                 messageFound.update({
                   comments: messageFound.comments - 1,
                 });
-
                 return res.status(201).json(commentFound);
               })
               .catch((err) => {
