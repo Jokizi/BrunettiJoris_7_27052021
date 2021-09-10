@@ -1,3 +1,20 @@
+.users-profil-big-container {
+  padding: 10px;
+  border: 1px solid #dcdcde;
+  margin: 10px 0 15px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px 5px #dcdcde;
+}
+
+.users-profil-infos {
+  margin: 20px 0 15px 20px;
+}
+
+.users-avatar {
+  display: flex;
+  align-items: center;
+}
 .other-user-pseudo {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -9,9 +26,8 @@
 
 .users-buttons-container {
   display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
-  margin-top: 20px;
+  justify-content: end;
+  margin: 0 15px 15px 15px;
 }
 
 .users-button-be-admin {

@@ -85,7 +85,7 @@ const LikeDislikeMessage = ({ messageId, like, dislike, changeLike, messageLikeB
       <div className="like-blue">
         <FontAwesomeIcon onClick={onLike} color="blue" icon={pushLike} /> {like}
       </div>
-      <div>
+      <div className="like-icon">
         <FontAwesomeIcon onClick={onDislike} color="red" icon={pushDislike} /> {dislike}
       </div>
     </div>

@@ -75,8 +75,12 @@ const ModifPopUp = ({
           </div>
         </div>
         <div className="modif-pop-up-buttons">
-          <Button title={buttonTitle1} onClick={onUpdate} />
-          <Button title={buttonTitle2} onClick={handleModal} />
+          <div className="button-save-modif">
+            <Button title={buttonTitle1} onClick={onUpdate} />
+          </div>
+          <div>
+            <Button title={buttonTitle2} onClick={handleModal} />
+          </div>
         </div>
       </div>
     </Dialog>

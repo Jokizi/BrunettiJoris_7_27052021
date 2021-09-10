@@ -48,6 +48,7 @@
 
 .user-button-modify-avatar {
   display: flex;
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 

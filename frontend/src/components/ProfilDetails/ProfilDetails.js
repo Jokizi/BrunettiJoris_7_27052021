@@ -182,7 +182,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
             <div className="message-is-admin">
               {isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />} {isAdmin && "Administrateur"}
             </div>
-            <div onClick={handleUpdateUsername}>
+            <div className="modify-icon" onClick={handleUpdateUsername}>
               <FontAwesomeIcon color="blue" icon={["far", "edit"]} /> modifier pseudonyme
             </div>
             <ModifCommentPopUp
@@ -214,33 +214,31 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
               </div>
               <div className="button-modify-bio">
                 <Button onClick={handleUpdateModal} title="Modifier Ma Description" />
+                <ConfirmPopUp
+                  open={openUpdate}
+                  handleModal={handleUpdateModal}
+                  modalTitle="Modifier la Description ?"
+                  buttonTitle1="Oui"
+                  buttonTitle2="Non"
+                  confirmModalAction={onUpdateBio}
+                  bio={bio}
+                  setBio={setBio}
+                />
               </div>
             </div>
           </div>
 
           <div className="button-delete-my-account">
             <Button onClick={handleDeleteModal} title="Supprimer Mon Compte" />
+            <ConfirmPopUp
+              open={openDelete}
+              handleModal={handleDeleteModal}
+              confirmModalAction={onDeleteUser}
+              modalTitle="Supprimer votre compte ?"
+              buttonTitle1="Oui"
+              buttonTitle2="Non"
+            />
           </div>
-
-          <ConfirmPopUp
-            open={openUpdate}
-            handleModal={handleUpdateModal}
-            modalTitle="Modifier la Description ?"
-            buttonTitle1="Sauvegarder Modifications"
-            buttonTitle2="Annuler Modifications"
-            confirmModalAction={onUpdateBio}
-            bio={bio}
-            setBio={setBio}
-          />
-
-          <ConfirmPopUp
-            open={openDelete}
-            handleModal={handleDeleteModal}
-            confirmModalAction={onDeleteUser}
-            modalTitle="Supprimer votre compte ?"
-            buttonTitle1="Confirmer"
-            buttonTitle2="Annuler"
-          />
         </div>
       </div>
     </div>

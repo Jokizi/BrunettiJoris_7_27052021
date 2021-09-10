@@ -77,7 +77,7 @@ const DeleteComment = ({
   return (
     <div>
       {(myUserId === idUserComment || admin === true) && (
-        <div onClick={handleModal}>
+        <div className="delete-icon" onClick={handleModal}>
           <FontAwesomeIcon color="red" icon={["far", "trash-alt"]} /> supprimer
         </div>
       )}

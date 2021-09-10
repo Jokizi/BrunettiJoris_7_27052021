@@ -4,6 +4,7 @@ import { useState } from "react";
 import ModifPopUp from "../ModifPopUp/ModifPopUp";
 import FormData from "form-data";
 import { toastTrigger } from "../../helper/toast";
+import "./modify-message.css";
 
 const ModifyMessage = ({
   messagesOtherUser,
@@ -81,7 +82,7 @@ const ModifyMessage = ({
   return (
     <div>
       {(myUserId === idUserMessage || admin === true) && (
-        <div onClick={handleModal}>
+        <div className="modify-icon" onClick={handleModal}>
           <FontAwesomeIcon color="blue" icon={["far", "edit"]} /> modifier
         </div>
       )}

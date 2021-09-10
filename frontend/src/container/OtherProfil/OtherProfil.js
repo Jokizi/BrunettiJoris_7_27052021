@@ -126,17 +126,19 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
 
   return (
     <div className="profil-details-container">
-      <div className="user-profil-big-container">
-        <div>
-          Avatar :
-          <img className="avatar-picture" src={infoAvatar} />
+      <div className="users-profil-big-container">
+        <div className="users-profil-infos">
+          <div className="users-avatar">
+            Avatar :
+            <img className="avatar-picture" src={infoAvatar} />
+          </div>
+          <div className="other-user-pseudo">Pseudonyme : {infoPseudonyme}</div>
+          <div className="message-is-admin">
+            {isOtherUserAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
+            {isOtherUserAdmin && "Administrateur"}
+          </div>
+          <div className="other-user-bio">Description : {infoBio}</div>
         </div>
-        <div className="other-user-pseudo">Pseudonyme : {infoPseudonyme}</div>
-        <div className="message-is-admin">
-          {isOtherUserAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
-          {isOtherUserAdmin && "Administrateur"}
-        </div>
-        <div className="other-user-bio">Description : {infoBio}</div>
         {admin && (
           <div className="users-buttons-container">
             <div className="users-button-be-admin">
@@ -149,8 +151,8 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
                 handleModal={handleAdminToUserModal}
                 confirmModalAction={adminPower}
                 modalTitle="Donner ou Enlever les droits administrateur à cet utilisateur ?"
-                buttonTitle1="Confirmer"
-                buttonTitle2="Annuler"
+                buttonTitle1="Oui"
+                buttonTitle2="Non"
               />
             </div>
             <div>
@@ -160,8 +162,8 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
                 handleModal={handleDeleteModal}
                 confirmModalAction={onDeleteOtherUser}
                 modalTitle="Supprimer le compte de cet Utilisateur ?"
-                buttonTitle1="Confirmer"
-                buttonTitle2="Annuler"
+                buttonTitle1="Oui"
+                buttonTitle2="Non"
               />
             </div>
           </div>

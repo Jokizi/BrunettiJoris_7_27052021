@@ -13,6 +13,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     flexWrap: "wrap",
+    backgroundColor: "#f9f9f9",
+    boxShadow: "5px 5px 5px 5px #dcdcde",
+    borderRadius: "5px",
+    paddingTop: "15px",
+    paddingBottom: "15px",
     "& > *": {
       margin: theme.spacing(0.5),
     },
@@ -65,10 +70,18 @@ export default function OutlinedChips({ myUserId }) {
         .map((element) => {
           return (
             <Chip
-              style={{ width: "12%", height: "45px", color: "black", borderColor: "#fc930c" }}
+              style={{
+                width: "12%",
+                height: "45px",
+                color: "black",
+                borderColor: "#fc930c",
+                borderRadius: "50px",
+                displayFlex: "flex",
+                justifyContent: "start",
+              }}
               key={element.id}
               avatar={
-                <Avatar style={{ width: "20%", height: "35px" }}>
+                <Avatar style={{ width: "20%", height: "35px", marginRight: "10px" }}>
                   {<img src={element.avatar} style={{ width: "100%", height: "52px" }} />}
                 </Avatar>
               }

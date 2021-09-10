@@ -17,6 +17,7 @@
 .img-logo-1 {
   height: auto;
   width: 100%;
+  cursor: pointer;
 }
 
 .grpm-buttons-log {
