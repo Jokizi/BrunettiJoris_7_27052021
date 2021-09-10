@@ -6,8 +6,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  height: 200px;
   margin: 15px 20% 15px 20%;
   padding: 10px;
 }
@@ -24,4 +22,26 @@
 
 .landing-button-login {
   margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 1259px) {
+  .landing-container {
+    margin: 15px 0;
+  }
+}
+@media screen and (max-width: 1035px) {
+  .landing-container {
+    margin: 15px 0;
+  }
+}
+@media screen and (max-width: 428px) {
+  .landing-container {
+    margin: 15px 0;
+  }
+}
+@media screen and (max-width: 228px) {
+  .landing-container {
+    margin: 15px 0;
+  }
 }

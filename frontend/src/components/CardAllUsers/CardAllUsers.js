@@ -76,6 +76,7 @@ export default function OutlinedChips({ myUserId }) {
                 color: "black",
                 borderColor: "#fc930c",
                 borderRadius: "50px",
+                boxShadow: "3px 3px 3px 3px #b6a9a9",
                 displayFlex: "flex",
                 justifyContent: "start",
               }}

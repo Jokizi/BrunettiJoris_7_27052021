@@ -1,12 +1,11 @@
 .button {
   border: inherit;
   border-radius: 0.5em;
-  box-shadow: 0.12em 0.12em 0.12em 0.12em #dcdcde;
+  box-shadow: 0.2em 0.2em 0.2em 0.2em #3f3838;
   padding-top: 11px;
   padding-bottom: 11px;
   padding-left: 1em;
   padding-right: 1em;
-
   color: black;
   min-width: 100px;
   display: flex;
@@ -14,6 +13,12 @@
   align-items: center;
   background-color: #fc930c;
   cursor: pointer;
+}
+
+.button:active {
+  box-shadow: 0.2em 0.2em 0.2em 0.2em #b6a9a9; /* animation bouton violet */
+
+  filter: brightness(130%);
 }
 
 .icon-button {
