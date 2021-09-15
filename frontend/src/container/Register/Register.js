@@ -15,6 +15,7 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
   const [bio, setBio] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const onChangeFirstname = (e) => {
@@ -37,7 +38,15 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
     setPassword(e.target.value);
   };
 
+  const onChangeConfirmPassword = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+
   const onRegister = async () => {
+    if (password !== confirmPassword) {
+      setErrorMessage("vous n'avez pas saisie le même mot de passe");
+      return;
+    }
     try {
       const response = await api.post("/users/registrer/", {
         firstname,
@@ -45,6 +54,7 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
         bio,
         email,
         password,
+        confirmPassword,
       });
 
       sessionStorage.setItem("groupomania-token", response.data.token);
@@ -73,6 +83,14 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
       </div>
       <div className="register-input">
         <Input onChange={onChangePassword} value={password} label="mot de passe" type="password" />
+      </div>
+      <div className="register-input">
+        <Input
+          onChange={onChangeConfirmPassword}
+          value={confirmPassword}
+          label="confirmer mot de passe"
+          type="password"
+        />
       </div>
       <div className="register-input">
         <InputTextArea rows={4} variant="outlined" label="Description" onChange={onChangeBio} value={bio} />

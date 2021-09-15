@@ -13,13 +13,10 @@ const password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s
 module.exports = {
   registrer: function (req, res) {
     // Paramètres
-    let { email, firstname, lastname, password, bio } = req.body;
+    let { email, firstname, lastname, password, confirmPassword, bio } = req.body;
     const avatar = "/static/media/1.589279a0.jpg";
 
     if (!email || !firstname || !lastname || !password) {
-      console.log("------------------------------------");
-      console.log("hello1");
-      console.log("------------------------------------");
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
     // .trim supprime les espaces
@@ -29,15 +26,9 @@ module.exports = {
     bio = bio.trim();
     // verifier la longueur pseudo, mail regex, password etc
     if (firstname.length >= 25 || firstname.length <= 3) {
-      console.log("------------------------------------");
-      console.log("hello2");
-      console.log("------------------------------------");
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
     if (lastname.length >= 25 || lastname.length <= 3) {
-      console.log("------------------------------------");
-      console.log("hello3");
-      console.log("------------------------------------");
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
 
@@ -50,6 +41,10 @@ module.exports = {
         error:
           "mot de passe non valide, 8 caractères minimum, contenant au moins une lettre minuscule, une lettre majuscule, un chiffre numérique et un caractère spécial",
       });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({ error: "vous n'avez pas saisie le même mot de passe" });
     }
 
     const groupomaniaEmail = email.split("@");
