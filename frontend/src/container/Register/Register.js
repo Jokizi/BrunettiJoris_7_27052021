@@ -8,7 +8,7 @@ import { toastTrigger } from "../../helper/toast";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import "./register.css";
 
-const Register = ({ setIsLoggedin, setMyUserId }) => {
+const Register = ({ /*setIsLoggedin*/ setMyUserId }) => {
   const history = useHistory();
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -57,12 +57,13 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
         confirmPassword,
       });
 
-      sessionStorage.setItem("groupomania-token", response.data.token);
-      setIsLoggedin(true);
+      //sessionStorage.setItem("groupomania-token", response.data.token);
+      //setIsLoggedin(true);
 
       setMyUserId(response.data.userId);
       toastTrigger("success", "Inscription réussie");
-      history.push("/accueil");
+      //history.push("/accueil");
+      history.push("/connexion");
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
       setErrorMessage(error.response.data.error);
