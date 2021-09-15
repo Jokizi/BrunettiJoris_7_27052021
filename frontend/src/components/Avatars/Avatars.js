@@ -29,7 +29,8 @@ const Card = ({ number, selectCardIndex }) => {
   );
 };
 const Avatar = ({ onChangeAvatar, close, open, handleModal }) => {
-  const [avatar, setAvatars] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
 
   const [selectCardIndex, setSelectCardIndex] = useState(null);
   const tab = Array.from(Array(11).keys());
@@ -37,7 +38,7 @@ const Avatar = ({ onChangeAvatar, close, open, handleModal }) => {
   tab.shift();
 
   const onSubmitAvatar = (e, i) => {
-    setAvatars(e.target.name);
+    setAvatar(e.target.name);
     setSelectCardIndex(i + 1);
   };
 
@@ -50,6 +51,10 @@ const Avatar = ({ onChangeAvatar, close, open, handleModal }) => {
         data: { avatar },
         headers: { Authorization: `Bearer ${token}` },
       });
+      let oldSessionStorage = groupomaniaUser;
+      oldSessionStorage.avatar = response.data.avatar;
+      sessionStorage.setItem("groupomania-user", JSON.stringify(oldSessionStorage));
+      //setFirstname(response.data.firstname);
       onChangeAvatar(response.data.avatar);
       close();
     } catch (error) {}

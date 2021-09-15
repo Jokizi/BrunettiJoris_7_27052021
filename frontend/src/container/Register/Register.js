@@ -10,14 +10,19 @@ import "./register.css";
 
 const Register = ({ setIsLoggedin, setMyUserId }) => {
   const history = useHistory();
-  const [username, setUsername] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [bio, setBio] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const onChangeUsername = (e) => {
-    setUsername(e.target.value);
+  const onChangeFirstname = (e) => {
+    setFirstname(e.target.value);
+  };
+
+  const onChangeLastname = (e) => {
+    setLastname(e.target.value);
   };
 
   const onChangeBio = (e) => {
@@ -35,7 +40,8 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
   const onRegister = async () => {
     try {
       const response = await api.post("/users/registrer/", {
-        username,
+        firstname,
+        lastname,
         bio,
         email,
         password,
@@ -60,7 +66,10 @@ const Register = ({ setIsLoggedin, setMyUserId }) => {
         <Input onChange={onChangeEmail} value={email} label="e-mail" />
       </div>
       <div className="register-input">
-        <Input onChange={onChangeUsername} value={username} label="Pseudonyme" />
+        <Input onChange={onChangeFirstname} value={firstname} label="Prénom" />
+      </div>
+      <div className="register-input">
+        <Input onChange={onChangeLastname} value={lastname} label="NOM" />
       </div>
       <div className="register-input">
         <Input onChange={onChangePassword} value={password} label="mot de passe" type="password" />

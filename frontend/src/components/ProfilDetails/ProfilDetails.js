@@ -16,20 +16,24 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [openDelete, setOpenDelete] = useState(false);
   const history = useHistory();
   const [email, setEmail] = useState("");
-  const [pseudonyme, setPseudonyme] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [isDisable, setIsDisable] = useState(true);
   const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState("");
   const [isAdmin, setIsAdmin] = useState(null);
   const [open, setOpen] = useState(false);
-  const [openUsername, setOpenUsername] = useState(false);
-  const [newUsername, setNewUsername] = useState("");
+  const [openFirstname, setOpenFirstname] = useState(false);
+  const [openLastname, setOpenLastname] = useState(false);
+  const [newFirstname, setNewFirstname] = useState("");
+  const [newLastname, setNewLastname] = useState("");
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
 
   useEffect(() => {
     if (sessionStorage.getItem("groupomania-user")) {
       setEmail(groupomaniaUser.email);
-      setPseudonyme(groupomaniaUser.username);
+      setFirstname(groupomaniaUser.firstname);
+      setLastname(groupomaniaUser.lastname);
       setBio(groupomaniaUser.bio);
       setAvatar(groupomaniaUser.avatar);
       setIsAdmin(groupomaniaUser.isAdmin);
@@ -39,7 +43,8 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   }, [
     history,
     groupomaniaUser.email,
-    groupomaniaUser.username,
+    groupomaniaUser.firstname,
+    groupomaniaUser.lastname,
     groupomaniaUser.bio,
     groupomaniaUser.avatar,
     groupomaniaUser.isAdmin,
@@ -53,8 +58,12 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
     setBio(e.target.value);
   };
 
-  const onChangeUsername = (e) => {
-    setNewUsername(e.target.value);
+  const onChangeFirstname = (e) => {
+    setNewFirstname(e.target.value);
+  };
+
+  const onChangeLastname = (e) => {
+    setNewLastname(e.target.value);
   };
 
   const handleUpdate = () => {
@@ -73,34 +82,68 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
     setOpen(!open);
   };
 
-  const handleUpdateUsername = () => {
-    setOpenUsername(!openUsername);
+  const handleUpdateFirstname = () => {
+    setOpenFirstname(!openFirstname);
   };
 
-  const onUpdateUsername = async () => {
+  const handleUpdateLastname = () => {
+    setOpenLastname(!openLastname);
+  };
+
+  const onUpdateFirstname = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
-    if (newUsername === groupomaniaUser.username) {
+    if (newFirstname === groupomaniaUser.firstname) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
-      setOpenUsername(false);
+      setOpenFirstname(false);
       return;
     }
     try {
       const response = await api({
-        url: "/users/username/",
+        url: "/users/firstname/",
         method: "put",
-        data: { username: newUsername },
+        data: { firstname: newFirstname },
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
       });
 
-      setOpenUsername(false);
+      setOpenFirstname(false);
 
       let oldSessionStorage = groupomaniaUser;
-      oldSessionStorage.username = response.data.username;
+      oldSessionStorage.firstname = response.data.firstname;
       sessionStorage.setItem("groupomania-user", JSON.stringify(oldSessionStorage));
-      setPseudonyme(response.data.username);
+      setFirstname(response.data.firstname);
+      toastTrigger("success", "Profil Mis à Jour 👌🏼");
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
+  };
+
+  const onUpdateLastname = async () => {
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
+    if (newLastname === groupomaniaUser.lastname) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+      setOpenLastname(false);
+      return;
+    }
+    try {
+      const response = await api({
+        url: "/users/lastname/",
+        method: "put",
+        data: { lastname: newLastname },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      setOpenLastname(false);
+
+      let oldSessionStorage = groupomaniaUser;
+      oldSessionStorage.lastname = response.data.lastname;
+      sessionStorage.setItem("groupomania-user", JSON.stringify(oldSessionStorage));
+      setLastname(response.data.lastname);
       toastTrigger("success", "Profil Mis à Jour 👌🏼");
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
@@ -173,25 +216,58 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
             <div className="user-button-modify-avatar">
               <Button onClick={handleModal} title="Modifier Avatar" />
             </div>
-            <Avatar onChangeAvatar={onChangeAvatar} open={open} close={handleModal} />
+            <Avatar
+              onChangeAvatar={onChangeAvatar}
+              avatar={avatar}
+              setAvatar={setAvatar}
+              open={open}
+              close={handleModal}
+            />
           </div>
 
           <div className="user-name-container">
-            <div className="user-email"> e-mail : {email} </div>
-            <div className="user-name">Pseudonyme : {pseudonyme}</div>
             <div className="message-is-admin">
               {isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />} {isAdmin && "Administrateur"}
             </div>
-            <div className="modify-icon" onClick={handleUpdateUsername}>
-              <FontAwesomeIcon color="blue" icon={["far", "edit"]} /> modifier pseudonyme
+            <div className="user-email"> e-mail : {email} </div>
+            <div className="modify-icon-profil" onClick={handleUpdateFirstname}>
+              <FontAwesomeIcon color="blue" icon={["far", "edit"]} /> modifier e-mail
             </div>
             <ModifCommentPopUp
-              open={openUsername}
-              onChange={onChangeUsername}
-              handleModal={handleUpdateUsername}
-              onUpdate={onUpdateUsername}
-              modalTitle="Modifier votre pseudonyme"
-              label="Modifier pseudonyme"
+              open={openFirstname}
+              onChange={onChangeFirstname}
+              handleModal={handleUpdateFirstname}
+              onUpdate={onUpdateFirstname}
+              modalTitle="Modifier votre e-mail"
+              label="Modifier e-mail"
+              buttonTitle1="Sauvegarder Modifications"
+              buttonTitle2="Annuler Modifications"
+            />
+            <div className="user-name">Prénom : {firstname}</div>
+            <div className="modify-icon-profil" onClick={handleUpdateFirstname}>
+              <FontAwesomeIcon color="blue" icon={["far", "edit"]} /> modifier Prénom
+            </div>
+            <ModifCommentPopUp
+              open={openFirstname}
+              onChange={onChangeFirstname}
+              handleModal={handleUpdateFirstname}
+              onUpdate={onUpdateFirstname}
+              modalTitle="Modifier votre Prénom"
+              label="Modifier Prénom"
+              buttonTitle1="Sauvegarder Modifications"
+              buttonTitle2="Annuler Modifications"
+            />
+            <div className="user-name">NOM : {lastname}</div>
+            <div className="modify-icon-profil" onClick={handleUpdateLastname}>
+              <FontAwesomeIcon color="blue" icon={["far", "edit"]} /> modifier NOM
+            </div>
+            <ModifCommentPopUp
+              open={openLastname}
+              onChange={onChangeLastname}
+              handleModal={handleUpdateLastname}
+              onUpdate={onUpdateLastname}
+              modalTitle="Modifier votre NOM"
+              label="Modifier NOM"
               buttonTitle1="Sauvegarder Modifications"
               buttonTitle2="Annuler Modifications"
             />

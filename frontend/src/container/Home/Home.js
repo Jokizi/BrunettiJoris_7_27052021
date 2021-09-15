@@ -100,6 +100,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
       <div className="message-card-container">
         {allMessages.map((element) => {
           const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
+          const firstnameLastname = element.User.firstname + " " + element.User.lastname;
 
           return (
             <div className="message-card" key={element.id}>
@@ -107,7 +108,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
                 <div className="avatar-picture">
                   <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />
                 </div>
-                <div>{element.User.username}</div>
+                <div>{firstnameLastname}</div>
               </div>
               <div className="message-is-admin">
                 {element.User.isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}

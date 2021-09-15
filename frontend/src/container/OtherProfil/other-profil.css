@@ -16,6 +16,7 @@
   align-items: center;
 }
 .other-user-pseudo {
+  font-weight: bold;
   margin-top: 10px;
   margin-bottom: 10px;
 }

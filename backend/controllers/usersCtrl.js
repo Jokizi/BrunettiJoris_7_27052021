@@ -13,18 +13,31 @@ const password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s
 module.exports = {
   registrer: function (req, res) {
     // Paramètres
-    let { email, username, password, bio } = req.body;
+    let { email, firstname, lastname, password, bio } = req.body;
     const avatar = "/static/media/1.589279a0.jpg";
 
-    if (!email || !username || !password) {
+    if (!email || !firstname || !lastname || !password) {
+      console.log("------------------------------------");
+      console.log("hello1");
+      console.log("------------------------------------");
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
     // .trim supprime les espaces
     email = email.trim();
-    username = username.trim();
+    firstname = firstname.trim();
+    lastname = lastname.trim();
     bio = bio.trim();
     // verifier la longueur pseudo, mail regex, password etc
-    if (username.length >= 25 || username.length <= 4) {
+    if (firstname.length >= 25 || firstname.length <= 3) {
+      console.log("------------------------------------");
+      console.log("hello2");
+      console.log("------------------------------------");
+      return res.status(400).json({ error: "champ(s) manquant(s)" });
+    }
+    if (lastname.length >= 25 || lastname.length <= 3) {
+      console.log("------------------------------------");
+      console.log("hello3");
+      console.log("------------------------------------");
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
 
@@ -76,28 +89,41 @@ module.exports = {
         },
         function (userFound, bcryptedPassword, done) {
           models.User.findOne({
-            attributes: ["username"],
-            where: { username },
+            attributes: ["firstname"],
+            where: { firstname },
           })
-            .then(function (userNameFound) {
-              done(null, userFound, bcryptedPassword, userNameFound);
+            .then(function (firstnameFound) {
+              done(null, userFound, bcryptedPassword, firstnameFound);
             })
             .catch(function (err) {
               return res.status(500).json({ error: "2 vérification utilisateur impossible" });
             });
         },
-        function (userFound, bcryptedPassword, userNameFound, done) {
-          if (!userNameFound) {
-            done(null, userFound, bcryptedPassword, userNameFound);
+        function (userFound, bcryptedPassword, firstnameFound, done) {
+          models.User.findOne({
+            attributes: ["lastname"],
+            where: { lastname },
+          })
+            .then(function (lastnameFound) {
+              done(null, userFound, bcryptedPassword, firstnameFound, lastnameFound);
+            })
+            .catch(function (err) {
+              return res.status(500).json({ error: "2 vérification utilisateur impossible" });
+            });
+        },
+        function (userFound, bcryptedPassword, firstnameFound, lastnameFound, done) {
+          if (!firstnameFound) {
+            done(null, userFound, bcryptedPassword, firstnameFound, lastnameFound);
           } else {
             return res.status(409).json({ error: "Pseudonyme déjà existant" });
           }
         },
         // si mot de passe hasher, on crée un nouvel utilisateur
-        function (userFound, bcryptedPassword, userNameFound, done) {
+        function (userFound, bcryptedPassword, firstnameFound, lastnameFound, done) {
           const newUser = models.User.create({
             email: email,
-            username: username,
+            firstname: firstname,
+            lastname: lastname,
             password: bcryptedPassword,
             bio: bio,
             avatar: avatar,
@@ -170,7 +196,8 @@ module.exports = {
         if (userFound) {
           return res.status(201).json({
             userId: userFound.id,
-            username: userFound.username,
+            firstname: userFound.firstname,
+            lastname: userFound.lastname,
             token: jwt.sign(
               {
                 userId: userFound.id,
@@ -192,7 +219,7 @@ module.exports = {
     const userId = decodedToken.userId;
 
     models.User.findOne({
-      attributes: ["id", "email", "username", "bio", "avatar", "isAdmin"],
+      attributes: ["id", "email", "firstname", "lastname", "bio", "avatar", "isAdmin"],
       where: { id: userId },
     })
       .then(function (user) {
@@ -211,7 +238,7 @@ module.exports = {
     const decodedToken = jwt.verify(token, process.env.TOKEN);
     const userId = decodedToken.userId;*/
 
-    models.User.findByPk(req.params.userId, { attributes: ["username", "bio", "avatar", "isAdmin"] })
+    models.User.findByPk(req.params.userId, { attributes: ["firstname", "lastname", "bio", "avatar", "isAdmin"] })
       .then(function (user) {
         if (user) {
           res.status(201).json(user);
@@ -228,7 +255,7 @@ module.exports = {
 
     models.User.findAll({
       order: [order != null ? order.split(":") : ["createdAt", "DESC"]],
-      attributes: ["id", "username", "avatar", "isAdmin"],
+      attributes: ["id", "firstname", "lastname", "avatar", "isAdmin"],
     })
       .then(function (user) {
         if (user) {
@@ -293,13 +320,13 @@ module.exports = {
     );
   },
 
-  updateUsername: function (req, res) {
+  updateFirstname: function (req, res) {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
     const userId = decodedToken.userId;
 
     // Paramètres
-    const username = req.body.username;
+    const firstname = req.body.firstname;
 
     asyncLib.waterfall(
       [
@@ -320,7 +347,56 @@ module.exports = {
           if (userFound) {
             userFound
               .update({
-                username: username ? username : userFound.username,
+                firstname: firstname ? firstname : userFound.firstname,
+              })
+              .then(function () {
+                done(userFound);
+              })
+              .catch(function (err) {
+                res.status(500).json({ error: "mise à jour utilisateur impossible" });
+              });
+          } else {
+            res.status(404).json({ error: "utilisateur introuvable" });
+          }
+        },
+      ],
+      function (userFound) {
+        if (userFound) {
+          return res.status(201).json(userFound);
+        } else {
+          return res.status(500).json({ error: "mise à jour du pseudonyme utilisateur impossible" });
+        }
+      }
+    );
+  },
+  updateLastname: function (req, res) {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
+    const userId = decodedToken.userId;
+
+    // Paramètres
+    const lastname = req.body.lastname;
+
+    asyncLib.waterfall(
+      [
+        // récupère l'utilisateur dans la DBase
+        function (done) {
+          models.User.findOne({
+            //attributes: ["id", "bio"],
+            where: { id: userId },
+          })
+            .then(function (userFound) {
+              done(null, userFound);
+            })
+            .catch(function (err) {
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
+            });
+        },
+        function (userFound, done) {
+          if (userFound) {
+            userFound
+              .update({
+                lastname: lastname ? lastname : userFound.lastname,
               })
               .then(function () {
                 done(userFound);

@@ -32,7 +32,7 @@ const Login = ({ setIsLoggedin, setMyUserId /*setAdmin*/ }) => {
       sessionStorage.setItem("groupomania-token", response.data.token);
       setIsLoggedin(true);
       setMyUserId(response.data.userId);
-      toastTrigger("success", `Bonjour ${response.data.username} ✌🏼`);
+      toastTrigger("success", `Bonjour ${response.data.firstname} ✌🏼`);
       history.push({ pathname: "/accueil" });
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");

@@ -69,7 +69,8 @@ const Accordion = ({
                 <div className="avatar-comment-picture">
                   <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />
                 </div>
-                <div className="accordion-comment-username">{element.User.username}</div>
+                <div className="accordion-comment-username">{element.User.firstname}</div>
+                <div className="accordion-comment-username">{element.User.lastname}</div>
               </div>
               <div className="accordion-comment-content">{element.content}</div>
               <div className="accordion-comment-like-modify-delete-container">

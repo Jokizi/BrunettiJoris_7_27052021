@@ -12,7 +12,8 @@ import { toastTrigger } from "../../helper/toast";
 import "./other-profil.css";
 
 const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
-  const [infoPseudonyme, setInfoPseudonyme] = useState("");
+  const [infoFirstname, setInfoFirstname] = useState("");
+  const [infoLastname, setInfoLastname] = useState("");
   const [infoBio, setInfoBio] = useState("");
   const [infoAvatar, setInfoAvatar] = useState("");
   const [messagesOtherUser, setMessagesOtherUser] = useState([]);
@@ -34,7 +35,8 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
           });
 
           setInfoAvatar(response.data.avatar);
-          setInfoPseudonyme(response.data.username);
+          setInfoFirstname(response.data.firstname);
+          setInfoLastname(response.data.lastname);
           setInfoBio(response.data.bio);
           setIsOtherUserAdmin(response.data.isAdmin);
           try {
@@ -132,7 +134,8 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
             Avatar :
             <img className="avatar-picture" src={infoAvatar} />
           </div>
-          <div className="other-user-pseudo">Pseudonyme : {infoPseudonyme}</div>
+          <div className="other-user-pseudo">Prénom : {infoFirstname}</div>
+          <div className="other-user-pseudo">NOM : {infoLastname}</div>
           <div className="message-is-admin">
             {isOtherUserAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
             {isOtherUserAdmin && "Administrateur"}
@@ -172,13 +175,14 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
       <div className="message-other-user-card-container">
         {messagesOtherUser.map((element) => {
           const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
+          const firstnameLastname = element.User.firstname + " " + element.User.lastname;
           return (
             <div className="message-other-user-card" key={element.id}>
               <div className="avatar-name">
                 <div className="avatar-picture">
                   <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />
                 </div>
-                <div>{element.User.username}</div>
+                <div>{firstnameLastname}</div>
               </div>
               <div className="message-is-admin">
                 {element.User.isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
