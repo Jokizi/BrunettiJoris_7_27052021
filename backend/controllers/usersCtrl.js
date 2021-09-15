@@ -9,7 +9,7 @@ const fs = require("fs");
 const email_regex =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/;
-
+const name_regex = /^([A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ-]* ?[A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ]+$)$/;
 module.exports = {
   registrer: function (req, res) {
     // Paramètres
@@ -34,6 +34,14 @@ module.exports = {
 
     if (!email_regex.test(email)) {
       return res.status(400).json({ error: "e-mail non valide" });
+    }
+
+    if (!name_regex.test(firstname)) {
+      return res.status(400).json({ error: "Prénom non valide" });
+    }
+
+    if (!name_regex.test(lastname)) {
+      return res.status(400).json({ error: "NOM non valide" });
     }
 
     if (!password_regex.test(password)) {
@@ -323,6 +331,9 @@ module.exports = {
     // Paramètres
     const firstname = req.body.firstname;
 
+    if (!name_regex.test(firstname)) {
+      return res.status(400).json({ error: "Prénom non valide" });
+    }
     asyncLib.waterfall(
       [
         // récupère l'utilisateur dans la DBase
@@ -372,6 +383,9 @@ module.exports = {
     // Paramètres
     const lastname = req.body.lastname;
 
+    if (!name_regex.test(lastname)) {
+      return res.status(400).json({ error: "NOM non valide" });
+    }
     asyncLib.waterfall(
       [
         // récupère l'utilisateur dans la DBase

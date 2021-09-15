@@ -18,6 +18,8 @@ const Register = ({ /*setIsLoggedin*/ setMyUserId }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const name_regex = /^([A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ-]* ?[A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ]+$)$/;
+
   const onChangeFirstname = (e) => {
     setFirstname(e.target.value);
   };
@@ -47,6 +49,15 @@ const Register = ({ /*setIsLoggedin*/ setMyUserId }) => {
       setErrorMessage("vous n'avez pas saisie le même mot de passe");
       return;
     }
+    if (!name_regex.test(firstname)) {
+      setErrorMessage("Prénom non valide");
+      return;
+    }
+    if (!name_regex.test(lastname)) {
+      setErrorMessage("NOM non valide");
+      return;
+    }
+
     try {
       const response = await api.post("/users/registrer/", {
         firstname,

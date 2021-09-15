@@ -28,6 +28,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [newFirstname, setNewFirstname] = useState("");
   const [newLastname, setNewLastname] = useState("");
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
+  const name_regex = /^([A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ-]* ?[A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ]+$)$/;
 
   useEffect(() => {
     if (sessionStorage.getItem("groupomania-user")) {
@@ -97,6 +98,12 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       setOpenFirstname(false);
       return;
     }
+
+    if (!name_regex.test(newFirstname)) {
+      toastTrigger("error", "Prénom non valide ⛔️");
+      return;
+    }
+
     try {
       const response = await api({
         url: "/users/firstname/",
@@ -125,6 +132,11 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
     if (newLastname === groupomaniaUser.lastname) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
       setOpenLastname(false);
+      return;
+    }
+
+    if (!name_regex.test(newFirstname)) {
+      toastTrigger("error", "NOM non valide ⛔️");
       return;
     }
     try {
