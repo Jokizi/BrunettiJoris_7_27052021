@@ -29,10 +29,6 @@ class PostMessage extends Component {
 
   onPublish = async () => {
     const { title, content, file } = this.state;
-    if (!title || !content) {
-      toastTrigger("error", "Une erreur est survenue ⛔️");
-      return;
-    }
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
 
     const obj = { title, content };

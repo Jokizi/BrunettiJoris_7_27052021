@@ -22,11 +22,11 @@ module.exports = {
 
     const { title, content } = formMessage;
 
-    if (!title || !content || !req.file) {
+    if (!title) {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
 
-    if (title.length <= title_limit || content.length <= content_limit) {
+    if (title.length <= title_limit) {
       return res.status(400).json({ error: "publication insuffisante" });
     }
 
@@ -259,10 +259,6 @@ module.exports = {
       });
   },
   listMessagesOtherUser: function (req, res) {
-    /*const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.TOKEN);
-    const userId = decodedToken.userId;*/
-
     const userId = req.params.userId;
     const fields = req.query.fields;
     const limit = parseInt(req.query.limit);
@@ -427,7 +423,7 @@ module.exports = {
                 messageFound
                   .update({
                     title: title ? title : messageFound.title,
-                    content: content ? content : messageFound.content,
+                    content,
                     attachment: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
                   })
                   .then(function (newMessageFound) {

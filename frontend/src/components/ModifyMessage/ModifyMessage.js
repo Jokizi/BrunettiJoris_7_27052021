@@ -38,12 +38,15 @@ const ModifyMessage = ({
     const formData = new FormData();
     formData.append("image", fileToSend);
     formData.append("message", json);
-    if (
-      (title === newTitle && content === newContent && newFile === oldAttachement) ||
-      newTitle === "" ||
-      newContent === ""
-    ) {
+    if ((title === newTitle && content === newContent && newFile === oldAttachement) || newTitle === "") {
       toastTrigger("error", "Rien n'a été modifié");
+      setOpen(false);
+      return;
+    }
+
+    if (!newFile && newContent === "") {
+      toastTrigger("error", "Rien n'a été modifié");
+      setNewContent(content);
       setOpen(false);
       return;
     }
