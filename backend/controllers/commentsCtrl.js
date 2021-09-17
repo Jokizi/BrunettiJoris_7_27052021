@@ -112,9 +112,11 @@ module.exports = {
         const messagesParsed = JSON.parse(JSON.stringify(messages));
         if (messages) {
           const messagesFormated = messagesParsed.map((element) => {
-            const date = moment(element.createdAt).local().format("LL");
-            const hour = moment(element.createdAt).local().format("LT");
-            element.createdAt = `Le ${date} à ${hour}`;
+            const postedDate = moment(element.createdAt).local().format("MMMM Do YYYY, h:mm:ss a");
+            element.createdAt = postedDate;
+
+            const updatedDate = moment(element.updatedAt).local().format("MMMM Do YYYY, h:mm:ss a");
+            element.updatedAt = updatedDate;
             return element;
           });
           res.status(200).json(messagesFormated);
@@ -124,7 +126,7 @@ module.exports = {
       })
       .catch(function (err) {
         console.log(err);
-        res.status(500).json({ error: "invalid fields" });
+        res.status(500).json({ error: "publications introuvable" });
       });
   },
   updateComment: function (req, res) {

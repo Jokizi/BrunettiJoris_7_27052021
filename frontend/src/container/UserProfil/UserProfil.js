@@ -7,6 +7,7 @@ import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
 import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
 import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
+import moment from "moment";
 import "./user-profil.css";
 
 const UserProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
@@ -89,7 +90,10 @@ const UserProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
                 </div>
                 <div>{firstnameLastname}</div>
               </div>
-              <div className="message-date">{element.createdAt}</div>
+              <div className="message-date">Publiée {moment(new Date(element.createdAt)).fromNow()}</div>
+              {element.createdAt !== element.updatedAt && (
+                <div className="message-date">Modifiée {moment(new Date(element.updatedAt)).fromNow()}</div>
+              )}
               <div className="message-container">
                 <div className="message-title">{element.title}</div>
                 {element.attachment && (

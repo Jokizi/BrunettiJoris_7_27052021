@@ -8,6 +8,7 @@ import LikeDislikeMessage from "../../components/LikeMessage/LikeMessage";
 import CommentMessage from "../../components/CommentMessage/CommentMessage";
 import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
 import ModifyMessage from "../../components/ModifyMessage/ModifyMessage";
+import moment from "moment";
 import "./home.css";
 
 const Home = ({ myUserId, admin, setAdmin }) => {
@@ -101,7 +102,6 @@ const Home = ({ myUserId, admin, setAdmin }) => {
         {allMessages.map((element) => {
           const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
           const firstnameLastname = element.User.firstname + " " + element.User.lastname;
-
           return (
             <div className="message-card" key={element.id}>
               <div className="avatar-name" onClick={() => goToOtherProfil(element.UserId)}>
@@ -114,7 +114,11 @@ const Home = ({ myUserId, admin, setAdmin }) => {
                 {element.User.isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
                 {element.User.isAdmin && "Administrateur"}
               </div>
-              <div className="message-date">{element.createdAt}</div>
+              <div className="message-date">Publiée {moment(new Date(element.createdAt)).fromNow()}</div>
+              {element.createdAt !== element.updatedAt && (
+                <div className="message-date">Modifiée {moment(new Date(element.updatedAt)).fromNow()}</div>
+              )}
+
               <div className="message-container">
                 <div className="message-title">{element.title}</div>
                 {element.attachment && (

@@ -13,6 +13,7 @@ import api from "../../Config/Api";
 import "../../assets/fontawesome";
 import { ToastContainer } from "react-toastify";
 import "./app.css";
+import "moment/locale/fr";
 
 const App = () => {
   const [isLoggedin, setIsLoggedin] = useState(false);

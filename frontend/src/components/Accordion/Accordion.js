@@ -4,6 +4,7 @@ import api from "../../Config/Api";
 import LikeDislikeComment from "../LikeComment/LikeComment";
 import ModifyComment from "../ModifyComment/ModifyComment";
 import DeleteComment from "../DeleteComment/DeleteComment";
+import moment from "moment";
 
 const Accordion = ({
   myUserId,
@@ -64,7 +65,10 @@ const Accordion = ({
           );
           return (
             <div className="accordion-comment-card" key={element.id}>
-              <div>{element.createdAt}</div>
+              <div>Publié {moment(new Date(element.createdAt)).fromNow()}</div>
+              {element.createdAt !== element.updatedAt && (
+                <div>Modifié {moment(new Date(element.updatedAt)).fromNow()}</div>
+              )}
               <div className="accordion-avatar-name">
                 <div className="avatar-comment-picture">
                   <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />

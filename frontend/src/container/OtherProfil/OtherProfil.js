@@ -9,6 +9,7 @@ import DeleteMessage from "../../components/DeleteMessage/DeleteMessage";
 import Button from "../../components/Button/Button";
 import ConfirmPopUp from "../../components/ConfirmPopUp/ConfirmPopUp";
 import { toastTrigger } from "../../helper/toast";
+import moment from "moment";
 import "./other-profil.css";
 
 const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
@@ -188,7 +189,10 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
                 {element.User.isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />}{" "}
                 {element.User.isAdmin && "Administrateur"}
               </div>
-              <div className="message-date">{element.createdAt}</div>
+              <div className="message-date">Publiée {moment(new Date(element.createdAt)).fromNow()}</div>
+              {element.createdAt !== element.updatedAt && (
+                <div className="message-date">Modifiée {moment(new Date(element.updatedAt)).fromNow()}</div>
+              )}
               <div className="message-container">
                 <div className="message-title">{element.title}</div>
                 {element.attachment && (

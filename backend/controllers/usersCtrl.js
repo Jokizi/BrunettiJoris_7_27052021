@@ -25,10 +25,10 @@ module.exports = {
     lastname = lastname.trim();
     bio = bio.trim();
     // verifier la longueur pseudo, mail regex, password etc
-    if (firstname.length >= 25 || firstname.length <= 3) {
+    if (firstname.length >= 25 || firstname === "") {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
-    if (lastname.length >= 25 || lastname.length <= 3) {
+    if (lastname.length >= 25 || lastname === "") {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
 

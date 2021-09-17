@@ -79,24 +79,21 @@ module.exports = {
               },
             ],
           }).then(function (allMessageFound) {
-            /*console.log("-------------allMessageFound-----------------------");
-            console.log(allMessageFound);
-            console.log("------------------------------------");*/
             const allMessageFoundParsed = JSON.parse(JSON.stringify(allMessageFound));
 
             if (allMessageFound) {
               const messagesFormated = allMessageFoundParsed.map((element) => {
-                /*console.log("----------------element--------------------");
-                console.log(element.createdAt);
-                console.log("------------------------------------");*/
-                const date = moment(element.createdAt).local().format("LL");
+                /*const date = moment(element.createdAt).local().format("LL");
                 const hour = moment(element.createdAt).local().format("LT");
                 element.createdAt = `Le ${date} à ${hour}`;
+                */
+                const postedDate = moment(element.createdAt).local().format("MMMM Do YYYY, h:mm:ss a");
+                element.createdAt = postedDate;
+
+                const updatedDate = moment(element.updatedAt).local().format("MMMM Do YYYY, h:mm:ss a");
+                element.updatedAt = updatedDate;
                 return element;
               });
-              /*console.log("---------------messagesFormated---------------------");
-              console.log(messagesFormated);
-              console.log("------------------------------------");*/
               return res.status(201).json(messagesFormated);
             }
           });
@@ -171,24 +168,20 @@ module.exports = {
               },
             ],
           }).then(function (allMessageFound) {
-            /*console.log("-------------allMessageFound-----------------------");
-            console.log(allMessageFound);
-            console.log("------------------------------------");*/
             const allMessageFoundParsed = JSON.parse(JSON.stringify(allMessageFound));
 
             if (allMessageFound) {
               const messagesFormated = allMessageFoundParsed.map((element) => {
-                /*console.log("----------------element--------------------");
-                console.log(element.createdAt);
-                console.log("------------------------------------");*/
-                const date = moment(element.createdAt).local().format("LL");
+                /*const date = moment(element.createdAt).local().format("LL");
                 const hour = moment(element.createdAt).local().format("LT");
-                element.createdAt = `Le ${date} à ${hour}`;
+                element.createdAt = `Le ${date} à ${hour}`;*/
+                const postedDate = moment(element.createdAt).local().format("MMMM Do YYYY, h:mm:ss a");
+                element.createdAt = postedDate;
+
+                const updatedDate = moment(element.updatedAt).local().format("MMMM Do YYYY, h:mm:ss a");
+                element.updatedAt = updatedDate;
                 return element;
               });
-              /*console.log("---------------messagesFormated---------------------");
-              console.log(messagesFormated);
-              console.log("------------------------------------");*/
               return res.status(201).json(messagesFormated);
             }
           });
@@ -236,18 +229,16 @@ module.exports = {
         console.log("------------------------------------");*/
         if (messages) {
           const messagesFormated = messagesParsed.map((element) => {
-            /*console.log("----------------element--------------------");
-            console.log(element.createdAt);
-            console.log("------------------------------------");*/
-            const date = moment(element.createdAt).local().format("LL");
+            /*const date = moment(element.createdAt).local().format("LL");
             const hour = moment(element.createdAt).local().format("LT");
-            element.createdAt = `Le ${date} à ${hour}`;
+            element.createdAt = `Le ${date} à ${hour}`;*/
+            const postedDate = moment(element.createdAt).local().format("MMMM Do YYYY, h:mm:ss a");
+            element.createdAt = postedDate;
+
+            const updatedDate = moment(element.updatedAt).local().format("MMMM Do YYYY, h:mm:ss a");
+            element.updatedAt = updatedDate;
             return element;
           });
-
-          /*console.log("---------------messagesFormated---------------------");
-          console.log(messagesFormated);
-          console.log("------------------------------------");*/
           res.status(200).json(messagesFormated);
         } else {
           res.status(404).json({ error: "message(s) introuvable(s)" });
@@ -287,9 +278,14 @@ module.exports = {
         const messagesParsed = JSON.parse(JSON.stringify(messages));
         if (messages) {
           const messagesFormated = messagesParsed.map((element) => {
-            const date = moment(element.createdAt).local().format("LL");
+            /*const date = moment(element.createdAt).local().format("LL");
             const hour = moment(element.createdAt).local().format("LT");
-            element.createdAt = `Le ${date} à ${hour}`;
+            element.createdAt = `Le ${date} à ${hour}`;*/
+            const postedDate = moment(element.createdAt).local().format("MMMM Do YYYY, h:mm:ss a");
+            element.createdAt = postedDate;
+
+            const updatedDate = moment(element.updatedAt).local().format("MMMM Do YYYY, h:mm:ss a");
+            element.updatedAt = updatedDate;
             return element;
           });
           res.status(200).json(messagesFormated);
@@ -333,9 +329,14 @@ module.exports = {
         const messagesParsed = JSON.parse(JSON.stringify(messages));
         if (messages) {
           const messagesFormated = messagesParsed.map((element) => {
-            const date = moment(element.createdAt).local().format("LL");
+            /*const date = moment(element.createdAt).local().format("LL");
             const hour = moment(element.createdAt).local().format("LT");
-            element.createdAt = `Le ${date} à ${hour}`;
+            element.createdAt = `Le ${date} à ${hour}`;*/
+            const postedDate = moment(element.createdAt).local().format("MMMM Do YYYY, h:mm:ss a");
+            element.createdAt = postedDate;
+
+            const updatedDate = moment(element.updatedAt).local().format("MMMM Do YYYY, h:mm:ss a");
+            element.updatedAt = updatedDate;
             return element;
           });
           res.status(200).json(messagesFormated);
