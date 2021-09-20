@@ -13,7 +13,7 @@ router.put("/users/profile/", auth, usersCtrl.updateUserProfile);
 router.put("/users/firstname/", auth, usersCtrl.updateFirstname);
 router.put("/users/lastname/", auth, usersCtrl.updateLastname);
 router.put("/users/email/", auth, usersCtrl.updateEmail);
-
+router.put("/users/password/", auth, usersCtrl.updatePassword);
 router.put("/users/:id", auth, usersCtrl.giveAdminOtherUser);
 router.delete("/user/:id", auth, usersCtrl.deleteUser);
 module.exports = router;

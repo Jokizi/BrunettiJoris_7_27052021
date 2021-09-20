@@ -445,10 +445,8 @@ module.exports = {
     }
     asyncLib.waterfall(
       [
-        // récupère l'utilisateur dans la DBase
         function (done) {
           models.User.findOne({
-            //attributes: ["id", "bio"],
             where: { id: userId },
           })
             .then(function (userFound) {
@@ -464,8 +462,6 @@ module.exports = {
             attributes: ["email"],
             where: { email: email },
           })
-            // passe dans le then avec done qui sert de callback, le paramètre null signifie qu'on souhaite passer à la suite
-            // on applique le paramètre userFound car on en a besoin dans la fonction suivante
             .then(function (mailFound) {
               done(null, userFound, mailFound);
             })
@@ -473,8 +469,6 @@ module.exports = {
               return res.status(500).json({ error: "vérification utilisateur impossible" });
             });
         },
-        // si utilisateur n'est pas existant, on utilise bcrypt pour hasher le password
-        // dans le cas contraire on renvoit une erreur
         function (userFound, mailFound, done) {
           if (!mailFound) {
             done(null, userFound, mailFound);
@@ -507,6 +501,66 @@ module.exports = {
         }
       }
     );
+  },
+
+  updatePassword: function (req, res) {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
+    const userId = decodedToken.userId;
+
+    let oldPassword = req.body.oldPassword;
+    let newPassword = req.body.newPassword;
+
+    if (!password_regex.test(newPassword)) {
+      return res.status(400).json({
+        error:
+          "mot de passe non valide, 8 caractères minimum, contenant au moins une lettre minuscule, une lettre majuscule, un chiffre numérique et un caractère spécial",
+      });
+    }
+    asyncLib.waterfall([
+      function (done) {
+        models.User.findOne({
+          where: { id: userId },
+        })
+          .then(function (userFound) {
+            done(null, userFound);
+          })
+          .catch(function (err) {
+            return res.status(500).json({ error: "vérification utilisateur impossible" });
+          });
+      },
+      function (userFound, done) {
+        if (userFound) {
+          bcrypt.compare(oldPassword, userFound.password, function (errBycrypt, resBycrypt) {
+            done(null, userFound, resBycrypt);
+          });
+        } else {
+          return res.status(404).json({ error: "utilisateur absent de la base de donnée" });
+        }
+      },
+      function (userFound, resBycrypt, done) {
+        if (resBycrypt) {
+          bcrypt.hash(newPassword, 5, function (err, bcryptedPassword) {
+            done(null, userFound, bcryptedPassword);
+          });
+        } else {
+          return res.status(409).json({ error: "une erreur est survenue" });
+        }
+      },
+      function (userFound, bcryptedPassword, done) {
+        if (userFound) {
+          userFound
+            .update({
+              password: bcryptedPassword,
+            })
+            .then(function (updatedUser) {
+              return res.status(201).json(updatedUser);
+            });
+        } else {
+          return res.status(500).json({ error: "mise à jour du mot de passe impossible" });
+        }
+      },
+    ]);
   },
 
   /*deleteUser: function (req, res) {

@@ -10,6 +10,7 @@ import { toastTrigger } from "../../helper/toast";
 import Avatar from "../Avatars/Avatars";
 import "./profil-details.css";
 import ModifCommentPopUp from "../ModifCommentPopUp/ModifCommentPopUP";
+import ModifPasswordPopUp from "../ModifPasswordPopUP/ModifPasswordPopUP";
 
 const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -26,9 +27,12 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [openFirstname, setOpenFirstname] = useState(false);
   const [openLastname, setOpenLastname] = useState(false);
   const [openEmail, setOpenEmail] = useState(false);
+  const [openPassword, setOpenPassword] = useState(false);
   const [newFirstname, setNewFirstname] = useState("");
   const [newLastname, setNewLastname] = useState("");
   const [newEmail, setNewEmail] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
   const name_regex = /^([A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ-]* ?[A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ]+$)$/;
 
@@ -73,6 +77,14 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
     setNewEmail(e.target.value);
   };
 
+  const onChangeOldPassword = (e) => {
+    setOldPassword(e.target.value);
+  };
+
+  const onChangeNewPassword = (e) => {
+    setNewPassword(e.target.value);
+  };
+
   const handleUpdate = () => {
     setIsDisable(!isDisable);
   };
@@ -99,6 +111,10 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
   const handleUpdateEmail = () => {
     setOpenEmail(!openEmail);
+  };
+
+  const handleUpdatePassword = () => {
+    setOpenPassword(!openPassword);
   };
 
   const onUpdateFirstname = async () => {
@@ -173,12 +189,6 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   };
 
   const onUpdateEmail = async () => {
-    console.log("-------------groupomaniaUser.email-----------------------");
-    console.log(groupomaniaUser.email);
-    console.log("------------------------------------");
-    console.log("---------------newEmail---------------------");
-    console.log(newEmail);
-    console.log("------------------------------------");
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     const email_regex =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -214,6 +224,38 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       setEmail(response.data.email);
       toastTrigger("success", "e-mail Mis à Jour 👌🏼");
     } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
+  };
+
+  const onUpdatePassword = async () => {
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
+    const password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/;
+    const obj = { oldPassword, newPassword };
+    if (!password_regex.test(newPassword)) {
+      toastTrigger(
+        "error",
+        "mot de passe non valide, 8 caractères minimum, contenant au moins une lettre minuscule, une lettre majuscule, un chiffre numérique et un caractère spécial ⛔️"
+      );
+      return;
+    }
+    try {
+      const response = await api({
+        url: "/users/password/",
+        method: "put",
+        data: obj,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      setOpenPassword(false);
+      toastTrigger("success", "mot de passe Mis à Jour 👌🏼");
+    } catch (error) {
+      console.log("--------------error----------------------");
+      console.log(error);
+      console.log("------------------------------------");
       toastTrigger("error", "Une erreur est survenue ⛔️");
     }
   };
@@ -307,6 +349,21 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
               onUpdate={onUpdateEmail}
               modalTitle="Modifier votre e-mail"
               label="Modifier e-mail"
+              buttonTitle1="Sauvegarder Modifications"
+              buttonTitle2="Annuler Modifications"
+            />
+            <div className="modify-icon-profil" onClick={handleUpdatePassword}>
+              <FontAwesomeIcon color="blue" icon={["far", "edit"]} /> modifier mot de passe
+            </div>
+            <ModifPasswordPopUp
+              open={openPassword}
+              onChange={onChangeOldPassword}
+              onChange2={onChangeNewPassword}
+              handleModal={handleUpdatePassword}
+              onUpdate={onUpdatePassword}
+              modalTitle="Modifier votre mot de passe"
+              label="ancien mot de passe"
+              label2="nouveau mot de passe"
               buttonTitle1="Sauvegarder Modifications"
               buttonTitle2="Annuler Modifications"
             />
