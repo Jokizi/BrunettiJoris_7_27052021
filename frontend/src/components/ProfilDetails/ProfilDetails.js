@@ -25,8 +25,10 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [open, setOpen] = useState(false);
   const [openFirstname, setOpenFirstname] = useState(false);
   const [openLastname, setOpenLastname] = useState(false);
+  const [openEmail, setOpenEmail] = useState(false);
   const [newFirstname, setNewFirstname] = useState("");
   const [newLastname, setNewLastname] = useState("");
+  const [newEmail, setNewEmail] = useState("");
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
   const name_regex = /^([A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ-]* ?[A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ]+$)$/;
 
@@ -67,6 +69,10 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
     setNewLastname(e.target.value);
   };
 
+  const onChangeEmail = (e) => {
+    setNewEmail(e.target.value);
+  };
+
   const handleUpdate = () => {
     setIsDisable(!isDisable);
   };
@@ -89,6 +95,10 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
   const handleUpdateLastname = () => {
     setOpenLastname(!openLastname);
+  };
+
+  const handleUpdateEmail = () => {
+    setOpenEmail(!openEmail);
   };
 
   const onUpdateFirstname = async () => {
@@ -157,6 +167,52 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       sessionStorage.setItem("groupomania-user", JSON.stringify(oldSessionStorage));
       setLastname(response.data.lastname);
       toastTrigger("success", "Profil Mis à Jour 👌🏼");
+    } catch (error) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+    }
+  };
+
+  const onUpdateEmail = async () => {
+    console.log("-------------groupomaniaUser.email-----------------------");
+    console.log(groupomaniaUser.email);
+    console.log("------------------------------------");
+    console.log("---------------newEmail---------------------");
+    console.log(newEmail);
+    console.log("------------------------------------");
+    const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
+    const email_regex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (newEmail === groupomaniaUser.email) {
+      toastTrigger("success", "e-mail inchangé");
+      setOpenLastname(false);
+      return;
+    }
+    if (newEmail) {
+      const groupomaniaEmail = newEmail.split("@");
+      if (groupomaniaEmail[1] !== "groupomania.com") {
+        toastTrigger("error", "Votre e-mail doit se terminer par @groupomania.com ⛔️");
+        return;
+      }
+    }
+    try {
+      const response = await api({
+        url: "/users/email/",
+        method: "put",
+        data: { email: newEmail },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      setOpenEmail(false);
+
+      let oldSessionStorage = groupomaniaUser;
+      oldSessionStorage.email = response.data.email;
+      sessionStorage.setItem("groupomania-user", JSON.stringify(oldSessionStorage));
+      setEmail(response.data.email);
+      toastTrigger("success", "e-mail Mis à Jour 👌🏼");
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
     }
@@ -236,20 +292,19 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
               close={handleModal}
             />
           </div>
-
           <div className="user-name-container">
             <div className="message-is-admin">
               {isAdmin && <FontAwesomeIcon color="#fc930c" icon={["fas", "user-cog"]} />} {isAdmin && "Administrateur"}
             </div>
             <div className="user-email"> e-mail : {email} </div>
-            <div className="modify-icon-profil" onClick={handleUpdateFirstname}>
+            <div className="modify-icon-profil" onClick={handleUpdateEmail}>
               <FontAwesomeIcon color="blue" icon={["far", "edit"]} /> modifier e-mail
             </div>
             <ModifCommentPopUp
-              open={openFirstname}
-              onChange={onChangeFirstname}
-              handleModal={handleUpdateFirstname}
-              onUpdate={onUpdateFirstname}
+              open={openEmail}
+              onChange={onChangeEmail}
+              handleModal={handleUpdateEmail}
+              onUpdate={onUpdateEmail}
               modalTitle="Modifier votre e-mail"
               label="Modifier e-mail"
               buttonTitle1="Sauvegarder Modifications"

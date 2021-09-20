@@ -31,11 +31,9 @@ module.exports = {
     if (lastname.length >= 25 || lastname === "") {
       return res.status(400).json({ error: "champ(s) manquant(s)" });
     }
-
     if (!email_regex.test(email)) {
       return res.status(400).json({ error: "e-mail non valide" });
     }
-
     if (!name_regex.test(firstname)) {
       return res.status(400).json({ error: "Prénom non valide" });
     }
@@ -76,7 +74,7 @@ module.exports = {
               done(null, userFound);
             })
             .catch(function (err) {
-              return res.status(500).json({ error: "1 vérification utilisateur impossible" });
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
             });
         },
         // si utilisateur n'est pas existant, on utilise bcrypt pour hasher le password
@@ -99,7 +97,7 @@ module.exports = {
               done(null, userFound, bcryptedPassword, firstnameFound);
             })
             .catch(function (err) {
-              return res.status(500).json({ error: "2 vérification utilisateur impossible" });
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
             });
         },
         function (userFound, bcryptedPassword, firstnameFound, done) {
@@ -229,11 +227,11 @@ module.exports = {
         if (user) {
           res.status(201).json(user);
         } else {
-          res.status(404).json({ error: " utilisateur introuvable " });
+          res.status(404).json({ error: "utilisateur introuvable" });
         }
       })
       .catch(function (err) {
-        res.status(500).json({ error: " impossible de récupérer l'utilisateur " });
+        res.status(500).json({ error: "impossible de récupérer l'utilisateur" });
       });
   },
   getOtherUserProfile: function (req, res) {
@@ -246,11 +244,11 @@ module.exports = {
         if (user) {
           res.status(201).json(user);
         } else {
-          res.status(404).json({ error: "  utilisateur introuvable " });
+          res.status(404).json({ error: "utilisateur introuvable" });
         }
       })
       .catch(function (err) {
-        res.status(500).json({ error: "  impossible de récupérer l'utilisateur " });
+        res.status(500).json({ error: "impossible de récupérer l'utilisateur" });
       });
   },
   getAllOtherUser: function (req, res) {
@@ -264,11 +262,11 @@ module.exports = {
         if (user) {
           res.status(201).json(user);
         } else {
-          res.status(404).json({ error: "  utilisateurs introuvable " });
+          res.status(404).json({ error: "utilisateurs introuvable" });
         }
       })
       .catch(function (err) {
-        res.status(500).json({ error: "  impossible de récupérer les utilisateurs " });
+        res.status(500).json({ error: "impossible de récupérer les utilisateurs" });
       });
   },
   updateUserProfile: function (req, res) {
@@ -423,6 +421,89 @@ module.exports = {
           return res.status(201).json(userFound);
         } else {
           return res.status(500).json({ error: "mise à jour du pseudonyme utilisateur impossible" });
+        }
+      }
+    );
+  },
+  updateEmail: function (req, res) {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN); // lien avec fichier .env
+    const userId = decodedToken.userId;
+
+    // Paramètres
+    const email = req.body.email;
+    const groupomaniaEmail = email.split("@");
+
+    if (!email_regex.test(email)) {
+      return res.status(400).json({ error: "e-mail non valide" });
+    }
+
+    if (groupomaniaEmail[1] !== "groupomania.com") {
+      return res.status(400).json({
+        error: "Votre e-mail doit se terminer par @groupomania.com",
+      });
+    }
+    asyncLib.waterfall(
+      [
+        // récupère l'utilisateur dans la DBase
+        function (done) {
+          models.User.findOne({
+            //attributes: ["id", "bio"],
+            where: { id: userId },
+          })
+            .then(function (userFound) {
+              done(null, userFound);
+            })
+            .catch(function (err) {
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
+            });
+        },
+
+        function (userFound, done) {
+          models.User.findOne({
+            attributes: ["email"],
+            where: { email: email },
+          })
+            // passe dans le then avec done qui sert de callback, le paramètre null signifie qu'on souhaite passer à la suite
+            // on applique le paramètre userFound car on en a besoin dans la fonction suivante
+            .then(function (mailFound) {
+              done(null, userFound, mailFound);
+            })
+            .catch(function (err) {
+              return res.status(500).json({ error: "vérification utilisateur impossible" });
+            });
+        },
+        // si utilisateur n'est pas existant, on utilise bcrypt pour hasher le password
+        // dans le cas contraire on renvoit une erreur
+        function (userFound, mailFound, done) {
+          if (!mailFound) {
+            done(null, userFound, mailFound);
+          } else {
+            return res.status(409).json({ error: "e-mail déjà existant" });
+          }
+        },
+        function (userFound, mailFound, done) {
+          if (userFound) {
+            userFound
+              .update({
+                email: email ? email : userFound.email,
+              })
+              .then(function () {
+                done(userFound);
+              })
+              .catch(function (err) {
+                res.status(500).json({ error: "mise à jour impossible" });
+              });
+          } else {
+            res.status(404).json({ error: "utilisateur introuvable" });
+          }
+        },
+      ],
+      function (userFound) {
+        if (userFound) {
+          return res.status(201).json(userFound);
+        } else {
+          return res.status(500).json({ error: "mise à jour de l'e-mail impossible" });
         }
       }
     );
@@ -801,7 +882,7 @@ module.exports = {
             done(null, userFound);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: " 1 impossible de vérifier l'utilisateur " });
+            return res.status(500).json({ error: "1 impossible de vérifier l'utilisateur" });
           });
       },
       function (userFound, done) {
@@ -812,7 +893,7 @@ module.exports = {
             done(null, userFound, userAdminFound);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: " 2 impossible de vérifier l'utilisateur " });
+            return res.status(500).json({ error: "2 impossible de vérifier l'utilisateur" });
           });
       },
       function (userFound, userAdminFound, done) {
@@ -827,7 +908,7 @@ module.exports = {
             done(null, userFound, userAdminFound, messageIdTab);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: " 3 impossible de vérifier tous les messages " });
+            return res.status(500).json({ error: "3 impossible de vérifier tous les messages" });
           });
       },
 
@@ -840,7 +921,7 @@ module.exports = {
             done(null, userFound, userAdminFound, messageIdTab, allLikeFoundDislike);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: " 4 impossible de vérifier tous les userDislike " });
+            return res.status(500).json({ error: "4 impossible de vérifier tous les userDislike" });
           });
       },
 
@@ -853,7 +934,7 @@ module.exports = {
             done(null, userFound, userAdminFound, messageIdTab, allLikeFoundDislike, allLikeFoundLike);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: " 5 impossible de vérifier tous les userLike" });
+            return res.status(500).json({ error: "5 impossible de vérifier tous les userLike" });
           });
       },
 
@@ -892,7 +973,7 @@ module.exports = {
             );
           })
           .catch(function (err) {
-            return res.status(500).json({ error: " 6 impossible de vérifier tous les commentaires" });
+            return res.status(500).json({ error: "6 impossible de vérifier tous les commentaires" });
           });
       },
 
@@ -922,7 +1003,7 @@ module.exports = {
             );
           })
           .catch(function (err) {
-            return res.status(500).json({ error: " 7 impossible de vérifier tous les commentsLike " });
+            return res.status(500).json({ error: "7 impossible de vérifier tous les commentsLike" });
           });
       },
 
@@ -954,7 +1035,7 @@ module.exports = {
             );
           })
           .catch(function (err) {
-            return res.status(500).json({ error: " 8 impossible de vérifier tous les commentsDislike " });
+            return res.status(500).json({ error: "8 impossible de vérifier tous les commentsDislike" });
           });
       },
       function (
@@ -1022,11 +1103,11 @@ module.exports = {
                   );
                 })
                 .catch((err) => {
-                  return res.status(500).json({ error: " 9 impossible de supprimer les likes " });
+                  return res.status(500).json({ error: "9 impossible de supprimer les likes" });
                 });
             });
         } else {
-          return res.status(500).json({ error: " Vous n'avez pas les droits " });
+          return res.status(500).json({ error: "Vous n'avez pas les droits" });
         }
       },
 
@@ -1097,12 +1178,12 @@ module.exports = {
                       done(null, userFound, userAdminFound, userMessageComment, messageToDelete);
                     })
                     .catch((err) => {
-                      return res.status(500).json({ error: " 10 impossible de supprimer les commentaires " });
+                      return res.status(500).json({ error: "10 impossible de supprimer les commentaires" });
                     });
                 });
             });
         } else {
-          return res.status(500).json({ error: " Vous n'avez pas les droits " });
+          return res.status(500).json({ error: "Vous n'avez pas les droits" });
         }
       },
 
@@ -1155,14 +1236,14 @@ module.exports = {
                     done(null, userFound, userAdminFound);
                   })
                   .catch((err) => {
-                    return res.status(500).json({ error: " 11 impossible de supprimer les commentLikes " });
+                    return res.status(500).json({ error: "11 impossible de supprimer les commentLikes" });
                   });
               } else {
                 done(null, userFound);
               }
             });
         } else {
-          return res.status(500).json({ error: " Vous n'avez pas les droits " });
+          return res.status(500).json({ error: "Vous n'avez pas les droits" });
         }
       },
 
@@ -1206,7 +1287,7 @@ module.exports = {
                       done(null, userFound, userAdminFound);
                     })
                     .catch((err) => {
-                      return res.status(500).json({ error: " 12 impossible de supprimer les messages " });
+                      return res.status(500).json({ error: "12 impossible de supprimer les messages" });
                     });
                 }
               });
@@ -1218,12 +1299,12 @@ module.exports = {
                   done(null, userFound, userAdminFound);
                 })
                 .catch((err) => {
-                  return res.status(500).json({ error: " 13 impossible de supprimer les messages " });
+                  return res.status(500).json({ error: "13 impossible de supprimer les messages" });
                 });
             }
           });
         } else {
-          return res.status(500).json({ error: " vous n'avez pas les droits " });
+          return res.status(500).json({ error: "vous n'avez pas les droits" });
         }
       },
 
@@ -1234,10 +1315,10 @@ module.exports = {
               where: { userId: userFound.id },
             })
             .then(() => {
-              return res.status(201).json(" Le compte à été supprimé avec succès ");
+              return res.status(201).json("Le compte à été supprimé avec succès");
             });
         } else {
-          return res.status(500).json({ error: " vous n'avez pas les droits " });
+          return res.status(500).json({ error: "vous n'avez pas les droits" });
         }
       },
     ]);
@@ -1255,7 +1336,7 @@ module.exports = {
               done(null, userfound);
             })
             .catch(function (err) {
-              return res.status(500).json({ error: " impossible de vérifier l'utilisateur " });
+              return res.status(500).json({ error: "impossible de vérifier l'utilisateur" });
             });
         },
         function (userfound, done) {
@@ -1266,7 +1347,7 @@ module.exports = {
               done(null, userfound, userAdminFound);
             })
             .catch(function (err) {
-              return res.status(500).json({ error: " impossible de vérifier l'admin " });
+              return res.status(500).json({ error: "impossible de vérifier l'admin" });
             });
         },
 
@@ -1290,7 +1371,7 @@ module.exports = {
                 });
             }
           } else {
-            return res.status(500).json({ error: " vous n'avez pas les droits " });
+            return res.status(500).json({ error: "vous n'avez pas les droits" });
           }
         },
       ],
@@ -1298,7 +1379,7 @@ module.exports = {
         if (userFound) {
           return res.status(201).json(userFound);
         } else {
-          return res.status(500).json({ error: " impossible de donner les droits à l'utilisateur " });
+          return res.status(500).json({ error: "impossible de donner les droits à l'utilisateur" });
         }
       }
     );

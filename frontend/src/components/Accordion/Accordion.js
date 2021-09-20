@@ -63,6 +63,7 @@ const Accordion = ({
           const messageCommentLikeByCurrentUser = element?.CommentsLikes?.filter(
             (elt) => groupomaniaUser.id === elt.userId
           );
+          const firstnameLastname = element.User.firstname + " " + element.User.lastname;
           return (
             <div className="accordion-comment-card" key={element.id}>
               <div>Publié {moment(new Date(element.createdAt)).fromNow()}</div>
@@ -73,8 +74,7 @@ const Accordion = ({
                 <div className="avatar-comment-picture">
                   <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />
                 </div>
-                <div className="accordion-comment-username">{element.User.firstname}</div>
-                <div className="accordion-comment-username">{element.User.lastname}</div>
+                <div className="accordion-comment-username">{firstnameLastname}</div>
               </div>
               <div className="accordion-comment-content">{element.content}</div>
               <div className="accordion-comment-like-modify-delete-container">
