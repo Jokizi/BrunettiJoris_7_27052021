@@ -51,5 +51,6 @@
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  margin-top: 5px;
   width: 100px;
 }

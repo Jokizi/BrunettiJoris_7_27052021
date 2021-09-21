@@ -22,6 +22,7 @@ class PostMessage extends Component {
       limitTitle: 0,
       activeLimitTitle: false,
       caractere: "caractères",
+      publishError: false,
     };
   }
 
@@ -155,6 +156,7 @@ class PostMessage extends Component {
         }
       } catch (error) {
         toastTrigger("error", "Une erreur est survenue ⛔️");
+        this.setState({ publishError: true });
       }
     }
   };
@@ -191,6 +193,9 @@ class PostMessage extends Component {
         </div>
         {this.state.activePicture && this.state.file?.name !== undefined && (
           <div className="picture-name">{this.state.file?.name}</div>
+        )}
+        {this.state.publishError && (
+          <div style={{ color: "red" }}>Le titre est obligatoire, avec une image et ou une publication</div>
         )}
         <div className="button-publish">
           <Button onClick={this.onPublish} title="Publier" />
