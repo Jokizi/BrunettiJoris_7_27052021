@@ -11,7 +11,18 @@ import "./PostMessage.css";
 class PostMessage extends Component {
   constructor(props) {
     super(props);
-    this.state = { file: "", title: "", content: "", theInputKey: "", activePicture: false };
+    this.state = {
+      file: "",
+      title: "",
+      content: "",
+      theInputKey: "",
+      activePicture: false,
+      limitContent: 0,
+      activeLimitContent: false,
+      limitTitle: 0,
+      activeLimitTitle: false,
+      caractere: "caractères",
+    };
   }
 
   onUploadFile = (e) => {
@@ -21,10 +32,42 @@ class PostMessage extends Component {
 
   onChangeTitle = (e) => {
     this.setState({ title: e.target.value });
+    let limitNumberTitle = e.target.value.length;
+
+    if (limitNumberTitle > 255) {
+      let errorLimit = limitNumberTitle - 255;
+
+      this.setState({ limitTitle: errorLimit });
+      this.setState({ activeLimitTitle: true });
+    } else {
+      this.setState({ limitTitle: 0 });
+      this.setState({ activeLimitTitle: false });
+    }
+    if (this.state.limitTitle > 0) {
+      this.setState({ caractere: "caractères" });
+    } else {
+      this.setState({ caractere: "caractère" });
+    }
   };
 
   onChangeContent = (e) => {
     this.setState({ content: e.target.value });
+    let limitNumberContent = e.target.value.length;
+
+    if (limitNumberContent > 2550) {
+      let errorLimit = limitNumberContent - 2550;
+
+      this.setState({ limitContent: errorLimit });
+      this.setState({ activeLimitContent: true });
+    } else {
+      this.setState({ limitContent: 0 });
+      this.setState({ activeLimitContent: false });
+    }
+    if (this.state.limitContent > 0) {
+      this.setState({ caractere: "caractères" });
+    } else {
+      this.setState({ caractere: "caractère" });
+    }
   };
 
   onPublish = async () => {
@@ -37,6 +80,12 @@ class PostMessage extends Component {
 
     formData.append("image", file);
     formData.append("message", json);
+
+    if (this.state.activeLimitContent) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+      return;
+    }
+
     if (this.props.isProfil) {
       try {
         if (file) {
@@ -111,13 +160,17 @@ class PostMessage extends Component {
   };
 
   render() {
-    const { title, content } = this.state;
+    const { title, content, caractere } = this.state;
+
     return (
       <div className="post-message">
         <div className="post-message-title">Échanger avec vos collaborateurs</div>
         <div className="input-container">
           <div className="input-title">
             <Input value={title} onChange={this.onChangeTitle} label="Titre" type="text" />
+            {this.state.activeLimitTitle && (
+              <div style={{ color: "red" }}>vous avez {`${this.state.limitTitle + " " + caractere}`} en plus</div>
+            )}
           </div>
           <div className="input-file">
             <ButtonFile onChange={this.onUploadFile} type="file" theInputKey={this.state.theInputKey} />
@@ -131,6 +184,9 @@ class PostMessage extends Component {
               onChange={this.onChangeContent}
               value={content}
             />
+            {this.state.activeLimitContent && (
+              <div style={{ color: "red" }}>vous avez {`${this.state.limitContent + " " + caractere}`} de trop</div>
+            )}
           </div>
         </div>
         {this.state.activePicture && this.state.file?.name !== undefined && (

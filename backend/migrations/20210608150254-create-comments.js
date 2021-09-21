@@ -14,6 +14,7 @@ module.exports = {
           model: "Messages",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
       userId: {
         allowNull: false,
@@ -24,7 +25,7 @@ module.exports = {
         },
       },
       content: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1500),
       },
       commentLikes: {
         type: Sequelize.INTEGER,

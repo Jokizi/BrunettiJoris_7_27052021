@@ -253,9 +253,6 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       setOpenPassword(false);
       toastTrigger("success", "mot de passe Mis à Jour 👌🏼");
     } catch (error) {
-      console.log("--------------error----------------------");
-      console.log(error);
-      console.log("------------------------------------");
       toastTrigger("error", "Une erreur est survenue ⛔️");
     }
   };

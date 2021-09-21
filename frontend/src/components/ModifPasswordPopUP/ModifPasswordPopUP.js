@@ -24,8 +24,13 @@ const ModifPasswordPopUp = ({
           <div className="modif-pop-up-title">
             <DialogTitle>{modalTitle}</DialogTitle>
           </div>
-          <Input value={newContent} onChange={onChange} label={label} type="password" />
-          <Input value={newContent2} onChange={onChange2} label={label2} type="password" />
+
+          <div style={{ marginBottom: "10px" }}>
+            <Input value={newContent} onChange={onChange} label={label} type="password" />
+          </div>
+          <div>
+            <Input value={newContent2} onChange={onChange2} label={label2} type="password" />
+          </div>
           <div className="modif-pop-up-buttons">
             <div className="button-save-modif">
               <Button title={buttonTitle1} onClick={onUpdate} />

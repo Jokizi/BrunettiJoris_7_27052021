@@ -21,6 +21,9 @@ const CommentMessage = ({
   const [allComments, setAllComments] = useState([]);
   const [commentIcon, setCommentIcon] = useState(["far", "comment-dots"]);
   const [content, setContent] = useState("");
+  const [limitContent, setLimitContent] = useState(0);
+  const [activeLimitContent, setActiveLimitContent] = useState(false);
+  const [caractere, setCaractere] = useState("caractères");
 
   useEffect(() => {
     if (comments > 0) {
@@ -30,10 +33,31 @@ const CommentMessage = ({
 
   const onChangeContent = (e) => {
     setContent(e.target.value);
+    let limitNumberContent = e.target.value.length;
+
+    if (limitNumberContent > 1500) {
+      let errorLimit = limitNumberContent - 1500;
+
+      setLimitContent(errorLimit);
+      setActiveLimitContent(true);
+    } else {
+      setLimitContent(0);
+      setActiveLimitContent(false);
+    }
+    if (limitContent > 0) {
+      setCaractere("caractères");
+    } else {
+      setCaractere("caractère");
+    }
   };
 
   const onComment = async () => {
     if (!content) {
+      toastTrigger("error", "Une erreur est survenue ⛔️");
+      return;
+    }
+
+    if (activeLimitContent) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
       return;
     }
@@ -89,6 +113,9 @@ const CommentMessage = ({
       <div className="comment-input-button">
         <div className="comment-input">
           <Input value={content} onChange={onChangeContent} label="votre commentaire" type="text" />
+          {activeLimitContent && (
+            <div style={{ color: "red" }}>vous avez {`${limitContent + " " + caractere}`} de trop</div>
+          )}
         </div>
         <div className="comment-button">
           <Button onClick={onComment} title="commenter" />
