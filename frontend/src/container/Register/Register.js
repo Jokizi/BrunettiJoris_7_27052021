@@ -16,9 +16,16 @@ const Register = ({ /*setIsLoggedin*/ setMyUserId }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorFirstname, setErrorFirstname] = useState("");
+  const [errorLastname, setErrorLastname] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
 
   const name_regex = /^([A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ-]* ?[A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ]+$)$/;
+  const email_regex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/;
 
   const onChangeFirstname = (e) => {
     setFirstname(e.target.value);
@@ -45,17 +52,41 @@ const Register = ({ /*setIsLoggedin*/ setMyUserId }) => {
   };
 
   const onRegister = async () => {
-    if (password !== confirmPassword) {
-      setErrorMessage("vous n'avez pas saisie le même mot de passe");
+    if (!email_regex.test(email)) {
+      setErrorEmail("votre e-mail doit se terminer par @groupomania.com");
       return;
+    } else {
+      setErrorEmail("");
     }
+
     if (!name_regex.test(firstname)) {
-      setErrorMessage("Prénom non valide");
+      setErrorFirstname("Prénom non valide");
       return;
+    } else {
+      setErrorFirstname("");
     }
+
     if (!name_regex.test(lastname)) {
-      setErrorMessage("NOM non valide");
+      setErrorLastname("NOM non valide");
       return;
+    } else {
+      setErrorLastname("");
+    }
+
+    if (!password_regex.test(password)) {
+      setErrorPassword(
+        "mot de passe non valide, 8 caractères minimum, contenant au moins une lettre minuscule, une lettre majuscule, un chiffre numérique et un caractère spécial"
+      );
+      return;
+    } else {
+      setErrorPassword("");
+    }
+
+    if (password !== confirmPassword) {
+      setErrorConfirmPassword("vous n'avez pas saisie le même mot de passe");
+      return;
+    } else {
+      setErrorConfirmPassword("");
     }
 
     try {
@@ -77,7 +108,6 @@ const Register = ({ /*setIsLoggedin*/ setMyUserId }) => {
       history.push("/connexion");
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
-      setErrorMessage(error.response.data.error);
     }
   };
 
@@ -87,15 +117,19 @@ const Register = ({ /*setIsLoggedin*/ setMyUserId }) => {
       <div className="register-input">
         <Input onChange={onChangeEmail} value={email} label="e-mail" />
       </div>
+      {errorEmail && <ErrorMessage message={errorEmail} />}
       <div className="register-input">
         <Input onChange={onChangeFirstname} value={firstname} label="Prénom" />
       </div>
+      {errorFirstname && <ErrorMessage message={errorFirstname} />}
       <div className="register-input">
         <Input onChange={onChangeLastname} value={lastname} label="NOM" />
       </div>
+      {errorLastname && <ErrorMessage message={errorLastname} />}
       <div className="register-input">
         <Input onChange={onChangePassword} value={password} label="mot de passe" type="password" />
       </div>
+      {errorPassword && <ErrorMessage message={errorPassword} />}
       <div className="register-input">
         <Input
           onChange={onChangeConfirmPassword}
@@ -104,13 +138,13 @@ const Register = ({ /*setIsLoggedin*/ setMyUserId }) => {
           type="password"
         />
       </div>
+      {errorConfirmPassword && <ErrorMessage message={errorConfirmPassword} />}
       <div className="register-input">
         <InputTextArea rows={4} variant="outlined" label="Description" onChange={onChangeBio} value={bio} />
       </div>
       <div className="register-button">
         <Button onClick={onRegister} title="S'inscrire" />
       </div>
-      {errorMessage && <ErrorMessage message={errorMessage} />}
     </div>
   );
 };

@@ -33,6 +33,11 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const [newEmail, setNewEmail] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorFirstname, setErrorFirstname] = useState("");
+  const [errorLastname, setErrorLastname] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
   const groupomaniaUser = JSON.parse(sessionStorage.getItem("groupomania-user"));
   const name_regex = /^([A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ-]* ?[A-zàâäçéèêëîïôùûüÿæœÀÂÄÇÉÈÊËÎÏÔÙÛÜŸÆŒ]+$)$/;
 
@@ -103,30 +108,36 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
   const handleUpdateFirstname = () => {
     setOpenFirstname(!openFirstname);
+    setErrorFirstname("");
   };
 
   const handleUpdateLastname = () => {
     setOpenLastname(!openLastname);
+    setErrorLastname("");
   };
 
   const handleUpdateEmail = () => {
     setOpenEmail(!openEmail);
+    setErrorEmail("");
   };
 
   const handleUpdatePassword = () => {
     setOpenPassword(!openPassword);
+    setErrorPassword("");
   };
 
   const onUpdateFirstname = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     if (newFirstname === groupomaniaUser.firstname) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
+
       setOpenFirstname(false);
       return;
     }
 
     if (!name_regex.test(newFirstname)) {
       toastTrigger("error", "Prénom non valide ⛔️");
+      setErrorFirstname("Prénom non valide");
       return;
     }
 
@@ -148,6 +159,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       sessionStorage.setItem("groupomania-user", JSON.stringify(oldSessionStorage));
       setFirstname(response.data.firstname);
       toastTrigger("success", "Profil Mis à Jour 👌🏼");
+      setErrorFirstname("");
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
     }
@@ -163,6 +175,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
     if (!name_regex.test(newFirstname)) {
       toastTrigger("error", "NOM non valide ⛔️");
+      setErrorLastname("NOM non valide");
       return;
     }
     try {
@@ -183,6 +196,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       sessionStorage.setItem("groupomania-user", JSON.stringify(oldSessionStorage));
       setLastname(response.data.lastname);
       toastTrigger("success", "Profil Mis à Jour 👌🏼");
+      setErrorLastname("");
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
     }
@@ -202,6 +216,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       const groupomaniaEmail = newEmail.split("@");
       if (groupomaniaEmail[1] !== "groupomania.com") {
         toastTrigger("error", "Votre e-mail doit se terminer par @groupomania.com ⛔️");
+        setErrorEmail("Votre e-mail doit se terminer par @groupomania.com");
         return;
       }
     }
@@ -223,6 +238,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       sessionStorage.setItem("groupomania-user", JSON.stringify(oldSessionStorage));
       setEmail(response.data.email);
       toastTrigger("success", "e-mail Mis à Jour 👌🏼");
+      setErrorEmail("");
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
     }
@@ -232,10 +248,15 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     const password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/;
     const obj = { oldPassword, newPassword };
+    if (!password_regex.test(oldPassword)) {
+      toastTrigger("error", "mot de passe non valide ⛔️");
+      setErrorPassword("ce n'est pas le mot de passe actuel");
+      return;
+    }
     if (!password_regex.test(newPassword)) {
-      toastTrigger(
-        "error",
-        "mot de passe non valide, 8 caractères minimum, contenant au moins une lettre minuscule, une lettre majuscule, un chiffre numérique et un caractère spécial ⛔️"
+      toastTrigger("error", "mot de passe non valide ⛔️");
+      setErrorConfirmPassword(
+        "mot de passe non valide, 8 caractères minimum, contenant au moins une lettre minuscule, une lettre majuscule, un chiffre numérique et un caractère spécial"
       );
       return;
     }
@@ -252,6 +273,8 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
       setOpenPassword(false);
       toastTrigger("success", "mot de passe Mis à Jour 👌🏼");
+      setErrorPassword("");
+      setErrorConfirmPassword("");
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
     }
@@ -341,6 +364,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
             </div>
             <ModifCommentPopUp
               open={openEmail}
+              error={errorEmail}
               onChange={onChangeEmail}
               handleModal={handleUpdateEmail}
               onUpdate={onUpdateEmail}
@@ -354,6 +378,8 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
             </div>
             <ModifPasswordPopUp
               open={openPassword}
+              error={errorPassword}
+              errorConfirm={errorConfirmPassword}
               onChange={onChangeOldPassword}
               onChange2={onChangeNewPassword}
               handleModal={handleUpdatePassword}
@@ -370,6 +396,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
             </div>
             <ModifCommentPopUp
               open={openFirstname}
+              error={errorFirstname}
               onChange={onChangeFirstname}
               handleModal={handleUpdateFirstname}
               onUpdate={onUpdateFirstname}
@@ -384,6 +411,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
             </div>
             <ModifCommentPopUp
               open={openLastname}
+              error={errorLastname}
               onChange={onChangeLastname}
               handleModal={handleUpdateLastname}
               onUpdate={onUpdateLastname}

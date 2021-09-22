@@ -36,7 +36,7 @@ const Login = ({ setIsLoggedin, setMyUserId /*setAdmin*/ }) => {
       history.push({ pathname: "/accueil" });
     } catch (error) {
       toastTrigger("error", "Une erreur est survenue ⛔️");
-      setErrorMessage(error.response.data.error);
+      setErrorMessage("e-mail ou mot de passe invalide");
     }
   };
   return (
