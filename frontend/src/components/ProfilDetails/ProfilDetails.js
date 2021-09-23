@@ -129,7 +129,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const onUpdateFirstname = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     if (newFirstname === groupomaniaUser.firstname) {
-      toastTrigger("error", "Une erreur est survenue ⛔️");
+      toastTrigger("success", "Prénom inchangé");
 
       setOpenFirstname(false);
       return;
@@ -168,7 +168,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const onUpdateLastname = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     if (newLastname === groupomaniaUser.lastname) {
-      toastTrigger("error", "Une erreur est survenue ⛔️");
+      toastTrigger("success", "NOM inchangé");
       setOpenLastname(false);
       return;
     }
@@ -209,14 +209,14 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
     if (newEmail === groupomaniaUser.email) {
       toastTrigger("success", "e-mail inchangé");
-      setOpenLastname(false);
+      setOpenEmail(false);
       return;
     }
     if (newEmail) {
       const groupomaniaEmail = newEmail.split("@");
       if (groupomaniaEmail[1] !== "groupomania.com") {
         toastTrigger("error", "Votre e-mail doit se terminer par @groupomania.com ⛔️");
-        setErrorEmail("Votre e-mail doit se terminer par @groupomania.com");
+        setErrorEmail("votre e-mail doit se terminer par @groupomania.com");
         return;
       }
     }
@@ -283,7 +283,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
   const onUpdateBio = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
     if (bio === groupomaniaUser.bio) {
-      toastTrigger("error", "Une erreur est survenue ⛔️");
+      toastTrigger("success", "Description inchangé");
       setOpenUpdate(false);
       return;
     }

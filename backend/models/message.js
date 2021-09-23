@@ -15,10 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
 
-      models.Message.hasMany(models.Like, {
-        foreignKey: {
-          allowNull: true,
-        },
+      this.hasMany(models.Comment, {
+        foreignKey: "messageId",
+      });
+      this.hasMany(models.Like, {
+        foreignKey: "messageId",
       });
     }
   }

@@ -22,6 +22,7 @@ module.exports = {
           model: "Users",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
       userLike: {
         allowNull: false,
