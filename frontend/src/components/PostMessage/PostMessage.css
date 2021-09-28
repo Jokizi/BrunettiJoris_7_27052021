@@ -54,3 +54,24 @@
   margin-top: 5px;
   width: 100px;
 }
+
+@media screen and (max-width: 1259px) {
+  .post-message {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1035px) {
+  .post-message {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 428px) {
+  .post-message {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 228px) {
+  .post-message {
+    width: 100%;
+  }
+}

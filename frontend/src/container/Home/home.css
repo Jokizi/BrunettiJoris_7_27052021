@@ -30,7 +30,7 @@
 
 .avatar-name {
   font-weight: bold;
-  color: #fc930c;
+  color: black;
   cursor: pointer;
 }
 
@@ -70,13 +70,13 @@
 
 @media screen and (max-width: 1700px) {
   .message-card-container {
-    margin: 0 400px;
+    margin: 0 200px;
   }
 }
 
 @media screen and (max-width: 1400px) {
   .message-card-container {
-    margin: 0 300px;
+    margin: 0 200px;
   }
 }
 
@@ -87,12 +87,21 @@
 }
 
 @media screen and (max-width: 800px) {
+  .post-message-container {
+    padding: 0;
+  }
   .message-card-container {
     margin: 0 50px;
   }
 }
 
 @media screen and (max-width: 640px) {
+  .search-user-container {
+    padding: 0;
+  }
+  .post-message-container {
+    padding: 0;
+  }
   .message-card-container {
     margin: auto;
   }

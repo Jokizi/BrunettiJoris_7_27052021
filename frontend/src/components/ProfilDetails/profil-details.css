@@ -14,7 +14,7 @@
   font-size: 25px;
   font-weight: bold;
   margin-bottom: 30px;
-  color: #fc930c;
+  color: black;
 }
 
 .user-profil-container {
@@ -75,4 +75,48 @@
 
 .user-description-input {
   margin-right: 10px;
+}
+
+@media screen and (max-width: 1700px) {
+}
+
+@media screen and (max-width: 1400px) {
+}
+@media screen and (max-width: 1025px) {
+  .user-profil-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .user-description-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+}
+@media screen and (max-width: 800px) {
+  .user-profil-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .user-description-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+}
+@media screen and (max-width: 640px) {
+  .user-profil-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .user-description-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 }

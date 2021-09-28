@@ -3,7 +3,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Input from "../../components/Input/Input";
 import Button from "../Button/Button";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import "./modif-comment-pop-up.css";
 
 const ModifCommentPopUp = ({
   open,

@@ -29,7 +29,7 @@ const Login = ({ setIsLoggedin, setMyUserId /*setAdmin*/ }) => {
         password,
       });
       token = response.data.token;
-      sessionStorage.setItem("groupomania-token", response.data.token);
+      sessionStorage.setItem("groupomania-token", token);
       setIsLoggedin(true);
       setMyUserId(response.data.userId);
       toastTrigger("success", `Bonjour ${response.data.firstname} ✌🏼`);

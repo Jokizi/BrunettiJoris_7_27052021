@@ -47,9 +47,6 @@ const Home = ({ myUserId, admin, setAdmin }) => {
   }, [history, setAdmin]);
   // rendre dynamique l'affichage des messages
   const viewMessagesPost = (newMessages) => {
-    console.log("========newMessages============================");
-    console.log(newMessages);
-    console.log("====================================");
     setAllMessages(newMessages);
   };
 
@@ -106,7 +103,13 @@ const Home = ({ myUserId, admin, setAdmin }) => {
             <div className="message-card" key={element.id}>
               <div className="avatar-name" onClick={() => goToOtherProfil(element.UserId)}>
                 <div className="avatar-picture">
-                  <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />
+                  <img
+                    width="100%"
+                    height="100%"
+                    alt="avatar"
+                    style={{ borderRadius: "50%" }}
+                    src={element.User.avatar}
+                  />
                 </div>
                 <div>{firstnameLastname}</div>
               </div>

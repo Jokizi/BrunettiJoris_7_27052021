@@ -173,7 +173,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       return;
     }
 
-    if (!name_regex.test(newFirstname)) {
+    if (!name_regex.test(newLastname)) {
       toastTrigger("error", "NOM non valide ⛔️");
       setErrorLastname("NOM non valide");
       return;
@@ -204,8 +204,6 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
 
   const onUpdateEmail = async () => {
     const token = JSON.parse(JSON.stringify(sessionStorage.getItem("groupomania-token")));
-    const email_regex =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (newEmail === groupomaniaUser.email) {
       toastTrigger("success", "e-mail inchangé");
@@ -261,7 +259,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       return;
     }
     try {
-      const response = await api({
+      await api({
         url: "/users/password/",
         method: "put",
         data: obj,
@@ -328,7 +326,9 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
       sessionStorage.removeItem("groupomania-token");
       sessionStorage.removeItem("groupomania-user");
       history.push("/");
-    } catch (error) {}
+    } catch (error) {
+      toastTrigger("error", error.response.data.error);
+    }
   };
 
   return (
@@ -341,7 +341,7 @@ const ProfilDetails = ({ myUserId, setIsLoggedin, setCheckLogin }) => {
           <div className="avatar-container">
             <div>Avatar :</div>
             <div className="avatar-picture">
-              <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={avatar} />
+              <img width="100%" height="100%" alt="avatar" style={{ borderRadius: "50%" }} src={avatar} />
             </div>
             <div className="user-button-modify-avatar">
               <Button onClick={handleModal} title="Modifier Avatar" />

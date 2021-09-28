@@ -26,26 +26,42 @@
 
 @media screen and (max-width: 1700px) {
   .message-user-card-container {
-    margin: 0 400px;
+    margin: 0 200px;
   }
 }
 
 @media screen and (max-width: 1400px) {
+  .profil-details-container {
+    padding: 0;
+  }
   .message-user-card-container {
-    margin: 0 300px;
+    margin: 0 200px;
   }
 }
 @media screen and (max-width: 1000px) {
+  .profil-details-container {
+    padding: 0;
+  }
   .message-user-card-container {
     margin: 0 200px;
   }
 }
 @media screen and (max-width: 800px) {
+  .profil-details-container {
+    padding: 0;
+  }
   .message-user-card-container {
     margin: 0 50px;
   }
 }
 @media screen and (max-width: 640px) {
+  .profil-details-container {
+    padding: 0;
+  }
+
+  .post-message-container {
+    padding: 0;
+  }
   .message-user-card-container {
     margin: auto;
   }

@@ -27,16 +27,29 @@ const Header = ({ isLoggedin, setIsLoggedin }) => {
       </div>
 
       {isLoggedin && (
-        <div className="grpm-buttons-log">
-          <Button style={{ marginRight: "20px" }} onClick={() => history.push("/accueil")} title="Accueil">
-            <FontAwesomeIcon color="black" icon={["fas", "home"]} />
-          </Button>
-          <Button style={{ marginRight: "20px" }} onClick={() => history.push("/profil")} title="Profil">
-            <FontAwesomeIcon color="black" icon={["fas", "user-circle"]} />
-          </Button>
-          <Button style={{ marginRight: "20px" }} title="Déconnexion" onClick={onLogout}>
-            <FontAwesomeIcon color="black" icon={["fas", "stop-circle"]} />
-          </Button>
+        <div className="grpm-buttons-log-1">
+          <div className="grpm-buttons-log-2">
+            <Button style={{ marginRight: "20px" }} onClick={() => history.push("/accueil")} title="Accueil">
+              <FontAwesomeIcon color="black" icon={["fas", "home"]} />
+            </Button>
+            <Button style={{ marginRight: "20px" }} onClick={() => history.push("/profil")} title="Profil">
+              <FontAwesomeIcon color="black" icon={["fas", "user-circle"]} />
+            </Button>
+            <Button style={{ marginRight: "20px" }} title="Déconnexion" onClick={onLogout}>
+              <FontAwesomeIcon color="black" icon={["fas", "stop-circle"]} />
+            </Button>
+          </div>
+          <div className="grpm-buttons-log-3">
+            <Button style={{ marginRight: "20px" }} onClick={() => history.push("/accueil")}>
+              <FontAwesomeIcon color="black" icon={["fas", "home"]} />
+            </Button>
+            <Button style={{ marginRight: "20px" }} onClick={() => history.push("/profil")}>
+              <FontAwesomeIcon color="black" icon={["fas", "user-circle"]} />
+            </Button>
+            <Button style={{ marginRight: "20px" }} onClick={onLogout}>
+              <FontAwesomeIcon color="black" icon={["fas", "stop-circle"]} />
+            </Button>
+          </div>
         </div>
       )}
 

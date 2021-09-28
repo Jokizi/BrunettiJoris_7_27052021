@@ -133,7 +133,7 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
         <div className="users-profil-infos">
           <div className="users-avatar">
             Avatar :
-            <img className="avatar-picture" src={infoAvatar} />
+            <img className="avatar-picture" alt="avatar" src={infoAvatar} />
           </div>
           <div className="other-user-pseudo">Prénom : {infoFirstname}</div>
           <div className="other-user-pseudo">NOM : {infoLastname}</div>
@@ -181,7 +181,13 @@ const OtherProfil = ({ myUserId, admin, setIsLoggedin, setCheckLogin }) => {
             <div className="message-other-user-card" key={element.id}>
               <div className="avatar-name">
                 <div className="avatar-picture">
-                  <img width="100%" height="100%" style={{ borderRadius: "50%" }} src={element.User.avatar} />
+                  <img
+                    width="100%"
+                    height="100%"
+                    alt="avatar"
+                    style={{ borderRadius: "50%" }}
+                    src={element.User.avatar}
+                  />
                 </div>
                 <div>{firstnameLastname}</div>
               </div>
