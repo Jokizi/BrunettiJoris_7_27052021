@@ -2,9 +2,9 @@ import "./footer.css";
 
 const Footer = () => {
   return (
-    <div className="grpm-footer">
+    <footer className="grpm-footer">
       <div className="grpm-footer-content">CONNECT-E production.</div>
-    </div>
+    </footer>
   );
 };
 export default Footer;

@@ -99,7 +99,7 @@ export default function OutlinedChips({ myUserId }) {
                 key={element.id}
                 avatar={
                   <Avatar style={{ width: "20%", height: "35px", marginRight: "10px" }}>
-                    {<img src={element.avatar} alt="avatar" style={{ width: "100%", height: "52px" }} />}
+                    {<img src={element.avatar} alt="" style={{ width: "100%", height: "52px" }} />}
                   </Avatar>
                 }
                 label={firstnameLastname}

@@ -25,18 +25,22 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
-const Input = ({ label, type = "text", onChange, value, theInputKey, onClick }) => {
+const Input = ({ label, type = "text", onChange, value, theInputKey, onClick, aria }) => {
   return (
-    <CssTextField
-      value={value}
-      onChange={onChange}
-      label={label}
-      variant="outlined"
-      type={type}
-      autoComplete="off"
-      key={theInputKey || ""}
-      onClick={onClick}
-    />
+    <label>
+      <CssTextField
+        aria-label={aria}
+        aria-required="true"
+        value={value}
+        onChange={onChange}
+        label={label}
+        variant="outlined"
+        type={type}
+        autoComplete="off"
+        key={theInputKey || ""}
+        onClick={onClick}
+      />
+    </label>
   );
 };
 

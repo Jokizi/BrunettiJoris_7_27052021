@@ -21,7 +21,7 @@ const Header = ({ isLoggedin, setIsLoggedin }) => {
   });
 
   return (
-    <div className="grpm-header">
+    <header className="grpm-header">
       <div className="grpm-logo_1">
         <img className="img-logo-1" src={logo_1} onClick={() => history.push("/accueil")} alt="logo groupomania" />
       </div>
@@ -60,7 +60,7 @@ const Header = ({ isLoggedin, setIsLoggedin }) => {
           </Button>
         </div>
       )}
-    </div>
+    </header>
   );
 };
 

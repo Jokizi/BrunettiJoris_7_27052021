@@ -88,7 +88,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
   };
 
   return (
-    <div className="grpm-home">
+    <main className="grpm-home">
       <div className="post-message-container">
         <PostMessage viewMessagesPost={viewMessagesPost} />
       </div>
@@ -96,6 +96,9 @@ const Home = ({ myUserId, admin, setAdmin }) => {
         <OutlinedChips myUserId={myUserId} />
       </div>
       <div className="message-card-container">
+        <div style={{ display: "none" }}>
+          <h1>Dernières publications</h1>
+        </div>
         {allMessages.map((element) => {
           const messageLikeByCurrentUser = element?.Likes?.filter((elt) => groupomaniaUser.id === elt.userId);
           const firstnameLastname = element.User.firstname + " " + element.User.lastname;
@@ -103,13 +106,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
             <div className="message-card" key={element.id}>
               <div className="avatar-name" onClick={() => goToOtherProfil(element.UserId)}>
                 <div className="avatar-picture">
-                  <img
-                    width="100%"
-                    height="100%"
-                    alt="avatar"
-                    style={{ borderRadius: "50%" }}
-                    src={element.User.avatar}
-                  />
+                  <img width="100%" height="100%" alt="" style={{ borderRadius: "50%" }} src={element.User.avatar} />
                 </div>
                 <div>{firstnameLastname}</div>
               </div>
@@ -126,7 +123,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
                 <div className="message-title">{element.title}</div>
                 {element.attachment && (
                   <div className="picture-container">
-                    <img src={element.attachment} alt="img" width="100%" height="100%" />
+                    <img src={element.attachment} alt="" width="100%" height="100%" />
                   </div>
                 )}
                 <div className="message-content">{element.content}</div>
@@ -179,7 +176,7 @@ const Home = ({ myUserId, admin, setAdmin }) => {
           );
         })}
       </div>
-    </div>
+    </main>
   );
 };
 export default Home;

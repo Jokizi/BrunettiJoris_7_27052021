@@ -20,7 +20,8 @@ export default function UploadButtons({ onChange, theInputKey, type }) {
   return (
     <div className={classes.root}>
       <input onChange={onChange} key={theInputKey || ""} className={classes.input} id="icon-button-file" type={type} />
-      <label htmlFor="icon-button-file">
+      <label aria-label="upload picture" htmlFor="icon-button-file">
+        <div style={{ display: "none" }}>Sélectionner une image :</div>
         <IconButton color="primary" aria-label="upload picture" component="span">
           <FontAwesomeIcon color="#fc930c" icon={["fas", "camera-retro"]} />
         </IconButton>
