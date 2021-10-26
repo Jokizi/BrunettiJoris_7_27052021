@@ -198,7 +198,7 @@ module.exports = {
             })
             .catch(function (err) {
               return res.status(500).json({
-                error: "impossible de vérifier si l'utilisateur à déjà disliké",
+                error: "impossible de vérifier si l'utilisateur a déjà disliké",
               });
             });
         } else {

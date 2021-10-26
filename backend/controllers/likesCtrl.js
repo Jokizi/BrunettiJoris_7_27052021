@@ -61,7 +61,7 @@ module.exports = {
             })
             .catch(function (err) {
               return res.status(500).json({
-                error: "impossible de vérifier si l'utilisateur à déjà liké",
+                error: "impossible de vérifier si l'utilisateur a déjà liké",
               });
             });
         } else {

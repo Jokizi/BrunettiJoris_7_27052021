@@ -55,7 +55,7 @@ Pour démarrer le projet entièrement, faire tourner "l'api" ainsi que "l'app" :
 
 7 ème :
 
-Une fois le projet lancer voici les informations de connexion
+Une fois le projet lancé voici les informations de connexion
 
 email : admin@groupomania.com , john.wick@groupomania.com, wonder.woman@groupomania.com , dark.vador@groupomania.com
 

@@ -242,7 +242,7 @@ module.exports = {
       },*/
       function (messageFound, commentFound, done) {
         models.User.findOne({
-          where: { isAdmin: true, id: userId },
+          where: { id: userId },
         })
           .then(function (userFoundAdmin) {
             done(null, messageFound, commentFound, /*userFound,*/ userFoundAdmin);
@@ -354,7 +354,7 @@ module.exports = {
               });
           }
         } else {
-          return res.status(500).json({ error: "commentaire invtrouvable" });
+          return res.status(500).json({ error: "commentaire introuvable" });
         }
       },
     ]);

@@ -98,7 +98,7 @@ module.exports = {
             }
           });
         } else {
-          return res.status(500).json({ error: "cannot post message" });
+          return res.status(500).json({ error: "impossible de poster le message" });
         }
       }
     );
@@ -186,7 +186,7 @@ module.exports = {
             }
           });
         } else {
-          return res.status(500).json({ error: "cannot post message" });
+          return res.status(500).json({ error: "impossible de poster le message" });
         }
       }
     );
@@ -515,7 +515,7 @@ module.exports = {
             done(null, messageFound);
           })
           .catch(function (err) {
-            return res.status(500).json({ error: "impossible de vérifier la publication !!!!!" });
+            return res.status(500).json({ error: "impossible de vérifier la publication" });
           });
       },
       function (messageFound, done) {
@@ -526,7 +526,7 @@ module.exports = {
             done(null, messageFound, userFoundAdmin);
           })
           .catch(function (err) {
-            res.status(500).json({ error: "admin not found" });
+            res.status(500).json({ error: "impossible de véifier l'utilisateur" });
           });
       },
       function (messageFound, userFoundAdmin, done) {
